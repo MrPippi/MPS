@@ -19,7 +19,7 @@
 | 01 | [`spigot-paper-api-caller`](Skills/spigot-paper-api-caller/SKILL.md) | 產生正確的 Spigot/Paper Java API 調用代碼 | ✅ 已建立 |
 | 02 | `generate-plugin-skeleton` | 產生完整 Maven 插件骨架（pom.xml、plugin.yml、主類） | 🔲 規劃中 |
 | 03 | `generate-config-yml` | 依功能清單產生結構化 config.yml | 🔲 規劃中 |
-| 04 | `generate-command-handler` | 產生 Command + TabCompleter 處理類 | 🔲 規劃中 |
+| 04 | [`generate-command-handler`](Skills/generate-command-handler/SKILL.md) | 產生 Command + TabCompleter 處理類 | ✅ 已建立 |
 | 05 | `generate-event-listener` | 產生 Event Listener 骨架 | 🔲 規劃中 |
 | 06 | `generate-test-suite` | 產生 JUnit5 + MockBukkit 測試套件 | 🔲 規劃中 |
 | 07 | `generate-cicd-workflow` | 產生 GitHub Actions CI/CD workflow | 🔲 規劃中 |
