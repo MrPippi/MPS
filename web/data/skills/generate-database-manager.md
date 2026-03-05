@@ -23,7 +23,6 @@ featured: false
 
 # Generate Database Manager Skill
 
-> **狀態：規劃中** — 此 Skill 尚未完成，內容為預覽草稿。
 
 ## 目標
 
