@@ -1,11 +1,11 @@
----
+﻿---
 id: generate-config-yml
 title: Generate Config YAML
 titleZh: 配置檔生成器
 description: Generate a structured config.yml with default values and Traditional Chinese comments based on a feature list.
 descriptionZh: 依功能清單產生結構完整的 config.yml，含預設值與繁體中文註解。
-version: "0.1.0"
-status: planned
+version: "1.0.0"
+status: active
 category: configuration
 categoryLabel: 配置管理
 categoryLabelEn: Configuration

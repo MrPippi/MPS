@@ -1,11 +1,11 @@
----
+﻿---
 id: generate-plugin-skeleton
 title: Generate Plugin Skeleton
 titleZh: 插件骨架生成器
 description: Generate a complete Maven-based Bukkit/Paper plugin project scaffold including pom.xml, plugin.yml, and main class.
 descriptionZh: 依輸入參數產生完整的 Bukkit/Paper 插件 Maven 專案骨架，包含 pom.xml、plugin.yml 與主類。
-version: "0.1.0"
-status: planned
+version: "1.0.0"
+status: active
 category: scaffolding
 categoryLabel: 骨架生成
 categoryLabelEn: Scaffolding

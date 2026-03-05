@@ -1,11 +1,11 @@
----
+﻿---
 id: generate-placeholder-expansion
 title: Generate PlaceholderAPI Expansion
 titleZh: PlaceholderAPI 擴充生成器
 description: Generate a PlaceholderAPI Expansion class with handling logic for a provided list of placeholders.
 descriptionZh: 產生 PlaceholderAPI Expansion 類，依輸入的 placeholder 清單產生對應處理邏輯。
-version: "0.1.0"
-status: planned
+version: "1.0.0"
+status: active
 category: integrations
 categoryLabel: 整合擴充
 categoryLabelEn: Integrations

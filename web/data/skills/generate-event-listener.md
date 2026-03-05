@@ -1,11 +1,11 @@
----
+﻿---
 id: generate-event-listener
 title: Generate Event Listener
 titleZh: 事件監聽器生成器
 description: Generate a Bukkit Event Listener class that listens to specified events with common boilerplate logic.
 descriptionZh: 產生 Bukkit Event Listener 類，監聽指定事件並套用常見樣板邏輯。
-version: "0.1.0"
-status: planned
+version: "1.0.0"
+status: active
 category: events
 categoryLabel: 事件系統
 categoryLabelEn: Events

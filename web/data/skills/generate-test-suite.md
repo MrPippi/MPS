@@ -1,11 +1,11 @@
----
+﻿---
 id: generate-test-suite
 title: Generate Test Suite
 titleZh: 測試套件生成器
 description: Generate a JUnit 5 + MockBukkit test suite skeleton based on a plugin main class.
 descriptionZh: 依插件主類產生 JUnit 5 + MockBukkit 測試套件骨架。
-version: "0.1.0"
-status: planned
+version: "1.0.0"
+status: active
 category: testing
 categoryLabel: 測試
 categoryLabelEn: Testing

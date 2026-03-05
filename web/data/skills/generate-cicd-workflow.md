@@ -1,11 +1,11 @@
----
+﻿---
 id: generate-cicd-workflow
 title: Generate CI/CD Workflow
 titleZh: CI/CD 工作流程生成器
 description: Generate GitHub Actions workflow with build, test, and release jobs for Minecraft plugins.
 descriptionZh: 產生 GitHub Actions workflow，包含 build、test、release 三個 job。
-version: "0.1.0"
-status: planned
+version: "1.0.0"
+status: active
 category: devops
 categoryLabel: DevOps
 categoryLabelEn: DevOps

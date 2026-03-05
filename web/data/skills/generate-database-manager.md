@@ -1,11 +1,11 @@
----
+﻿---
 id: generate-database-manager
 title: Generate Database Manager
 titleZh: 資料庫管理器生成器
 description: Generate a SQLite/MySQL dual-mode DatabaseManager class with connection pooling and async query wrappers.
 descriptionZh: 產生 SQLite/MySQL 雙模式 DatabaseManager 類，含連線池與非同步查詢封裝。
-version: "0.1.0"
-status: planned
+version: "1.0.0"
+status: active
 category: database
 categoryLabel: 資料庫
 categoryLabelEn: Database
