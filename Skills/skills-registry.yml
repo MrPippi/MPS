@@ -1,15 +1,22 @@
-version: "1.0.0"
+version: "3.0.0"
 updated: "2026-03-05"
-description: MPS 專案 Agent Skills 總覽索引
+description: MPS — Minecraft Plugin Studio Agent Skills 總覽索引
 
 skills:
   - id: spigot-paper-api-caller
     version: "1.0.0"
     status: active
+    category: integration
     description: 為 Minecraft Bukkit/Spigot/Paper 插件產生正確的 Java API 調用代碼，包含事件、指令、排程、NBT、Adventure API 等
     skill_file: spigot-paper-api-caller/SKILL.md
     reference_files:
       - spigot-paper-api-caller/api-reference.md
+    inputs:
+      - api_type
+      - target_class
+      - mc_version
+    outputs:
+      - Java API 調用代碼片段
     tags: [api, java, bukkit, spigot, paper, event, command, scheduler]
     trigger_keywords:
       - "如何用 API"
@@ -21,33 +28,65 @@ skills:
       - "PersistentDataContainer"
 
   - id: generate-plugin-skeleton
-    version: "0.1.0"
-    status: planned
+    version: "1.0.0"
+    status: active
+    category: scaffold
     description: 依輸入參數產生完整的 Bukkit/Paper 插件 Maven 專案骨架（pom.xml、plugin.yml、主類）
     skill_file: generate-plugin-skeleton/SKILL.md
+    examples_file: generate-plugin-skeleton/examples.md
+    inputs:
+      - plugin_name
+      - main_class
+      - group_id
+      - mc_version
+      - api_type
+    outputs:
+      - pom.xml
+      - plugin.yml
+      - Main.java
     tags: [scaffold, maven, bukkit, paper]
     trigger_keywords:
       - "新建插件"
       - "plugin skeleton"
       - "插件骨架"
       - "建立專案"
+      - "Maven 插件"
 
   - id: generate-config-yml
-    version: "0.1.0"
-    status: planned
-    description: 依功能清單產生結構完整的 config.yml，含預設值與繁體中文註解
+    version: "1.0.0"
+    status: active
+    category: config
+    description: 依功能清單產生結構完整的 config.yml，含預設值與繁體中文註解，並同步產生 ConfigManager Java 類別
     skill_file: generate-config-yml/SKILL.md
-    tags: [config, yaml, bukkit]
+    examples_file: generate-config-yml/examples.md
+    inputs:
+      - plugin_name
+      - config_sections
+    outputs:
+      - config.yml
+      - ConfigManager.java
+    tags: [config, yaml, bukkit, configmanager]
     trigger_keywords:
       - "config.yml"
       - "產生配置"
       - "配置檔"
+      - "ConfigManager"
+      - "讀取配置"
 
   - id: generate-command-handler
     version: "1.0.0"
     status: active
+    category: command
     description: 依使用者提供的指令名稱與子指令清單，產生完整的 Bukkit CommandExecutor + TabCompleter 類別，含子指令路由、權限節點、玩家/控制台環境判斷、參數驗證
     skill_file: generate-command-handler/SKILL.md
+    examples_file: generate-command-handler/examples.md
+    inputs:
+      - command_name
+      - subcommands
+      - plugin_name
+    outputs:
+      - CommandHandler.java
+      - plugin.yml commands 區段
     tags: [command, tabcompleter, bukkit, permission, sub-command]
     trigger_keywords:
       - "指令處理"
@@ -57,47 +96,83 @@ skills:
       - "子指令"
 
   - id: generate-event-listener
-    version: "0.1.0"
-    status: planned
-    description: 產生 Bukkit Event Listener 類，監聽指定事件並套用常見樣板邏輯
+    version: "1.0.0"
+    status: active
+    category: event
+    description: 依使用者指定的事件名稱清單，產生 Bukkit Event Listener 類別，含 @EventHandler 宣告、EventPriority、常用欄位存取範例
     skill_file: generate-event-listener/SKILL.md
-    tags: [event, listener, bukkit]
+    examples_file: generate-event-listener/examples.md
+    inputs:
+      - event_names
+      - plugin_name
+      - priority
+    outputs:
+      - EventListener.java
+    tags: [event, listener, bukkit, eventhandler]
     trigger_keywords:
       - "監聽事件"
       - "Listener"
       - "EventHandler"
       - "事件監聽"
+      - "產生事件監聽器"
 
   - id: generate-test-suite
-    version: "0.1.0"
-    status: planned
-    description: 依插件主類產生 JUnit 5 + MockBukkit 測試套件骨架
+    version: "1.0.0"
+    status: active
+    category: testing
+    description: 依插件主類產生 JUnit 5 + MockBukkit 測試套件骨架，含 pom.xml 依賴、MockBukkit 初始化、玩家/事件/指令測試範例
     skill_file: generate-test-suite/SKILL.md
-    tags: [test, junit5, mockbukkit]
+    examples_file: generate-test-suite/examples.md
+    inputs:
+      - plugin_main_class
+      - test_scenarios
+    outputs:
+      - PluginTest.java
+      - pom.xml test dependencies
+    tags: [test, junit5, mockbukkit, unit-test]
     trigger_keywords:
       - "測試"
       - "MockBukkit"
       - "JUnit"
       - "單元測試"
+      - "測試骨架"
 
   - id: generate-cicd-workflow
-    version: "0.1.0"
-    status: planned
-    description: 產生 GitHub Actions workflow，包含 build、test、release 三個 job
+    version: "1.0.0"
+    status: active
+    category: devops
+    description: 為插件 Maven 專案產生 GitHub Actions CI/CD workflow，包含 build、test、release 三個 job，支援自動發布 JAR 至 GitHub Releases
     skill_file: generate-cicd-workflow/SKILL.md
-    tags: [cicd, github-actions, build]
+    examples_file: generate-cicd-workflow/examples.md
+    inputs:
+      - plugin_name
+      - java_version
+      - release_on_tag
+    outputs:
+      - .github/workflows/ci.yml
+    tags: [cicd, github-actions, build, release]
     trigger_keywords:
       - "CI/CD"
       - "GitHub Actions"
       - "自動化部署"
       - "workflow"
+      - "自動發布 JAR"
 
   - id: generate-database-manager
-    version: "0.1.0"
-    status: planned
-    description: 產生 SQLite/MySQL 雙模式 DatabaseManager 類，含連線池與非同步查詢封裝
+    version: "1.0.0"
+    status: active
+    category: database
+    description: 產生 SQLite/MySQL 雙模式 DatabaseManager 類，使用 HikariCP 連線池，含非同步查詢封裝與 CRUD 操作範例
     skill_file: generate-database-manager/SKILL.md
-    tags: [database, sqlite, mysql, hikaricp]
+    examples_file: generate-database-manager/examples.md
+    inputs:
+      - plugin_name
+      - db_type
+      - table_schemas
+    outputs:
+      - DatabaseManager.java
+      - pom.xml HikariCP dependency
+    tags: [database, sqlite, mysql, hikaricp, async]
     trigger_keywords:
       - "資料庫"
       - "DatabaseManager"
@@ -106,13 +181,68 @@ skills:
       - "HikariCP"
 
   - id: generate-placeholder-expansion
-    version: "0.1.0"
-    status: planned
-    description: 產生 PlaceholderAPI Expansion 類，依輸入的 placeholder 清單產生對應處理邏輯
+    version: "1.0.0"
+    status: active
+    category: integration
+    description: 產生 PlaceholderAPI Expansion 類，依輸入的 placeholder 清單產生對應的處理邏輯，含 pom.xml 依賴與整合說明
     skill_file: generate-placeholder-expansion/SKILL.md
-    tags: [placeholderapi, expansion]
+    examples_file: generate-placeholder-expansion/examples.md
+    inputs:
+      - plugin_name
+      - placeholder_keys
+    outputs:
+      - PlaceholderExpansion.java
+      - pom.xml PAPI dependency
+    tags: [placeholderapi, expansion, papi]
     trigger_keywords:
       - "PlaceholderAPI"
       - "PAPI"
       - "placeholder"
       - "變數擴充"
+      - "PAPI 擴充"
+
+  - id: generate-permission-system
+    version: "1.0.0"
+    status: active
+    category: permission
+    description: 依使用者提供的權限節點清單，產生 PermissionManager 工具類別、plugin.yml permissions 宣告，含繼承樹設計與預設值設定
+    skill_file: generate-permission-system/SKILL.md
+    examples_file: generate-permission-system/examples.md
+    inputs:
+      - plugin_name
+      - permission_nodes
+      - default_op_only
+    outputs:
+      - PermissionManager.java
+      - plugin.yml permissions 區段
+    tags: [permission, bukkit, plugin-yml]
+    trigger_keywords:
+      - "權限系統"
+      - "PermissionManager"
+      - "permission node"
+      - "權限節點"
+      - "plugin.yml 權限"
+      - "權限繼承"
+
+  - id: generate-message-system
+    version: "1.0.0"
+    status: active
+    category: config
+    description: 依訊息鍵值清單產生 messages.yml 設定檔與 MessageManager 類別，支援 MiniMessage / Legacy 格式、PlaceholderAPI 佔位符替換
+    skill_file: generate-message-system/SKILL.md
+    examples_file: generate-message-system/examples.md
+    inputs:
+      - message_keys
+      - format
+      - use_papi
+    outputs:
+      - messages.yml
+      - MessageManager.java
+    tags: [message, minimessage, legacy, bukkit, config]
+    trigger_keywords:
+      - "訊息系統"
+      - "MessageManager"
+      - "messages.yml"
+      - "MiniMessage"
+      - "訊息管理"
+      - "&a 色碼系統"
