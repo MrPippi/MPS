@@ -2,27 +2,13 @@ import Link from 'next/link';
 import type { SkillMeta } from '@/types/skill';
 import { SkillBadge } from './SkillBadge';
 import { formatDate } from '@/lib/utils';
+import { CategoryIcon } from '@/components/icons/CategoryIcon';
 
 interface SkillCardProps {
   skill: SkillMeta;
 }
 
-const CATEGORY_ICONS: Record<string, string> = {
-  'api-integration': '⚡',
-  scaffolding: '🏗️',
-  configuration: '⚙️',
-  commands: '💬',
-  events: '📡',
-  testing: '🧪',
-  devops: '🚀',
-  database: '🗄️',
-  integrations: '🔌',
-  general: '📦',
-};
-
 export function SkillCard({ skill }: SkillCardProps) {
-  const icon = CATEGORY_ICONS[skill.category] ?? '📦';
-
   return (
     <Link
       href={`/skills/${skill.slug}`}
@@ -30,8 +16,8 @@ export function SkillCard({ skill }: SkillCardProps) {
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-3">
-          <span className="text-2xl leading-none" role="img" aria-hidden>
-            {icon}
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-700/60 text-emerald-400 group-hover:bg-emerald-500/10 transition-colors">
+            <CategoryIcon category={skill.category} className="h-5 w-5" />
           </span>
           <div className="min-w-0">
             <h3 className="truncate text-sm font-semibold text-slate-100 group-hover:text-emerald-400 transition-colors">

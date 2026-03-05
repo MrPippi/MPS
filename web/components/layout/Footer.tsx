@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { GITHUB_REPO_URL, SITE_NAME } from '@/lib/utils';
+import { PickaxeIcon } from '@/components/icons/PickaxeIcon';
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
           <div>
             <div className="flex items-center gap-2 font-bold text-slate-100 mb-3">
-              <span>⛏️</span>
+              <PickaxeIcon className="h-5 w-5 text-emerald-400" />
               <span>MPS</span>
             </div>
             <p className="text-sm leading-relaxed text-slate-500">

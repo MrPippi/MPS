@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { GITHUB_REPO_URL } from '@/lib/utils';
+import { PickaxeIcon } from '@/components/icons/PickaxeIcon';
 
 const NAV_LINKS = [
   { href: '/skills', label: 'Skills' },
@@ -22,7 +23,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
     <header className="sticky top-0 z-40 border-b border-slate-700/50 bg-slate-900/90 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 font-bold text-slate-100">
-          <span className="text-xl">⛏️</span>
+          <PickaxeIcon className="h-6 w-6 text-emerald-400" />
           <span className="hidden sm:block">
             MPS <span className="text-xs font-normal text-slate-500">Minecraft Plugin Skills</span>
           </span>

@@ -2,23 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getCategories, getAllSkills } from '@/lib/skills';
 import { SITE_NAME } from '@/lib/utils';
+import { CategoryIcon } from '@/components/icons/CategoryIcon';
 
 export const metadata: Metadata = {
   title: `分類瀏覽 | ${SITE_NAME}`,
   description: '依分類瀏覽 Minecraft Plugin Skills，包含 API 整合、骨架生成、配置管理、指令系統等分類。',
-};
-
-const CATEGORY_ICONS: Record<string, string> = {
-  'api-integration': '⚡',
-  scaffolding: '🏗️',
-  configuration: '⚙️',
-  commands: '💬',
-  events: '📡',
-  testing: '🧪',
-  devops: '🚀',
-  database: '🗄️',
-  integrations: '🔌',
-  general: '📦',
 };
 
 export default function CategoriesPage() {
@@ -36,7 +24,6 @@ export default function CategoriesPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((cat) => {
-          const icon = CATEGORY_ICONS[cat.id] ?? '📦';
           const skills = allSkills.filter((s) => s.category === cat.id);
           const activeCount = skills.filter((s) => s.status === 'active').length;
 
@@ -47,7 +34,9 @@ export default function CategoriesPage() {
               className="group rounded-xl border border-slate-700/60 bg-slate-800/30 p-6 transition-all hover:border-emerald-500/40 hover:bg-slate-800/60"
             >
               <div className="flex items-start gap-4">
-                <span className="text-3xl leading-none">{icon}</span>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-700/60 text-emerald-400 group-hover:bg-emerald-500/10 transition-colors">
+                  <CategoryIcon category={cat.id} className="h-5 w-5" />
+                </span>
                 <div className="min-w-0">
                   <h2 className="text-base font-semibold text-slate-200 group-hover:text-emerald-400 transition-colors">
                     {cat.label}
