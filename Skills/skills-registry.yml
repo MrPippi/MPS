@@ -44,16 +44,17 @@ skills:
       - "配置檔"
 
   - id: generate-command-handler
-    version: "0.1.0"
-    status: planned
-    description: 產生 Bukkit Command 處理類（含 TabCompleter、權限節點、使用說明）
+    version: "1.0.0"
+    status: active
+    description: 依使用者提供的指令名稱與子指令清單，產生完整的 Bukkit CommandExecutor + TabCompleter 類別，含子指令路由、權限節點、玩家/控制台環境判斷、參數驗證
     skill_file: generate-command-handler/SKILL.md
-    tags: [command, tabcompleter, bukkit]
+    tags: [command, tabcompleter, bukkit, permission, sub-command]
     trigger_keywords:
       - "指令處理"
       - "CommandExecutor"
       - "TabCompleter"
       - "新增指令"
+      - "子指令"
 
   - id: generate-event-listener
     version: "0.1.0"
