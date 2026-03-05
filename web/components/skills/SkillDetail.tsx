@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { SkillFull } from '@/types/skill';
 import { SkillBadge } from './SkillBadge';
 import { formatDate, GITHUB_REPO_URL } from '@/lib/utils';
+import { CategoryIcon } from '@/components/icons/CategoryIcon';
 
 interface SkillDetailProps {
   skill: SkillFull;
@@ -25,6 +26,10 @@ export function SkillDetail({ skill }: SkillDetailProps) {
 
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
+            <div className="mb-2 inline-flex items-center gap-1.5 rounded-lg bg-slate-800/60 px-2.5 py-1 text-xs text-slate-400">
+              <CategoryIcon category={skill.category} className="h-3.5 w-3.5 text-emerald-400" />
+              <span>{skill.categoryLabelEn}</span>
+            </div>
             <h1 className="text-3xl font-bold text-slate-100">{skill.titleZh}</h1>
             <p className="mt-1 text-base text-slate-500">{skill.title}</p>
           </div>

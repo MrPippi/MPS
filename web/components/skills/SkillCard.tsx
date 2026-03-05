@@ -12,7 +12,7 @@ export function SkillCard({ skill }: SkillCardProps) {
   return (
     <Link
       href={`/skills/${skill.slug}`}
-      className="group relative flex flex-col gap-3 rounded-xl border border-slate-700/60 bg-slate-800/50 p-5 transition-all duration-200 hover:border-emerald-500/50 hover:bg-slate-800 hover:shadow-lg hover:shadow-emerald-500/5"
+      className="group relative flex flex-col gap-3 rounded-xl border border-slate-700/60 bg-slate-800/50 p-5 transition-all duration-200 hover:border-emerald-500/50 hover:bg-slate-800 hover:shadow-lg hover:shadow-emerald-500/5 hover:scale-[1.01]"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-3">
@@ -52,7 +52,12 @@ export function SkillCard({ skill }: SkillCardProps) {
       )}
 
       <div className="flex items-center justify-between pt-1 border-t border-slate-700/40">
-        <span className="text-xs text-slate-500">v{skill.version}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-slate-500">v{skill.version}</span>
+          <span className="rounded bg-slate-700/50 px-1.5 py-0.5 text-xs text-slate-500">
+            {skill.categoryLabelEn}
+          </span>
+        </div>
         {skill.updatedAt && (
           <span className="text-xs text-slate-600">{formatDate(skill.updatedAt)}</span>
         )}

@@ -13,7 +13,7 @@ export function Footer() {
               <span>MPS</span>
             </div>
             <p className="text-sm leading-relaxed text-slate-500">
-              Minecraft Plugin Skills — 專為 Minecraft Java Edition 插件開發設計的 Cursor Agent Skills 函式庫。
+              Minecraft Plugin Studio — AI-powered development toolkit for Spigot / Paper plugins.
             </p>
           </div>
 

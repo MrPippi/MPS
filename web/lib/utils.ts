@@ -42,6 +42,6 @@ export function cn(...classes: (string | undefined | false | null)[]): string {
 
 export const GITHUB_REPO_URL = 'https://github.com/MrPippi/MPS';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mps.vercel.app';
-export const SITE_NAME = 'MPS — Minecraft Plugin Skills';
+export const SITE_NAME = 'MPS — Minecraft Plugin Studio';
 export const SITE_DESCRIPTION =
-  '一個專為 Minecraft Java Edition 插件開發設計的 Cursor Agent Skills 函式庫，提供可復用的 AI 輔助開發技能。';
+  'AI-powered development toolkit for Spigot / Paper plugins. A collection of Cursor Agent Skills that help developers generate high-quality Minecraft plugin code automatically.';

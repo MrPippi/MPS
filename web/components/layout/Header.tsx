@@ -25,7 +25,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
         <Link href="/" className="flex items-center gap-2 font-bold text-slate-100">
           <PickaxeIcon className="h-6 w-6 text-emerald-400" />
           <span className="hidden sm:block">
-            MPS <span className="text-xs font-normal text-slate-500">Minecraft Plugin Skills</span>
+            MPS <span className="text-xs font-normal text-slate-500">Minecraft Plugin Studio</span>
           </span>
           <span className="block sm:hidden font-semibold">MPS</span>
         </Link>

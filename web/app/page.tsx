@@ -23,15 +23,19 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-xs text-emerald-400">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Open Source · Cursor Agent Skills
+              Open Source · AI-powered · Cursor Agent Skills
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-slate-100 sm:text-5xl lg:text-6xl">
               Minecraft Plugin{' '}
-              <span className="text-emerald-400">Skills</span>
+              <span className="text-emerald-400">Studio</span>
             </h1>
-            <p className="mt-6 text-lg leading-relaxed text-slate-400">
-              專為 Minecraft Java Edition 插件開發設計的 <strong className="text-slate-300">Cursor Agent Skills</strong> 函式庫。
-              提供可復用的 AI 輔助開發技能，讓開發者快速自動化 Bukkit / Spigot / Paper 插件的常見開發任務。
+            <p className="mt-4 text-base font-medium text-slate-300">
+              AI-powered development toolkit for Spigot / Paper plugins.
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-slate-400">
+              MPS provides a collection of <strong className="text-slate-300">Cursor Agent Skills</strong> that help developers
+              generate high-quality Minecraft plugin code automatically —
+              from plugin scaffolds to CI/CD workflows.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -65,7 +69,7 @@ export default function HomePage() {
               { value: categories.length, label: '個分類' },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-3xl font-bold text-emerald-400">{stat.value}</div>
+                <div className="text-3xl font-bold tabular-nums text-emerald-400">{stat.value}</div>
                 <div className="text-xs text-slate-500">{stat.label}</div>
               </div>
             ))}
