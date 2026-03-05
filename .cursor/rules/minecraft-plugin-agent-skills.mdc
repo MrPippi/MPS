@@ -13,13 +13,14 @@ alwaysApply: true
 
 ## Skills 存放規範
 
-**所有 Skill 統一存放於** `.cursor/skills/<skill-name>/` 目錄下。
+**Cursor Agent 載入路徑**：`.cursor/skills/<skill-name>/`
+**對外可讀鏡像**：`Skills/<skill-name>/`（供 GitHub 瀏覽，需與 `.cursor/skills/` 保持同步）
 
 ```
 .cursor/
 ├── rules/
 │   └── minecraft-plugin-agent-skills.mdc   ← 本規格文件
-└── skills/
+└── skills/                                  ← Agent 實際載入目錄
     ├── skills-registry.yml                  ← Skill 總覽索引
     ├── spigot-paper-api-caller/             ← 已建立
     │   ├── SKILL.md
@@ -32,6 +33,12 @@ alwaysApply: true
     ├── generate-cicd-workflow/
     ├── generate-database-manager/
     └── generate-placeholder-expansion/
+
+Skills/                                      ← 對外可讀鏡像（與上方保持同步）
+├── README.md
+└── spigot-paper-api-caller/
+    ├── SKILL.md
+    └── api-reference.md
 ```
 
 ---
@@ -39,10 +46,11 @@ alwaysApply: true
 ## 新增 Skill 步驟
 
 1. 在 `.cursor/skills/` 下建立新目錄（slug 命名，小寫加連字號）
-2. 建立 `SKILL.md`（含 YAML frontmatter：`name`、`description`）
-3. 如有詳細參考資料，建立 `reference.md` 或 `examples.md`
-4. 在 `.cursor/skills/skills-registry.yml` 新增條目
-5. 送出 PR，CI 自動驗證
+2. 同步在 `Skills/` 下建立相同目錄（對外可讀鏡像）
+3. 建立 `SKILL.md`（含 YAML frontmatter：`name`、`description`）
+4. 如有詳細參考資料，建立 `reference.md` 或 `examples.md`
+5. 在 `.cursor/skills/skills-registry.yml` 新增條目
+6. 送出 PR，CI 自動驗證
 
 ---
 
