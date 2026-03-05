@@ -40,7 +40,7 @@ export function cn(...classes: (string | undefined | false | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export const GITHUB_REPO_URL = 'https://github.com/your-username/MPS';
+export const GITHUB_REPO_URL = 'https://github.com/MrPippi/MPS';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mps.vercel.app';
 export const SITE_NAME = 'MPS — Minecraft Plugin Skills';
 export const SITE_DESCRIPTION =
