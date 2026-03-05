@@ -1,0 +1,256 @@
+
+---
+description: Minecraft 插件開發 Agent Skills 專案規劃與實作規格指引
+alwaysApply: true
+---
+
+# Minecraft 插件開發 Agent Skills 專案規格
+
+你是一位軟體架構師與產品設計助理（角色）。
+
+**任務**：設計一個「專門為 Minecraft 插件開發的 Agent Skills 專案」的完整專案規劃與實作規格，使開發者/團隊能依此建立可復用的 Agent Skills（例如：自動產生 plugin 範本、產生配置檔、測試腳本、或協助編寫特定功能的 agent skill）。
+
+**輸出格式**：繁體中文，使用 Markdown（包含標題與條列），產出內容需包含下列章節（按順序）且每項都具體可執行。
+
+---
+
+## 1. 專案概述
+
+目標：建立一套可復用的 Agent Skills 函式庫，專為 Minecraft Java Edition 插件（Bukkit/Spigot/Paper API）開發流程設計，協助開發者自動化常見開發任務（範本產生、配置管理、測試腳本、發布部署）。
+
+預期使用者：Minecraft 插件開發者（個人或小型團隊），熟悉 Java 但希望降低重複工作量。
+
+成功指標：
+- 新建一個插件 Skeleton 的時間從 30 分鐘降至 5 分鐘以內
+- 90% 的常見配置樣板可透過 Agent Skill 一鍵產生
+- 每個 Skill 有獨立測試覆蓋率 ≥ 80%
+
+---
+
+## 2. 交付物清單
+
+- Agent Skills 名單（含版本號與負責人）
+- 每個 Skill 的規格文件（依第 3 點規格範本填寫）
+- 示例 prompt 集合（可直接貼入 agent 的 prompt template）
+- 範例代碼片段（Java、YAML、JSON）
+- 測試用例（單元 + 整合）
+- CI/CD 腳本（GitHub Actions workflow）
+- 部署說明文件（README 範本）
+- Skill Registry 配置檔（skills-registry.yml）
+
+---
+
+## 3. Agent Skill 標準規格範本
+
+每個 Skill 依以下欄位填寫：
+
+```
+技能名稱：[英文 slug，例如 generate-plugin-skeleton]
+目的（1 行）：[說明此 skill 的核心功能]
+輸入：
+  格式：[JSON/自然語言/YAML]
+  範例：{"pluginName": "MyPlugin", "mcVersion": "1.20.4", "author": "dev"}
+輸出：
+  格式：[檔案清單/程式碼/YAML]
+  範例：[示例輸出片段]
+觸發條件：[使用者說出哪些關鍵字或場景時啟動]
+前置條件：[需要哪些環境或資訊已就位]
+失敗模式與回退策略：[可能出錯的情形及對應處理]
+範例 prompt（可直接放入 agent）：
+  "[請幫我產生一個 Minecraft 插件 skeleton，插件名稱為 {pluginName}，
+   目標 MC 版本 {mcVersion}，作者 {author}]"
+預期時間複雜度/成本估計：[執行時間或 token 估計]
+```
+
+---
+
+## 4. 建議的 Skill 範例（6–10 個）
+
+### Skill 01：generate-plugin-skeleton
+- **目的**：依輸入參數產生完整的 Bukkit/Paper 插件 Maven 專案骨架
+- **輸入**：`{"pluginName": "MyPlugin", "mcVersion": "1.20.4", "author": "dev", "package": "com.example.myplugin"}`
+- **輸出**：`pom.xml`、`plugin.yml`、`src/main/java/.../MyPlugin.java`（主類）、`src/main/resources/config.yml`
+- **範例 prompt**：「請幫我產生一個插件 skeleton，插件名稱 {pluginName}，MC 版本 {mcVersion}，作者 {author}，package {package}」
+
+### Skill 02：generate-config-yml
+- **目的**：依功能清單產生結構完整的 `config.yml`，含預設值與繁體中文註解
+- **輸入**：`{"features": ["cooldown", "economy", "permissions"], "pluginName": "MyPlugin"}`
+- **輸出**：`config.yml`（含階層結構、預設值、說明註解）
+- **範例 prompt**：「幫我的插件 {pluginName} 產生 config.yml，需要包含 {features} 這些功能的配置節點」
+
+### Skill 03：generate-command-handler
+- **目的**：產生 Bukkit Command 處理類（含 TabCompleter、權限節點、使用說明）
+- **輸入**：`{"commandName": "warp", "subcommands": ["set", "go", "delete", "list"], "permission": "myplugin.warp"}`
+- **輸出**：`WarpCommand.java`（實作 CommandExecutor + TabCompleter）、`plugin.yml` 的 commands 區段
+- **範例 prompt**：「幫我產生 /{commandName} 指令的處理類，子指令有 {subcommands}，權限節點前綴 {permission}」
+
+### Skill 04：generate-event-listener
+- **目的**：產生 Bukkit Event Listener 類，監聽指定事件並套用常見樣板邏輯
+- **輸入**：`{"events": ["PlayerJoinEvent", "PlayerQuitEvent", "BlockBreakEvent"]}`
+- **輸出**：`EventListener.java`（含 @EventHandler 方法骨架與 TODO 標記）
+- **範例 prompt**：「幫我產生監聽 {events} 的 Listener 類」
+
+### Skill 05：generate-test-suite
+- **目的**：依插件主類產生 JUnit 5 + MockBukkit 測試套件骨架
+- **輸入**：`{"pluginClass": "MyPlugin", "commandsToTest": ["warp"], "listenersToTest": ["EventListener"]}`
+- **輸出**：`MyPluginTest.java`、`WarpCommandTest.java`（含 MockBukkit 設定與測試方法骨架）
+- **範例 prompt**：「幫我為 {pluginClass} 產生 MockBukkit 測試套件，需要測試 {commandsToTest} 指令」
+
+### Skill 06：generate-cicd-workflow
+- **目的**：產生 GitHub Actions workflow，包含 build、test、release 三個 job
+- **輸入**：`{"javaVersion": "17", "mcVersion": "1.20.4", "releaseOnTag": true}`
+- **輸出**：`.github/workflows/build.yml`
+- **範例 prompt**：「幫我產生 GitHub Actions CI/CD，Java {javaVersion}，MC {mcVersion}，打 tag 時自動 release」
+
+### Skill 07：generate-database-manager
+- **目的**：產生 SQLite/MySQL 雙模式 DatabaseManager 類，含連線池與非同步查詢封裝
+- **輸入**：`{"dbType": "both", "tables": ["players", "warps"]}`
+- **輸出**：`DatabaseManager.java`、`config.yml` 的 database 區段
+- **範例 prompt**：「幫我產生支援 SQLite 與 MySQL 的 DatabaseManager，需要管理 {tables} 資料表」
+
+### Skill 08：generate-placeholder-expansion
+- **目的**：產生 PlaceholderAPI Expansion 類，依輸入的 placeholder 清單產生對應處理邏輯
+- **輸入**：`{"pluginName": "MyPlugin", "placeholders": ["rank", "points", "lastSeen"]}`
+- **輸出**：`MyPluginExpansion.java`
+- **範例 prompt**：「幫我產生 PlaceholderAPI 擴充，plugin 名稱 {pluginName}，需要 {placeholders} 這些 placeholder」
+
+---
+
+## 5. 系統架構與整合
+
+```
+[開發者 / IDE] --> [Agent (Cursor/CLI)] --> [Skill Registry]
+                                                   |
+                   +-------------------------------+-------------------------------+
+                   |                               |                               |
+          [Skill: skeleton]            [Skill: config-gen]           [Skill: test-gen]
+                   |                               |                               |
+          [輸出: Java/YAML 檔]         [輸出: config.yml]            [輸出: Test.java]
+                   |
+          [Maven Build / Paper Server]
+                   |
+          [GitHub Actions CI/CD]
+```
+
+整合要點：
+- **Skill Registry**：`skills-registry.yml` 集中管理所有 skill 的 ID、版本、入口 prompt 檔路徑
+- **版本控制**：每個 Skill 以 semver 標記，存放於 `skills/<skill-name>/` 子目錄
+- **執行環境**：Cursor Agent 或 CLI agent（Node.js/Python runner）
+- **授權**：Skill 可標記 `public` / `team-only`，敏感 skill 需 token 驗證
+- **安全考量**：Skill 輸入須白名單驗證，避免 prompt injection；不允許 Skill 直接執行 shell 命令
+- **整合點**：產出檔案直接寫入專案目錄；CI/CD Skill 可觸發 GitHub Actions API
+
+---
+
+## 6. 資料格式與範例檔
+
+### skills-registry.yml 範例
+```yaml
+version: "1.0.0"
+skills:
+  - id: generate-plugin-skeleton
+    version: "1.2.0"
+    description: 產生 Bukkit/Paper 插件 Maven 骨架
+    prompt_file: skills/generate-plugin-skeleton/prompt.md
+    schema_file: skills/generate-plugin-skeleton/schema.json
+    tags: [scaffold, maven, bukkit]
+    access: public
+
+  - id: generate-config-yml
+    version: "1.0.1"
+    description: 產生結構化 config.yml
+    prompt_file: skills/generate-config-yml/prompt.md
+    schema_file: skills/generate-config-yml/schema.json
+    tags: [config, yaml]
+    access: public
+```
+
+### Skill 輸入 schema.json 範例
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["pluginName", "mcVersion", "author"],
+  "properties": {
+    "pluginName": { "type": "string", "minLength": 1 },
+    "mcVersion":  { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "author":     { "type": "string" },
+    "package":    { "type": "string", "default": "com.example" }
+  }
+}
+```
+
+---
+
+## 7. 測試策略
+
+### 單元測試
+- 每個 Skill 的輸入 schema 驗證（使用 ajv 或 Pydantic）
+- Prompt 模板變數替換正確性
+
+### 整合測試
+- 呼叫 Agent，傳入標準輸入，驗證輸出檔案存在且語法正確（Java 用 `javac` 編譯；YAML 用 `yaml.safe_load`）
+- 產生的 pom.xml 可被 `mvn validate` 通過
+
+### 端對端測試
+- 執行完整流程：Skill → 產生檔案 → Maven build → 測試通過
+- GitHub Actions 中每次 PR 自動執行
+
+### 驗收標準
+- 所有 Skill 單元測試通過率 100%
+- 整合測試：產生的 Java 檔案可正常編譯
+- E2E：`mvn package` 成功，`-SNAPSHOT.jar` 產出無錯誤
+
+---
+
+## 8. 開發里程碑與優先順序
+
+| 里程碑 | 內容 | 預計時程 |
+|--------|------|----------|
+| **M1 MVP** | 完成 Skill 01–03（skeleton、config、command），建立 Registry 基礎架構，手動測試通過 | 第 1–2 週 |
+| **M2 核心擴充** | 完成 Skill 04–06（listener、test-suite、CI/CD），加入 schema 驗證，單元測試自動化 | 第 3–4 週 |
+| **M3 進階功能** | 完成 Skill 07–08（database、PlaceholderAPI），整合測試（javac 驗證），文件完善 | 第 5–6 週 |
+| **M4 長期維護** | 版本管理 UI、Skill 市集（可分享 Skill）、支援 Folia API、多語言 prompt | 第 7 週起 |
+
+---
+
+## 9. 風險與緩解
+
+1. **MC API 版本碎片化**：不同 MC 版本 API 差異大 → 緩解：Skill 輸入含 `mcVersion` 參數，維護版本對應表
+2. **LLM 輸出不穩定**：產生的 Java 程式碼可能有語法錯誤 → 緩解：整合 `javac` 語法驗證步驟，失敗時自動重試並附上錯誤訊息
+3. **Prompt Injection 風險**：使用者輸入含惡意指令 → 緩解：輸入白名單 + schema 嚴格驗證，禁止特殊字元
+4. **技術債累積**：Skill 快速增長導致難以維護 → 緩解：每個 Skill 獨立目錄、強制規格文件、PR review 流程
+5. **依賴過時**：PaperAPI / Maven 依賴版本落後 → 緩解：CI/CD 定期執行 `mvn versions:display-dependency-updates` 並建立更新 issue
+
+---
+
+## 10. 使用說明模板（README 範本）
+
+使用此 rule 時，在專案 README 或各 Skill 目錄下應包含以下結構：
+
+```markdown
+# [Skill 名稱]
+
+## 快速開始
+1. 在 Cursor Agent 輸入框貼上範例 prompt（見下方）
+2. 依提示填入參數
+3. 確認輸出檔案，按需調整
+
+## 範例 Prompt
+> 請幫我產生 [功能描述]，參數如下：
+> - 插件名稱：MyPlugin
+> - MC 版本：1.20.4
+> - 作者：YourName
+
+## 新增 Skill 步驟
+1. 在 `skills/` 下建立新目錄（例如 `skills/my-new-skill/`）
+2. 建立 `prompt.md`（包含 prompt 模板與變數說明）
+3. 建立 `schema.json`（輸入 schema）
+4. 在 `skills-registry.yml` 新增條目
+5. 撰寫測試於 `tests/my-new-skill/`
+6. 送出 PR，CI 自動驗證
+
+## 在 Agent 中呼叫 Skill
+在 Cursor 的 Agent 對話框輸入：
+> @skill generate-plugin-skeleton {"pluginName": "Demo", "mcVersion": "1.20.4", "author": "dev"}
+```
