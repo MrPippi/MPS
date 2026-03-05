@@ -10,25 +10,52 @@
 
 ```
 Skills/
-├── README.md                          ← 本文件
+├── README.md                              ← 本文件
 │
-└── spigot-paper-api-caller/           ✅ 已建立
-    ├── SKILL.md                       ← 主技能指引
-    └── api-reference.md               ← 詳細 API 參考
+├── spigot-paper-api-caller/               ✅ 已建立
+│   ├── SKILL.md
+│   └── api-reference.md
+│
+├── generate-plugin-skeleton/              ✅ 已建立
+│   └── SKILL.md
+│
+├── generate-config-yml/                   ✅ 已建立
+│   └── SKILL.md
+│
+├── generate-command-handler/              ✅ 已建立
+│   └── SKILL.md
+│
+├── generate-event-listener/               ✅ 已建立
+│   └── SKILL.md
+│
+├── generate-test-suite/                   ✅ 已建立
+│   └── SKILL.md
+│
+├── generate-cicd-workflow/                ✅ 已建立
+│   └── SKILL.md
+│
+├── generate-database-manager/             ✅ 已建立
+│   └── SKILL.md
+│
+└── generate-placeholder-expansion/        ✅ 已建立
+    └── SKILL.md
 ```
 
-### 規劃中（待建立）
+---
 
-| 目錄名稱 | 功能說明 |
-|----------|----------|
-| `generate-plugin-skeleton/` | 產生完整 Maven 插件骨架（pom.xml、plugin.yml、主類） |
-| `generate-config-yml/` | 依功能清單產生結構化 config.yml |
-| `generate-command-handler/` | 產生 Command + TabCompleter 處理類 |
-| `generate-event-listener/` | 產生 Event Listener 骨架 |
-| `generate-test-suite/` | 產生 JUnit5 + MockBukkit 測試套件 |
-| `generate-cicd-workflow/` | 產生 GitHub Actions CI/CD workflow |
-| `generate-database-manager/` | 產生 SQLite/MySQL DatabaseManager 類 |
-| `generate-placeholder-expansion/` | 產生 PlaceholderAPI Expansion 類 |
+## Skills 一覽
+
+| # | Skill ID | 功能說明 | 狀態 |
+|---|----------|----------|------|
+| 01 | [spigot-paper-api-caller](spigot-paper-api-caller/SKILL.md) | 產生正確的 Spigot/Paper Java API 調用代碼 | ✅ 已建立 |
+| 02 | [generate-plugin-skeleton](generate-plugin-skeleton/SKILL.md) | 產生完整 Maven 插件骨架（pom.xml、plugin.yml、主類） | ✅ 已建立 |
+| 03 | [generate-config-yml](generate-config-yml/SKILL.md) | 依功能清單產生結構化 config.yml + ConfigManager | ✅ 已建立 |
+| 04 | [generate-command-handler](generate-command-handler/SKILL.md) | 產生 CommandExecutor + TabCompleter 處理類 | ✅ 已建立 |
+| 05 | [generate-event-listener](generate-event-listener/SKILL.md) | 產生 Event Listener 骨架 | ✅ 已建立 |
+| 06 | [generate-test-suite](generate-test-suite/SKILL.md) | 產生 JUnit5 + MockBukkit 測試套件 | ✅ 已建立 |
+| 07 | [generate-cicd-workflow](generate-cicd-workflow/SKILL.md) | 產生 GitHub Actions CI/CD workflow | ✅ 已建立 |
+| 08 | [generate-database-manager](generate-database-manager/SKILL.md) | 產生 SQLite/MySQL + HikariCP DatabaseManager 類 | ✅ 已建立 |
+| 09 | [generate-placeholder-expansion](generate-placeholder-expansion/SKILL.md) | 產生 PlaceholderAPI Expansion 類 | ✅ 已建立 |
 
 ---
 
