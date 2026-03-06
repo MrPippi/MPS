@@ -1,114 +1,71 @@
 ---
-description: Minecraft 插件開發 Agent Skills 專案規劃與實作規格指引
+description: MPS 專案規格：Minecraft Plugin Studio Agent Skills 函式庫操作規範
 alwaysApply: true
 ---
 
-# Minecraft 插件開發 Agent Skills 專案規格
+# Minecraft Plugin Studio (MPS) — Agent Skills 操作規範
 
-你是一位軟體架構師與產品設計助理。
-
-**專案目標**：為 Minecraft Java Edition 插件（Bukkit/Spigot/Paper API）建立可復用的 Agent Skills 函式庫，協助開發者自動化常見任務。
+**專案目標**：為 Minecraft Java Edition 插件（Bukkit/Spigot/Paper API）提供可復用的 Agent Skills 函式庫，協助開發者自動化常見任務。
 
 ---
 
-## Skills 存放規範
-
-**Cursor Agent 載入路徑**：`.cursor/skills/<skill-name>/`
-**對外可讀鏡像**：`Skills/<skill-name>/`（供 GitHub 瀏覽，需與 `.cursor/skills/` 保持同步）
+## 目錄結構
 
 ```
-.cursor/
-├── rules/
-│   └── minecraft-plugin-agent-skills.mdc   ← 本規格文件
-└── skills/                                  ← Agent 實際載入目錄
-    ├── skills-registry.yml                  ← Skill 總覽索引
-    ├── spigot-paper-api-caller/             ← 已建立
-    │   ├── SKILL.md
-    │   └── api-reference.md
-    ├── generate-plugin-skeleton/            ← 待建立
-    ├── generate-config-yml/
-    ├── generate-command-handler/
-    ├── generate-event-listener/
-    ├── generate-test-suite/
-    ├── generate-cicd-workflow/
-    ├── generate-database-manager/
-    └── generate-placeholder-expansion/
-
-Skills/                                      ← 對外可讀鏡像（與上方保持同步）
-├── README.md
-└── spigot-paper-api-caller/
-    ├── SKILL.md
-    └── api-reference.md
+.cursor/skills/<skill-slug>/   ← Cursor Agent 實際載入路徑
+Skills/<skill-slug>/           ← 對外可讀鏡像（供 GitHub 瀏覽）
 ```
+
+兩個路徑**必須保持同步**，任何新增或修改都要同時更新。
+
+---
+
+## 已完成 Skills（11 個，全部 active）
+
+| Slug | 類別 | 功能 |
+|------|------|------|
+| `spigot-paper-api-caller` | integration | Bukkit/Paper Java API 調用代碼 |
+| `generate-plugin-skeleton` | scaffold | Maven 插件完整骨架 |
+| `generate-config-yml` | config | config.yml + ConfigManager |
+| `generate-command-handler` | command | CommandExecutor + TabCompleter |
+| `generate-event-listener` | event | Event Listener 骨架 |
+| `generate-test-suite` | testing | JUnit 5 + MockBukkit 測試套件 |
+| `generate-cicd-workflow` | devops | GitHub Actions CI/CD workflow |
+| `generate-database-manager` | database | SQLite/MySQL + HikariCP |
+| `generate-placeholder-expansion` | integration | PlaceholderAPI Expansion |
+| `generate-permission-system` | permission | PermissionManager + plugin.yml 宣告 |
+| `generate-message-system` | config | messages.yml + MessageManager |
+
+詳細索引見 `.cursor/skills/skills-registry.yml`。
 
 ---
 
 ## 新增 Skill 步驟
 
-1. 在 `.cursor/skills/` 下建立新目錄（slug 命名，小寫加連字號）
-2. 同步在 `Skills/` 下建立相同目錄（對外可讀鏡像）
+1. 在 `.cursor/skills/` 建立新目錄（slug：小寫加連字號）
+2. 同步在 `Skills/` 建立相同目錄
 3. 建立 `SKILL.md`（含 YAML frontmatter：`name`、`description`）
-4. 如有詳細參考資料，建立 `reference.md` 或 `examples.md`
-5. 在 `.cursor/skills/skills-registry.yml` 新增條目
-6. 送出 PR，CI 自動驗證
+4. 如有參考資料，建立 `reference.md` 或 `examples.md`
+5. 在 `.cursor/skills/skills-registry.yml` 新增條目（`status: active`）
+6. 同步更新 `Skills/skills-registry.yml`
 
 ---
 
-## Skill 規格範本
-
-每個 `SKILL.md` 至少涵蓋：
+## SKILL.md 必填欄位
 
 ```
 技能名稱：[英文 slug]
 目的（1 行）：[核心功能說明]
-輸入範例：{"pluginName": "MyPlugin", "mcVersion": "1.20.4"}
-輸出範例：[檔案清單或代碼片段]
 觸發條件：[使用者說出哪些關鍵字時啟動]
+輸入參數：[需要使用者提供的資訊]
+輸出產物：[產生的檔案或代碼清單]
 失敗回退：[出錯時的處理方式]
-範例 prompt：[可直接放入 agent 的 prompt]
 ```
 
 ---
 
-## 已規劃的 Skill 清單（8 個）
-
-| ID | Skill 名稱 | 目的 | 狀態 |
-|----|-----------|------|------|
-| 01 | `spigot-paper-api-caller` | 產生正確的 Spigot/Paper Java API 調用代碼 | ✅ 已建立 |
-| 02 | `generate-plugin-skeleton` | 產生完整 Maven 插件骨架 | 待建立 |
-| 03 | `generate-config-yml` | 產生結構化 config.yml | 待建立 |
-| 04 | `generate-command-handler` | 產生 Command + TabCompleter 類 | 待建立 |
-| 05 | `generate-event-listener` | 產生 Event Listener 骨架 | 待建立 |
-| 06 | `generate-test-suite` | 產生 JUnit5 + MockBukkit 測試套件 | 待建立 |
-| 07 | `generate-cicd-workflow` | 產生 GitHub Actions CI/CD | 待建立 |
-| 08 | `generate-database-manager` | 產生 SQLite/MySQL DatabaseManager | 待建立 |
-| 09 | `generate-placeholder-expansion` | 產生 PlaceholderAPI Expansion | 待建立 |
-
----
-
-## 執行緒安全原則（所有 Skill 需遵守）
+## 執行緒安全原則（所有 Skill 產生的代碼需遵守）
 
 - **主執行緒**：所有 Bukkit 物件操作（Player、World、ItemStack）
 - **非同步**：IO、資料庫、HTTP 請求
-- 從非同步切回主執行緒：`Bukkit.getScheduler().runTask(plugin, () -> {})`
-
----
-
-## 開發里程碑
-
-| 里程碑 | 內容 | 時程 |
-|--------|------|------|
-| M1 MVP | Skill 01–04 完成，Registry 建立 | 第 1–2 週 |
-| M2 擴充 | Skill 05–07，單元測試自動化 | 第 3–4 週 |
-| M3 完整 | Skill 08–09，整合測試（javac 驗證） | 第 5–6 週 |
-| M4 維護 | Folia 支援、Skill 市集、多語言 prompt | 第 7 週起 |
-
----
-
-## 風險緩解
-
-1. **MC API 版本碎片化** → Skill 輸入含 `mcVersion`，維護版本對應表
-2. **LLM 輸出不穩定** → 整合 `javac` 語法驗證，失敗自動重試
-3. **Prompt Injection** → 輸入白名單 + schema 嚴格驗證
-4. **技術債** → 每 Skill 獨立目錄、強制規格文件、PR review
-5. **依賴過時** → CI/CD 定期執行 `mvn versions:display-dependency-updates`
+- 從非同步切回主執行緒：`Bukkit.getScheduler().runTask(plugin, runnable)`
