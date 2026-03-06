@@ -246,3 +246,28 @@ skills:
       - "MiniMessage"
       - "訊息管理"
       - "&a 色碼系統"
+
+  - id: integrate-vault
+    version: "1.0.0"
+    status: active
+    category: integration
+    description: 為 Bukkit/Paper 插件整合 Vault 經濟 API，產生 EconomyManager 類別、pom.xml 依賴設定、plugin.yml 宣告，含存款、扣款、查詢餘額、軟依賴降級處理
+    skill_file: integrate-vault/SKILL.md
+    examples_file: integrate-vault/examples.md
+    inputs:
+      - plugin_name
+      - vault_as_softdepend
+    outputs:
+      - EconomyManager.java
+      - pom.xml Vault dependency
+      - plugin.yml depend/softdepend
+    tags: [vault, economy, bukkit, paper, integration]
+    trigger_keywords:
+      - "Vault 整合"
+      - "經濟插件"
+      - "EconomyManager"
+      - "Vault API"
+      - "存款扣款"
+      - "幫我整合 Vault"
+      - "Vault Economy"
+      - "餘額查詢"
