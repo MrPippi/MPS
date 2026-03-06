@@ -1,20 +1,30 @@
 ---
 name: generate-message-system
 description: 依使用者提供的訊息鍵值清單，產生 messages.yml 設定檔與 MessageManager Java 類別，支援 MiniMessage / Legacy 格式、PlaceholderAPI 佔位符替換、前綴設定。當使用者說「幫我建立訊息系統」、「MessageManager」、「messages.yml」、「MiniMessage」時自動應用。
-version: "1.0.0"
 ---
 
-# Skill: generate-message-system
+# Generate Message System Skill
 
-## 適用情境
+## 目標
 
-當使用者提供訊息鍵值清單，自動產生：
+依使用者提供的訊息鍵值清單，自動產生：
 - `messages.yml` 設定檔（含前綴、所有訊息鍵值、繁體中文預設值）
 - `MessageManager.java` 工具類別（讀取、替換佔位符、傳送給玩家/控制台）
 
 ---
 
-## 必要輸入
+## 使用流程
+
+1. **詢問訊息鍵值清單**：使用者列出需要的訊息 key（例：`no-permission`, `reload-success`）
+2. **詢問格式化系統**：`minimessage`（推薦）或 `legacy`（舊版色碼）
+3. **詢問是否整合 PlaceholderAPI**：是否需要 `%player_name%` 等佔位符
+4. **產生 messages.yml**：含前綴與所有訊息鍵值的繁體中文預設值
+5. **產生 MessageManager.java**：依選擇格式輸出對應版本
+6. **說明在主類中的初始化方式**
+
+---
+
+## 輸入參數說明
 
 | 參數 | 說明 | 範例 |
 |------|------|------|
@@ -24,7 +34,7 @@ version: "1.0.0"
 
 ---
 
-## 輸出規格
+## 代碼範本
 
 ### 1. messages.yml
 
@@ -237,23 +247,12 @@ public MessageManager getMessageManager() {
 
 ---
 
-## 產生步驟
+## 常見錯誤與修正
 
-1. **讀取輸入**：取得 `message_keys`、`format`、`use_papi`
-2. **產生 messages.yml**（含 prefix 鍵、messages 區段、每個 key 的繁體中文預設訊息）
-3. **依 format 選擇**：
-   - `minimessage` → Adventure Component 版 MessageManager
-   - `legacy` → ChatColor 版 MessageManager
-4. **若 `use_papi: true`**：在 MessageManager 加入 PlaceholderAPI.setPlaceholders() 呼叫
-5. **說明在主類中的初始化與使用方式**
-
----
-
-## 觸發關鍵詞
-
-- 「幫我建立訊息系統」
-- 「MessageManager」
-- 「messages.yml」
-- 「MiniMessage」
-- 「訊息管理」
-- 「&a 色碼系統」
+| 錯誤 | 原因 | 修正 |
+|------|------|------|
+| `missing message: xxx` 顯示在遊戲中 | messages.yml 中找不到該 key | 確認鍵名拼寫正確，確保 `messages.yml` 包含該 key |
+| MiniMessage 標籤未渲染（顯示原始 `<red>`）| 使用 Legacy 模式但訊息是 MiniMessage 格式 | 確認 `format` 設定與訊息格式一致 |
+| `FileNotFoundException` 於 reload() | messages.yml 不存在且未呼叫 `saveResource` | 在 `onEnable()` 呼叫 `saveResource("messages.yml", false)` |
+| PlaceholderAPI 佔位符未替換 | PAPI 未安裝或 `setPlaceholders()` 未呼叫 | 確認伺服器已安裝 PlaceholderAPI，且 `use_papi: true` 時有正確整合 |
+| 前綴重複出現 | 在 messages.yml 的訊息值中又加了前綴 | 前綴統一由 `MessageManager` 附加，訊息值本身不含前綴 |

@@ -13,20 +13,58 @@
 │   ├── SKILL.md                     ← 主技能指引
 │   └── api-reference.md             ← 詳細 API 參考
 │
-├── generate-plugin-skeleton/        🔲 待建立
-├── generate-config-yml/             🔲 待建立
-├── generate-command-handler/        🔲 待建立
-├── generate-event-listener/         🔲 待建立
-├── generate-test-suite/             🔲 待建立
-├── generate-cicd-workflow/          🔲 待建立
-├── generate-database-manager/       🔲 待建立
-└── generate-placeholder-expansion/  🔲 待建立
+├── generate-plugin-skeleton/        ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-config-yml/             ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-command-handler/        ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-event-listener/         ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-message-system/         ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-permission-system/      ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-test-suite/             ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-cicd-workflow/          ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-database-manager/       ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-placeholder-expansion/  ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── integrate-vault/                 ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+└── sync-website-skill/              ✅ 已建立
+    ├── SKILL.md
+    └── examples.md
 ```
 
-## 新增 Skill 流程
+## SKILL.md 標準結構
 
-1. 在此資料夾下建立新目錄（小寫英文 + 連字號命名）
-2. 在目錄內建立 `SKILL.md`，格式如下：
+每個 `SKILL.md` 必須遵守以下格式：
 
 ```markdown
 ---
@@ -34,17 +72,56 @@ name: your-skill-name
 description: 第三人稱說明此 Skill 的功能與觸發時機。
 ---
 
-# Skill 標題
+# Generate XXX Skill
+
+## 目標
+
+一兩句說明此 Skill 的產出物與用途。
+
+---
 
 ## 使用流程
-...
+
+1. **詢問必要資訊**：...
+2. **產生主要產出物**：...
+3. **說明整合方式**：...
+
+---
+
+## 輸入參數說明
+
+| 參數 | 範例 | 說明 |
+|------|------|------|
+| ... | ... | ... |
+
+---
 
 ## 代碼範本
-...
+
+（程式碼區塊）
+
+---
+
+## 常見錯誤與修正
+
+| 錯誤 | 原因 | 修正 |
+|------|------|------|
+| ... | ... | ... |
 ```
 
-3. 如有詳細參考資料，另建 `reference.md` 或 `examples.md`
+> **注意**：`## 更多範例` 區塊可選，若有 `examples.md` 則在末尾加上 `詳見 [examples.md](examples.md)`。
+
+---
+
+## 新增 Skill 流程
+
+1. 在此資料夾下建立新目錄（小寫英文 + 連字號命名）
+2. 在目錄內建立 `SKILL.md`，依上方標準結構填寫
+3. 如有使用範例，另建 `examples.md`
 4. 在 `skills-registry.yml` 新增對應條目（含 `id`、`version`、`status`、`tags`、`trigger_keywords`）
+5. 執行 sync-website-skill 同步更新網頁展示內容
+
+---
 
 ## 快速呼叫方式
 
@@ -53,11 +130,16 @@ description: 第三人稱說明此 Skill 的功能與觸發時機。
 範例：
 ```
 幫我產生 Spigot 插件的 PlayerJoinEvent 監聽器
-→ 自動載入 spigot-paper-api-caller
+→ 自動載入 generate-event-listener
 
 幫我新建一個插件骨架，名稱 MyPlugin，MC 版本 1.20.4
-→ 自動載入 generate-plugin-skeleton（建立後）
+→ 自動載入 generate-plugin-skeleton
+
+幫我建立 Vault 整合
+→ 自動載入 integrate-vault
 ```
+
+---
 
 ## Skill 狀態說明
 

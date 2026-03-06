@@ -1,20 +1,29 @@
 ---
 name: generate-permission-system
 description: 依使用者提供的權限節點清單，產生完整的 Bukkit PermissionManager 工具類別、plugin.yml permissions 區段宣告，含繼承樹設計、預設值設定、OP 判斷。當使用者說「幫我建立權限系統」、「PermissionManager」、「permission node」、「權限節點」時自動應用。
-version: "1.0.0"
 ---
 
-# Skill: generate-permission-system
+# Generate Permission System Skill
 
-## 適用情境
+## 目標
 
-當使用者提供插件名稱與權限節點清單，自動產生：
+依使用者提供的插件名稱與權限節點清單，自動產生：
 - `PermissionManager.java` 工具類別（靜態方法封裝）
 - `plugin.yml` 的 `permissions:` 區段（含描述、default、children 繼承）
 
 ---
 
-## 必要輸入
+## 使用流程
+
+1. **詢問基本資訊**：插件名稱、權限節點清單、預設是否僅 OP 可用
+2. **推導節點樹**：自動生成根萬用節點 `pluginid.*`，將所有節點列為 children
+3. **產生 plugin.yml permissions 區段**（YAML）
+4. **產生 PermissionManager.java**（靜態工具類，含每個節點的常數與便捷方法）
+5. **說明如何在主類與指令中調用**
+
+---
+
+## 輸入參數說明
 
 | 參數 | 說明 | 範例 |
 |------|------|------|
@@ -24,7 +33,7 @@ version: "1.0.0"
 
 ---
 
-## 輸出規格
+## 代碼範本
 
 ### 1. plugin.yml permissions 區段
 
@@ -134,23 +143,12 @@ if (!PermissionManager.isAdmin(player)) {
 
 ---
 
-## 產生步驟
+## 常見錯誤與修正
 
-1. **讀取輸入**：取得 `plugin_name`、`permission_nodes`、`default_op_only`
-2. **推導節點樹**：
-   - 自動生成根萬用節點 `pluginid.*`（小寫 plugin_name）
-   - 將所有節點列為 children
-3. **產生 plugin.yml permissions 區段**（YAML）
-4. **產生 PermissionManager.java**（靜態工具類，含每個節點的常數與便捷方法）
-5. **說明如何在主類/指令中調用**
-
----
-
-## 觸發關鍵詞
-
-- 「幫我建立權限系統」
-- 「PermissionManager」
-- 「permission node」
-- 「權限節點」
-- 「plugin.yml 權限」
-- 「權限繼承」
+| 錯誤 | 原因 | 修正 |
+|------|------|------|
+| `hasPermission()` 永遠回傳 `false` | plugin.yml 未宣告該權限節點 | 在 `permissions:` 區段加入對應節點 |
+| OP 玩家沒有子節點權限 | 根節點 `default: op` 但子節點未列入 `children` | 確認根節點 `children` 包含所有子節點 |
+| `default: true` 設定沒效果 | 伺服器權限插件（如 LuckPerms）覆蓋了預設值 | 在權限插件中手動設定或使用 `isOp()` 作為備援 |
+| 動態注冊拋出 `IllegalArgumentException` | 該節點名稱已被另一個插件注冊 | 使用 `safeRegister()` 包裝忽略重複注冊的例外 |
+| 節點名稱大小寫不符 | Bukkit 權限節點大小寫敏感 | 統一使用全小寫，並在 `hasPermission()` 前不做大小寫轉換 |
