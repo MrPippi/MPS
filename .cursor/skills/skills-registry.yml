@@ -247,6 +247,30 @@ skills:
       - "訊息管理"
       - "&a 色碼系統"
 
+  - id: sync-website-skill
+    version: "1.0.0"
+    status: active
+    category: devops
+    description: 在新增或修改 Cursor Agent Skill 後，同步更新 MPS 網站展示內容，包含建立 web/data/skills/ 資料檔、更新 skills-registry.yml、必要時更新 CategoryIcon.tsx
+    skill_file: sync-website-skill/SKILL.md
+    examples_file: sync-website-skill/examples.md
+    inputs:
+      - skill_name
+      - category
+      - is_new_category
+    outputs:
+      - web/data/skills/<skill-name>.md
+      - skills-registry.yml 新條目
+      - CategoryIcon.tsx 新 case（若需要）
+    tags: [website, sync, devops, web-data, next.js]
+    trigger_keywords:
+      - "更新網站"
+      - "更新網頁內容"
+      - "同步 Skill 到網站"
+      - "新增 Skill 後更新網頁"
+      - "web/data/skills"
+      - "網站同步"
+
   - id: integrate-vault
     version: "1.0.0"
     status: active
