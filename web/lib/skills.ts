@@ -25,7 +25,7 @@ function parseSkillFile(filename: string): SkillMeta | null {
     description: (data.description as string) || '',
     descriptionZh: (data.descriptionZh as string) || data.description || '',
     version: (data.version as string) || '0.1.0',
-    status: data.status || 'planned',
+    status: data.status || 'active',
     category: (data.category as string) || 'general',
     categoryLabel: (data.categoryLabel as string) || data.category || '',
     categoryLabelEn: (data.categoryLabelEn as string) || data.category || '',
@@ -43,11 +43,7 @@ export function getAllSkills(): SkillMeta[] {
     .map(parseSkillFile)
     .filter((s): s is SkillMeta => s !== null);
 
-  return skills.sort((a, b) => {
-    if (a.status === 'active' && b.status !== 'active') return -1;
-    if (a.status !== 'active' && b.status === 'active') return 1;
-    return a.title.localeCompare(b.title);
-  });
+  return skills.sort((a, b) => a.title.localeCompare(b.title));
 }
 
 export async function getSkillBySlug(slug: string): Promise<SkillFull | null> {

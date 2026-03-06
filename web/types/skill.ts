@@ -1,4 +1,4 @@
-export type SkillStatus = 'active' | 'planned' | 'deprecated';
+export type SkillStatus = 'active' | 'deprecated';
 
 export interface SkillMeta {
   id: string;

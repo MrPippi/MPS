@@ -13,11 +13,7 @@ export function SkillBadge({ status, className = '' }: SkillBadgeProps) {
     >
       <span
         className={`h-1.5 w-1.5 rounded-full ${
-          status === 'active'
-            ? 'bg-[#3fb950] pulse-dot'
-            : status === 'deprecated'
-              ? 'bg-[#f85149]'
-              : 'bg-[#484f58]'
+          status === 'active' ? 'bg-[#3fb950] pulse-dot' : 'bg-[#f85149]'
         }`}
       />
       {statusLabel(status)}

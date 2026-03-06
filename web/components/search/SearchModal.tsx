@@ -14,13 +14,11 @@ interface SearchModalProps {
 
 const STATUS_LABELS: Record<string, string> = {
   active: '已發布',
-  planned: '規劃中',
   deprecated: '已棄用',
 };
 
 const STATUS_COLORS: Record<string, string> = {
   active: 'text-[#3fb950]',
-  planned: 'text-[#484f58]',
   deprecated: 'text-[#f85149]',
 };
 

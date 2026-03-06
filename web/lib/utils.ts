@@ -14,12 +14,8 @@ export function statusColor(status: SkillStatus): string {
   switch (status) {
     case 'active':
       return 'bg-[#3fb950]/10 text-[#3fb950] border-[#3fb950]/25';
-    case 'planned':
-      return 'bg-[#30363d] text-[#8b949e] border-[#484f58]/30';
     case 'deprecated':
       return 'bg-[#f85149]/10 text-[#f85149] border-[#f85149]/25';
-    default:
-      return 'bg-[#30363d] text-[#8b949e] border-[#484f58]/30';
   }
 }
 
@@ -27,12 +23,8 @@ export function statusLabel(status: SkillStatus): string {
   switch (status) {
     case 'active':
       return '已發布';
-    case 'planned':
-      return '規劃中';
     case 'deprecated':
       return '已棄用';
-    default:
-      return status;
   }
 }
 
