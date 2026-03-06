@@ -3,6 +3,7 @@ import type { SkillFull } from '@/types/skill';
 import { SkillBadge } from './SkillBadge';
 import { formatDate, GITHUB_REPO_URL } from '@/lib/utils';
 import { CategoryIcon } from '@/components/icons/CategoryIcon';
+import { ViewCounter } from './ViewCounter';
 
 interface SkillDetailProps {
   skill: SkillFull;
@@ -52,6 +53,7 @@ export function SkillDetail({ skill }: SkillDetailProps) {
             ))}
           </div>
           <div className="ml-auto flex items-center gap-4 text-xs text-slate-500">
+            <ViewCounter slug={skill.slug} />
             <span>版本 {skill.version}</span>
             {skill.updatedAt && <span>更新：{formatDate(skill.updatedAt)}</span>}
             <a
