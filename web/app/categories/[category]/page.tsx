@@ -38,15 +38,16 @@ export default async function CategoryPage({ params }: Props) {
   const skills = getSkillsByCategory(category);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mb-6">
-        <div className="flex items-center gap-2 text-sm text-slate-500 mb-3">
-          <Link href="/categories" className="hover:text-emerald-400 transition-colors">分類</Link>
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      {/* Page header */}
+      <div className="mb-10 border-b border-[#21262d] pb-8">
+        <div className="flex items-center gap-2 text-xs text-[#484f58] mb-4">
+          <Link href="/categories" className="hover:text-[#3fb950] transition-colors">分類</Link>
           <span>/</span>
-          <span className="text-slate-300">{cat!.label}</span>
+          <span className="text-[#8b949e]">{cat!.label}</span>
         </div>
-        <h1 className="text-2xl font-bold text-slate-100">{cat!.label}</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <h1 className="text-3xl font-bold text-[#e6edf3]">{cat!.label}</h1>
+        <p className="mt-2 text-sm text-[#484f58]">
           {cat!.labelEn} · {skills.length} 個 Skills
         </p>
       </div>

@@ -9,15 +9,15 @@ interface SkillBadgeProps {
 export function SkillBadge({ status, className = '' }: SkillBadgeProps) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColor(status)} ${className}`}
+      className={`inline-flex shrink-0 items-center gap-1.5 rounded border px-2 py-0.5 text-[11px] font-medium ${statusColor(status)} ${className}`}
     >
       <span
         className={`h-1.5 w-1.5 rounded-full ${
           status === 'active'
-            ? 'bg-emerald-400'
+            ? 'bg-[#3fb950] pulse-dot'
             : status === 'deprecated'
-              ? 'bg-red-400'
-              : 'bg-slate-500'
+              ? 'bg-[#f85149]'
+              : 'bg-[#484f58]'
         }`}
       />
       {statusLabel(status)}
