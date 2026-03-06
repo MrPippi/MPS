@@ -2,178 +2,170 @@
 
 **AI-powered development toolkit for Spigot / Paper plugins.**
 
-MPS provides a collection of Cursor Agent Skills that help developers
-generate high-quality Minecraft plugin code automatically.
+MPS is a curated library of [Cursor Agent Skills](https://docs.cursor.com/agent/skills) that automate common Bukkit / Spigot / Paper plugin development tasks — from project scaffolding to CI/CD deployment.
+
+> 繁體中文說明請見 [README.zh-TW.md](README.zh-TW.md)
 
 ---
 
 ## Features
 
-- Plugin skeleton generation (Maven, pom.xml, plugin.yml)
-- Command handler generation (CommandExecutor + TabCompleter)
-- Event listener generation (@EventHandler, EventPriority)
-- Config system generation (config.yml + ConfigManager)
-- Message system generation (messages.yml + MessageManager, MiniMessage)
-- Permission system generation (PermissionManager, plugin.yml nodes)
-- Database manager generation (SQLite / MySQL + HikariCP)
-- PlaceholderAPI integration (Expansion class, placeholder routing)
-- JUnit 5 + MockBukkit test suite generation
-- GitHub Actions CI/CD workflow generation (build → test → release)
+- **Scaffold** — Generate a complete Maven plugin project (pom.xml, plugin.yml, main class)
+- **Commands** — Generate `CommandExecutor` + `TabCompleter` with sub-command routing and permission checks
+- **Events** — Generate `@EventHandler` listener skeletons with `EventPriority` and field access examples
+- **Config** — Generate structured `config.yml` + `ConfigManager` class
+- **Messages** — Generate `messages.yml` + `MessageManager` supporting MiniMessage / Legacy formats
+- **Permissions** — Generate `PermissionManager` + `plugin.yml` permission node declarations
+- **Database** — Generate SQLite / MySQL dual-mode `DatabaseManager` with HikariCP connection pool
+- **Integration** — Generate PlaceholderAPI `Expansion` class; produce correct Spigot / Paper API call code
+- **Testing** — Generate JUnit 5 + MockBukkit test suite skeleton
+- **DevOps** — Generate GitHub Actions CI/CD workflow (build → test → release JAR)
 
 ---
 
-## Architecture
+## Skills
 
-MPS uses Cursor Agent Skills to automate common development tasks.
-Skills are organized into modules:
+Skills are organized by category. Each skill generates production-ready Java code and configuration files.
 
-| Module | Skills |
-|--------|--------|
-| Scaffold | `generate-plugin-skeleton` |
-| Commands | `generate-command-handler` |
-| Events | `generate-event-listener` |
-| Config | `generate-config-yml`, `generate-message-system` |
-| Permission | `generate-permission-system` |
-| Database | `generate-database-manager` |
-| Integration | `generate-placeholder-expansion`, `spigot-paper-api-caller` |
-| Testing | `generate-test-suite` |
-| DevOps | `generate-cicd-workflow` |
+### Scaffold
 
----
+| Skill | Description |
+|-------|-------------|
+| [`generate-plugin-skeleton`](Skills/generate-plugin-skeleton/SKILL.md) | Complete Maven plugin project: `pom.xml`, `plugin.yml`, main class |
 
-## Skills 總覽
+### Commands & Events
 
-| # | Skill ID | 功能說明 | 類別 | 狀態 |
-|---|----------|----------|------|------|
-| 01 | [`spigot-paper-api-caller`](Skills/spigot-paper-api-caller/SKILL.md) | 產生正確的 Spigot/Paper Java API 調用代碼 | integration | ✅ |
-| 02 | [`generate-plugin-skeleton`](Skills/generate-plugin-skeleton/SKILL.md) | 產生完整 Maven 插件骨架（pom.xml、plugin.yml、主類） | scaffold | ✅ |
-| 03 | [`generate-config-yml`](Skills/generate-config-yml/SKILL.md) | 依功能清單產生結構化 config.yml + ConfigManager | config | ✅ |
-| 04 | [`generate-command-handler`](Skills/generate-command-handler/SKILL.md) | 產生 CommandExecutor + TabCompleter 處理類 | command | ✅ |
-| 05 | [`generate-event-listener`](Skills/generate-event-listener/SKILL.md) | 產生 Event Listener 骨架 | event | ✅ |
-| 06 | [`generate-test-suite`](Skills/generate-test-suite/SKILL.md) | 產生 JUnit5 + MockBukkit 測試套件 | testing | ✅ |
-| 07 | [`generate-cicd-workflow`](Skills/generate-cicd-workflow/SKILL.md) | 產生 GitHub Actions CI/CD workflow | devops | ✅ |
-| 08 | [`generate-database-manager`](Skills/generate-database-manager/SKILL.md) | 產生 SQLite/MySQL + HikariCP DatabaseManager 類 | database | ✅ |
-| 09 | [`generate-placeholder-expansion`](Skills/generate-placeholder-expansion/SKILL.md) | 產生 PlaceholderAPI Expansion 類 | integration | ✅ |
-| 10 | [`generate-permission-system`](Skills/generate-permission-system/SKILL.md) | 產生 PermissionManager + plugin.yml 權限節點宣告 | permission | ✅ |
-| 11 | [`generate-message-system`](Skills/generate-message-system/SKILL.md) | 產生 messages.yml + MessageManager（MiniMessage 支援） | config | ✅ |
+| Skill | Description |
+|-------|-------------|
+| [`generate-command-handler`](Skills/generate-command-handler/SKILL.md) | `CommandExecutor` + `TabCompleter` with sub-command routing, permissions, argument validation |
+| [`generate-event-listener`](Skills/generate-event-listener/SKILL.md) | `Listener` skeleton with `@EventHandler`, `EventPriority`, `ignoreCancelled`, field access examples |
 
-完整 Skills 文件見 [`Skills/`](Skills/) 目錄。
+### Config & Messages & Permissions
+
+| Skill | Description |
+|-------|-------------|
+| [`generate-config-yml`](Skills/generate-config-yml/SKILL.md) | Structured `config.yml` with defaults and `ConfigManager` class |
+| [`generate-message-system`](Skills/generate-message-system/SKILL.md) | `messages.yml` + `MessageManager` — MiniMessage and Legacy format, PlaceholderAPI support |
+| [`generate-permission-system`](Skills/generate-permission-system/SKILL.md) | `PermissionManager` + `plugin.yml` permission nodes with inheritance tree |
+
+### Database
+
+| Skill | Description |
+|-------|-------------|
+| [`generate-database-manager`](Skills/generate-database-manager/SKILL.md) | SQLite / MySQL dual-mode `DatabaseManager` with HikariCP, async queries, CRUD examples |
+
+### Integration
+
+| Skill | Description |
+|-------|-------------|
+| [`generate-placeholder-expansion`](Skills/generate-placeholder-expansion/SKILL.md) | PlaceholderAPI `Expansion` class with placeholder routing logic |
+| [`spigot-paper-api-caller`](Skills/spigot-paper-api-caller/SKILL.md) | Correct Spigot / Paper Java API usage — events, schedulers, NBT, Adventure API |
+
+### Testing
+
+| Skill | Description |
+|-------|-------------|
+| [`generate-test-suite`](Skills/generate-test-suite/SKILL.md) | JUnit 5 + MockBukkit test suite: `pom.xml` dependencies, server init, player/event/command tests |
+
+### DevOps
+
+| Skill | Description |
+|-------|-------------|
+| [`generate-cicd-workflow`](Skills/generate-cicd-workflow/SKILL.md) | GitHub Actions workflow: build, test, and auto-release JAR on tag push |
 
 ---
 
 ## Quick Start
 
-在 Cursor Agent 對話中，直接以自然語言描述需求，Agent 會自動載入對應的 Skill：
+Open a Cursor Agent chat and describe your need in natural language. The agent will automatically load the matching Skill:
 
 ```
-幫我建立一個名為 MyPlugin 的插件骨架，目標 MC 版本 1.21.4
-→ 自動套用 generate-plugin-skeleton
+Create a plugin skeleton named MyPlugin targeting MC 1.21.4
+→ applies generate-plugin-skeleton
 
-幫我產生監聽 PlayerJoinEvent 的 Listener 類
-→ 自動套用 generate-event-listener
+Generate a listener for PlayerJoinEvent
+→ applies generate-event-listener
 
-幫我建立 /shop buy sell list 三個子指令
-→ 自動套用 generate-command-handler
+Add /shop buy sell list subcommands
+→ applies generate-command-handler
 
-幫我產生 config.yml，需要 economy 和 cooldown 設定
-→ 自動套用 generate-config-yml
+Generate config.yml with economy and cooldown sections
+→ applies generate-config-yml
 
-幫我建立訊息系統，用 MiniMessage 格式
-→ 自動套用 generate-message-system
+Build a message system using MiniMessage format
+→ applies generate-message-system
 
-幫我建立權限節點 myplugin.admin 和 myplugin.use
-→ 自動套用 generate-permission-system
+Add permission nodes myplugin.admin and myplugin.use
+→ applies generate-permission-system
 
-幫我寫 MockBukkit 測試
-→ 自動套用 generate-test-suite
+Write MockBukkit unit tests for my plugin
+→ applies generate-test-suite
 
-幫我建立 GitHub Actions 自動發布 JAR
-→ 自動套用 generate-cicd-workflow
+Set up GitHub Actions to auto-publish the JAR
+→ applies generate-cicd-workflow
 
-幫我建立支援 SQLite 和 MySQL 的 DatabaseManager
-→ 自動套用 generate-database-manager
+Build a DatabaseManager supporting SQLite and MySQL
+→ applies generate-database-manager
 
-幫我寫 PlaceholderAPI 的 %myplugin_balance% placeholder
-→ 自動套用 generate-placeholder-expansion
+Write a PlaceholderAPI expansion for %myplugin_balance%
+→ applies generate-placeholder-expansion
 ```
 
 ---
 
-## 目錄結構
+## Repository Structure
 
 ```
 MPS/
-├── README.md                          ← 本文件
-├── Skills/                            ← Skills 對外可讀文件（GitHub 瀏覽用）
+├── README.md                          ← This file (English)
+├── README.zh-TW.md                    ← Traditional Chinese version
+├── Skills/                            ← Human-readable Skill docs (GitHub browsing)
 │   ├── README.md
-│   ├── skills-registry.yml
+│   ├── skills-registry.yml            ← Skills index (category / inputs / outputs)
 │   ├── spigot-paper-api-caller/
 │   │   ├── SKILL.md
 │   │   └── api-reference.md
 │   ├── generate-plugin-skeleton/
 │   │   ├── SKILL.md
 │   │   └── examples.md
-│   ├── generate-config-yml/
-│   │   ├── SKILL.md
-│   │   └── examples.md
 │   ├── generate-command-handler/
 │   │   ├── SKILL.md
 │   │   └── examples.md
-│   ├── generate-event-listener/
-│   │   ├── SKILL.md
-│   │   └── examples.md
-│   ├── generate-test-suite/
-│   │   ├── SKILL.md
-│   │   └── examples.md
-│   ├── generate-cicd-workflow/
-│   │   ├── SKILL.md
-│   │   └── examples.md
-│   ├── generate-database-manager/
-│   │   ├── SKILL.md
-│   │   └── examples.md
-│   ├── generate-placeholder-expansion/
-│   │   ├── SKILL.md
-│   │   └── examples.md
-│   ├── generate-permission-system/
-│   │   ├── SKILL.md
-│   │   └── examples.md
-│   └── generate-message-system/
-│       ├── SKILL.md
-│       └── examples.md
+│   └── ... (one directory per skill)
 └── .cursor/
     ├── rules/
-    │   └── minecraft-plugin-agent-skills.mdc   ← Cursor Agent 規格指引
-    └── skills/                                 ← Cursor Agent 實際載入目錄
+    │   └── minecraft-plugin-agent-skills.mdc   ← Agent behavior rules
+    └── skills/                                 ← Cursor Agent runtime directory
         ├── skills-registry.yml
-        └── [各 Skill 目錄，結構同 Skills/]
+        └── ... (mirrors Skills/)
 ```
 
 ---
 
-## 開發里程碑
+## Contributing
 
-| 里程碑 | 內容 | 狀態 |
-|--------|------|------|
-| M1 MVP | Skill 01–04 完成，Registry 建立 | ✅ 完成 |
-| M2 擴充 | Skill 05–07，單元測試自動化 | ✅ 完成 |
-| M3 完整 | Skill 08–09，整合測試（javac 驗證） | ✅ 完成 |
-| M4 強化 | Skill 10–11（Permission / Message），examples.md，Registry schema v3 | ✅ 完成 |
-| M5 維護 | Folia 支援、Skill 市集、多語言 prompt | 🔲 規劃中 |
+1. Fork this repository
+2. Create a new Skill directory under both `Skills/` and `.cursor/skills/`
+3. Write `SKILL.md` (with YAML frontmatter) and `examples.md` (at least 2 examples)
+4. Update `.cursor/skills/skills-registry.yml` with `category`, `inputs`, and `outputs`
+5. Open a Pull Request
 
----
-
-## 貢獻指南
-
-1. Fork 本專案
-2. 在 `Skills/` 與 `.cursor/skills/` 同步建立新 Skill 目錄
-3. 撰寫 `SKILL.md`（含 YAML frontmatter）及 `examples.md`
-4. 更新 `.cursor/skills/skills-registry.yml`（含 category、inputs、outputs）
-5. 送出 Pull Request
-
-詳細規範見 [`.cursor/rules/minecraft-plugin-agent-skills.mdc`](.cursor/rules/minecraft-plugin-agent-skills.mdc)。
+See [`.cursor/rules/minecraft-plugin-agent-skills.mdc`](.cursor/rules/minecraft-plugin-agent-skills.mdc) for the full contribution specification.
 
 ---
 
-## 授權
+## Roadmap
 
-本專案採用 [LICENSE](LICENSE) 授權。
+| Milestone | Scope | Status |
+|-----------|-------|--------|
+| M1 MVP | Skills 01–04, Registry setup | ✅ Done |
+| M2 Expand | Skills 05–07, automated testing | ✅ Done |
+| M3 Complete | Skills 08–09, javac integration tests | ✅ Done |
+| M4 Strengthen | Skills 10–11 (Permission / Message), examples.md, Registry schema v3 | ✅ Done |
+| M5 Maintain | Folia support, Skill marketplace, multilingual prompts | 🔲 Planned |
+
+---
+
+## License
+
+This project is released under the [LICENSE](LICENSE).
