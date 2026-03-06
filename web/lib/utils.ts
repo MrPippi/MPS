@@ -13,13 +13,13 @@ export function formatDate(dateStr: string): string {
 export function statusColor(status: SkillStatus): string {
   switch (status) {
     case 'active':
-      return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+      return 'bg-[#3fb950]/10 text-[#3fb950] border-[#3fb950]/25';
     case 'planned':
-      return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      return 'bg-[#30363d] text-[#8b949e] border-[#484f58]/30';
     case 'deprecated':
-      return 'bg-red-500/20 text-red-400 border-red-500/30';
+      return 'bg-[#f85149]/10 text-[#f85149] border-[#f85149]/25';
     default:
-      return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      return 'bg-[#30363d] text-[#8b949e] border-[#484f58]/30';
   }
 }
 

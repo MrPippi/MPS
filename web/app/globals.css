@@ -3,10 +3,16 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --color-bg: #020617;
-  --color-surface: #0f172a;
-  --color-border: #1e293b;
-  --color-accent: #22c55e;
+  --color-bg: #030712;
+  --color-surface: #0d1117;
+  --color-surface-2: #161b22;
+  --color-border: #21262d;
+  --color-border-muted: #161b22;
+  --color-accent: #3fb950;
+  --color-accent-muted: #238636;
+  --color-text: #e6edf3;
+  --color-text-secondary: #8b949e;
+  --color-text-muted: #484f58;
 }
 
 html {
@@ -15,6 +21,8 @@ html {
 
 body {
   background-color: var(--color-bg);
+  color: var(--color-text);
+  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
 /* Scrollbar */
@@ -26,14 +34,91 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #30363d;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #484f58;
+}
+
+/* Glow effects */
+.glow-accent {
+  box-shadow: 0 0 20px rgba(63, 185, 80, 0.15);
+}
+
+.glow-accent-sm {
+  box-shadow: 0 0 10px rgba(63, 185, 80, 0.1);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #3fb950 0%, #58a6ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Grid pattern */
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(63, 185, 80, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 185, 80, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Badge animations */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Card hover lift */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
 }
 
 /* Code highlight */
 pre code {
   font-size: 0.85em;
+}
+
+/* Hero gradient blur */
+.hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(63, 185, 80, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
 }

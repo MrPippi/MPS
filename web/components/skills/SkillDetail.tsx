@@ -16,53 +16,61 @@ export function SkillDetail({ skill }: SkillDetailProps) {
 
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="mb-8">
-        <div className="mb-3 flex items-center gap-2 text-sm text-slate-500">
-          <Link href="/skills" className="hover:text-emerald-400 transition-colors">
+      {/* Header */}
+      <div className="mb-10 pb-8 border-b border-[#21262d]">
+        {/* Breadcrumb */}
+        <div className="mb-5 flex items-center gap-2 text-xs text-[#484f58]">
+          <Link href="/skills" className="hover:text-[#3fb950] transition-colors">
             Skills
           </Link>
           <span>/</span>
-          <span className="text-slate-300">{skill.titleZh}</span>
+          <span className="text-[#8b949e]">{skill.titleZh}</span>
         </div>
 
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <div className="mb-2 inline-flex items-center gap-1.5 rounded-lg bg-slate-800/60 px-2.5 py-1 text-xs text-slate-400">
-              <CategoryIcon category={skill.category} className="h-3.5 w-3.5 text-emerald-400" />
-              <span>{skill.categoryLabelEn}</span>
-            </div>
-            <h1 className="text-3xl font-bold text-slate-100">{skill.titleZh}</h1>
-            <p className="mt-1 text-base text-slate-500">{skill.title}</p>
+        {/* Category + Status row */}
+        <div className="mb-4 flex items-center gap-3">
+          <div className="inline-flex items-center gap-1.5 rounded border border-[#30363d] bg-[#21262d] px-2.5 py-1 text-xs text-[#8b949e]">
+            <CategoryIcon category={skill.category} className="h-3.5 w-3.5 text-[#3fb950]" />
+            <span>{skill.categoryLabelEn}</span>
           </div>
-          <SkillBadge status={skill.status} className="mt-1" />
+          <SkillBadge status={skill.status} />
         </div>
 
-        <p className="mt-4 text-base leading-relaxed text-slate-400">
+        {/* Title */}
+        <h1 className="text-4xl font-bold text-[#e6edf3] leading-tight">{skill.titleZh}</h1>
+        <p className="mt-2 text-base text-[#484f58] font-mono">{skill.title}</p>
+
+        {/* Description */}
+        <p className="mt-4 text-base leading-relaxed text-[#8b949e]">
           {skill.descriptionZh}
         </p>
 
-        <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-slate-700/50 pt-5">
+        {/* Tags + Meta */}
+        <div className="mt-6 flex flex-wrap items-center gap-3">
           <div className="flex flex-wrap gap-1.5">
             {skill.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-md bg-slate-700/60 px-2.5 py-1 text-xs text-slate-400"
+                className="rounded border border-[#30363d] bg-[#21262d] px-2.5 py-1 text-xs text-[#8b949e] font-mono"
               >
                 {tag}
               </span>
             ))}
           </div>
-          <div className="ml-auto flex items-center gap-4 text-xs text-slate-500">
+
+          <div className="ml-auto flex flex-wrap items-center gap-4 text-xs text-[#484f58]">
             <ViewCounter slug={skill.slug} />
-            <span>版本 {skill.version}</span>
-            {skill.updatedAt && <span>更新：{formatDate(skill.updatedAt)}</span>}
+            <span className="font-mono">v{skill.version}</span>
+            {skill.updatedAt && (
+              <span>更新：{formatDate(skill.updatedAt)}</span>
+            )}
             <a
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-slate-400 hover:text-emerald-400 transition-colors"
+              className="flex items-center gap-1.5 rounded border border-[#30363d] bg-[#21262d] px-3 py-1.5 text-[#8b949e] transition-all hover:border-[#484f58] hover:text-[#e6edf3]"
             >
-              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
               </svg>
               GitHub
@@ -71,20 +79,27 @@ export function SkillDetail({ skill }: SkillDetailProps) {
         </div>
       </div>
 
+      {/* Content */}
       <div
-        className="prose prose-invert prose-slate max-w-none
-          prose-headings:text-slate-100 prose-headings:font-semibold
-          prose-h1:text-2xl prose-h2:text-xl prose-h2:border-b prose-h2:border-slate-700/50 prose-h2:pb-2
-          prose-h3:text-lg prose-h3:text-emerald-400
-          prose-p:text-slate-300 prose-p:leading-relaxed
-          prose-a:text-emerald-400 prose-a:no-underline hover:prose-a:underline
-          prose-strong:text-slate-200
-          prose-code:text-emerald-300 prose-code:bg-slate-800 prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
-          prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-700/50 prose-pre:rounded-xl
-          prose-blockquote:border-emerald-500 prose-blockquote:text-slate-400
-          prose-table:text-sm prose-thead:bg-slate-800/50 prose-th:text-slate-300 prose-td:text-slate-400
-          prose-li:text-slate-300
-          prose-hr:border-slate-700/50"
+        className="prose prose-invert max-w-none
+          prose-headings:text-[#e6edf3] prose-headings:font-semibold prose-headings:tracking-tight
+          prose-h1:text-2xl
+          prose-h2:text-xl prose-h2:border-b prose-h2:border-[#21262d] prose-h2:pb-3 prose-h2:mt-10
+          prose-h3:text-base prose-h3:text-[#3fb950]
+          prose-p:text-[#c9d1d9] prose-p:leading-7
+          prose-a:text-[#3fb950] prose-a:no-underline hover:prose-a:underline
+          prose-strong:text-[#e6edf3] prose-strong:font-semibold
+          prose-code:text-[#3fb950] prose-code:bg-[#161b22] prose-code:border prose-code:border-[#30363d] prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[0.85em] prose-code:before:content-none prose-code:after:content-none
+          prose-pre:bg-[#161b22] prose-pre:border prose-pre:border-[#30363d] prose-pre:rounded-lg prose-pre:shadow-lg
+          prose-blockquote:border-l-[#3fb950] prose-blockquote:bg-[#161b22] prose-blockquote:rounded-r-md prose-blockquote:not-italic prose-blockquote:text-[#8b949e]
+          prose-table:text-sm
+          prose-thead:border-b prose-thead:border-[#30363d]
+          prose-th:text-[#8b949e] prose-th:font-semibold prose-th:uppercase prose-th:text-xs prose-th:tracking-wider
+          prose-td:text-[#c9d1d9] prose-td:border-b prose-td:border-[#21262d]
+          prose-li:text-[#c9d1d9]
+          prose-ul:marker:text-[#3fb950]
+          prose-hr:border-[#21262d]
+          prose-img:rounded-lg prose-img:border prose-img:border-[#30363d]"
         dangerouslySetInnerHTML={{ __html: skill.contentHtml }}
       />
     </div>

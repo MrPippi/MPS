@@ -4,14 +4,17 @@ import { PickaxeIcon } from '@/components/icons/PickaxeIcon';
 export default function NotFound() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center text-center px-4">
-      <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-800 text-emerald-400">
-        <PickaxeIcon className="h-10 w-10" />
+      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl border border-[#30363d] bg-[#161b22] text-[#3fb950]">
+        <PickaxeIcon className="h-8 w-8" />
       </div>
-      <h1 className="text-4xl font-bold text-slate-100 mb-2">404</h1>
-      <p className="text-slate-400 mb-6">找不到這個頁面，可能已移除或路徑輸入有誤。</p>
+      <div className="text-6xl font-extrabold text-[#21262d] mb-3 tabular-nums">404</div>
+      <h1 className="text-xl font-bold text-[#e6edf3] mb-2">找不到頁面</h1>
+      <p className="text-sm text-[#484f58] mb-8 max-w-sm">
+        找不到這個頁面，可能已移除或路徑輸入有誤。
+      </p>
       <Link
         href="/"
-        className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-400 transition-colors"
+        className="inline-flex items-center gap-2 rounded-md bg-[#3fb950] px-5 py-2.5 text-sm font-semibold text-[#0d1117] transition-all hover:bg-[#56d364]"
       >
         回首頁
       </Link>
