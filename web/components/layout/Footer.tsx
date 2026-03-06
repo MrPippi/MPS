@@ -45,6 +45,7 @@ export function Footer() {
                 { href: '/', label: '首頁' },
                 { href: '/skills', label: '所有 Skills' },
                 { href: '/categories', label: '分類瀏覽' },
+                { href: '/guide', label: '使用方法' },
               ].map((item) => (
                 <li key={item.href}>
                   <Link

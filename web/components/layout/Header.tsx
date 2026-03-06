@@ -9,6 +9,7 @@ import { PickaxeIcon } from '@/components/icons/PickaxeIcon';
 const NAV_LINKS = [
   { href: '/skills', label: 'Skills' },
   { href: '/categories', label: '分類' },
+  { href: '/guide', label: '使用方法' },
 ];
 
 interface HeaderProps {
