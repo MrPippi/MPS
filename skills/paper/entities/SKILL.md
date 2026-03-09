@@ -62,7 +62,7 @@ public class EntitySpawner {
             // Pre-spawn configurator — fires before EntitySpawnEvent
 
             // Custom name tag
-            zombie.customName(Component.text("§c☠ Dungeon Boss").color(NamedTextColor.RED));
+            zombie.customName(Component.text("☠ Dungeon Boss").color(NamedTextColor.RED));
             zombie.setCustomNameVisible(true);
 
             // Double max health

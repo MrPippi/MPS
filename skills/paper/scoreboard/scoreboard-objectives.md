@@ -123,8 +123,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 player.sendPlayerListHeaderAndFooter(
-    Component.text("§6My Network").color(NamedTextColor.GOLD),
-    Component.text("§7play.example.com").color(NamedTextColor.GRAY)
+    Component.text("My Network").color(NamedTextColor.GOLD),
+    Component.text("play.example.com").color(NamedTextColor.GRAY)
 );
 
 // Update periodically with a repeating task:

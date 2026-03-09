@@ -161,7 +161,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 TextDisplay td = world.spawn(location, TextDisplay.class, d -> {
-    d.text(Component.text("§6Level 5 Zone").color(NamedTextColor.GOLD));
+    d.text(Component.text("Level 5 Zone").color(NamedTextColor.GOLD));
     d.setBillboard(Display.Billboard.VERTICAL);   // FIXED, VERTICAL, HORIZONTAL, CENTER
     d.setBackgroundColor(org.bukkit.Color.fromARGB(160, 0, 0, 0));
     d.setTextOpacity((byte) 200);   // 0–255; 255 = fully opaque
@@ -172,7 +172,7 @@ TextDisplay td = world.spawn(location, TextDisplay.class, d -> {
 });
 
 // Update text later
-td.text(Component.text("§aLevel 6 Zone").color(NamedTextColor.GREEN));
+td.text(Component.text("Level 6 Zone").color(NamedTextColor.GREEN));
 ```
 
 ### ItemDisplay
