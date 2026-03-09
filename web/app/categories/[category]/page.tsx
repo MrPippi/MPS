@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getCategories, getSkillsByCategory } from '@/lib/skills';
-import { SkillGrid } from '@/components/skills/SkillGrid';
+import { getCategories, getSkillsByCategory, SkillGrid } from '@/features/skills';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { SITE_NAME } from '@/lib/utils';
 import Link from 'next/link';

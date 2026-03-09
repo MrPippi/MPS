@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { SearchModal } from '@/components/search/SearchModal';
+import { SearchModal } from '@/features/search';
 import type { SearchIndex } from '@/types/skill';
 
 interface AppShellProps {

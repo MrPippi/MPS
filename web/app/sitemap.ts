@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getAllSkills, getCategories } from '@/lib/skills';
+import { getAllSkills, getCategories } from '@/features/skills';
 import { SITE_URL } from '@/lib/utils';
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { getAllSkills, getFeaturedSkills, getCategories } from '@/lib/skills';
-import { SkillCard } from '@/components/skills/SkillCard';
-import { CategoryIcon } from '@/components/icons/CategoryIcon';
+import { getAllSkills, getFeaturedSkills, getCategories, SkillCard } from '@/features/skills';
+import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { GITHUB_REPO_URL } from '@/lib/utils';
 
 export default function HomePage() {

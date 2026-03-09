@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { getAllSkills, getCategories } from '@/lib/skills';
-import { SkillGrid } from '@/components/skills/SkillGrid';
+import { getAllSkills, getCategories, SkillGrid } from '@/features/skills';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { SITE_NAME } from '@/lib/utils';
 

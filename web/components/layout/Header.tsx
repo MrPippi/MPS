@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { GITHUB_REPO_URL } from '@/lib/utils';
-import { PickaxeIcon } from '@/components/icons/PickaxeIcon';
+import { PickaxeIcon } from '@/components/ui/PickaxeIcon';
 
 const NAV_LINKS = [
   { href: '/skills', label: 'Skills' },

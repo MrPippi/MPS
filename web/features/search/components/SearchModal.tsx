@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import Fuse, { type FuseResult } from 'fuse.js';
-import { createSearchIndex, search } from '@/lib/search';
+import { createSearchIndex, search } from '@/features/search/api/search';
 import type { SearchIndex } from '@/types/skill';
 
 interface SearchModalProps {

@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getAllSkills, getSkillBySlug } from '@/lib/skills';
-import { SkillDetail } from '@/components/skills/SkillDetail';
+import { getAllSkills, getSkillBySlug, SkillDetail } from '@/features/skills';
 
 interface Props {
   params: Promise<{ slug: string }>;

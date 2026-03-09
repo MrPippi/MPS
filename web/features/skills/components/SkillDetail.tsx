@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { SkillFull } from '@/types/skill';
 import { SkillBadge } from './SkillBadge';
 import { formatDate, GITHUB_REPO_URL } from '@/lib/utils';
-import { CategoryIcon } from '@/components/icons/CategoryIcon';
+import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { ViewCounter } from './ViewCounter';
 
 interface SkillDetailProps {
