@@ -59,21 +59,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.slf4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-
 public class BungeeCordMessenger implements PluginMessageListener {
 
     private static final String CHANNEL = "BungeeCord";
 
     private final JavaPlugin plugin;
     private final Logger logger;
-
-    // Pending response callbacks keyed by sub-channel
-    private final Map<String, Consumer<ByteArrayDataInput>> pendingCallbacks = new HashMap<>();
 
     public BungeeCordMessenger(JavaPlugin plugin) {
         this.plugin = plugin;
