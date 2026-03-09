@@ -71,18 +71,43 @@ public class PlayerScoreboard {
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         player.setScoreboard(board);
+        setupLines();
+    }
+
+    // Team-based approach: entry key is fixed; dynamic value lives in team prefix.
+    // This avoids ghost lines because the scoreboard entry string never changes.
+    private void registerLine(String entryKey, int slot) {
+        sidebar.getScore(entryKey).setScore(slot);
+        if (board.getTeam(entryKey) == null) {
+            Team team = board.registerNewTeam(entryKey);
+            team.addEntry(entryKey);
+        }
+    }
+
+    private void setLinePrefix(String entryKey, String prefix) {
+        Team team = board.getTeam(entryKey);
+        if (team != null) {
+            team.setPrefix(prefix);
+        }
+    }
+
+    public void setupLines() {
+        // Register fixed entry keys once; score = sort order (higher = top)
+        sidebar.getScore(" ").setScore(7);          // blank line (static, never changes)
+        registerLine("kills",  6);
+        registerLine("deaths", 5);
+        sidebar.getScore("  ").setScore(4);         // blank line (static)
+        registerLine("coins",  3);
+        sidebar.getScore("   ").setScore(2);        // blank line (static)
+        sidebar.getScore("§7play.example.com").setScore(1);  // static line
     }
 
     public void update(int kills, int deaths, int coins) {
-        // Each unique string = one sidebar line; score = sort order (higher = top)
-        // Blank entries use unique invisible strings for spacing
-        sidebar.getScore(" ").setScore(7);                         // blank line
-        sidebar.getScore("§fKills: §a" + kills).setScore(6);
-        sidebar.getScore("§fDeaths: §c" + deaths).setScore(5);
-        sidebar.getScore("  ").setScore(4);                        // another blank line
-        sidebar.getScore("§fCoins: §6" + coins).setScore(3);
-        sidebar.getScore("   ").setScore(2);
-        sidebar.getScore("§7play.example.com").setScore(1);
+        // Update only the team prefix — the entry key stays constant,
+        // so no old entry accumulates as a ghost line.
+        setLinePrefix("kills",  "§fKills: §a"  + kills);
+        setLinePrefix("deaths", "§fDeaths: §c" + deaths);
+        setLinePrefix("coins",  "§fCoins: §6"  + coins);
     }
 
     public void remove() {
