@@ -28,9 +28,41 @@ skills/
 │   │   ├── config-yml.md            ← FileConfiguration, ConfigurationSection
 │   │   ├── pdc.md                   ← PersistentDataContainer full usage
 │   │   └── database-hikari.md       ← HikariCP + MySQL/SQLite connection pooling
-│   └── messaging/
-│       ├── SKILL.md                 ← Plugin messaging overview
-│       └── plugin-channels.md       ← PluginMessageChannel & BungeeCord communication
+│   ├── messaging/
+│   │   ├── SKILL.md                 ← Plugin messaging overview
+│   │   └── plugin-channels.md       ← PluginMessageChannel & BungeeCord communication
+│   ├── scheduling/
+│   │   ├── SKILL.md                 ← BukkitScheduler overview & task type guide
+│   │   └── scheduler-tasks.md       ← runTask/Async/Later/Timer, BukkitTask, CompletableFuture
+│   ├── items/
+│   │   ├── SKILL.md                 ← ItemStack lifecycle, ItemMeta vs PDC decision
+│   │   ├── item-meta.md             ← ItemMeta hierarchy, lore, enchants, skull, potion, leather
+│   │   └── recipes.md               ← Shaped/shapeless/furnace recipes, RecipeChoice
+│   ├── inventory/
+│   │   ├── SKILL.md                 ← Custom GUI inventories, InventoryHolder pattern
+│   │   └── inventory-events.md      ← InventoryClickEvent, DragEvent, OpenEvent, CloseEvent
+│   ├── entities/
+│   │   ├── SKILL.md                 ← Entity spawning, attributes, equipment overview
+│   │   └── entity-management.md     ← Attribute modifiers, Display entities, removal
+│   ├── scoreboard/
+│   │   ├── SKILL.md                 ← Scoreboard overview, sidebar, tab-list
+│   │   └── scoreboard-objectives.md ← Criteria, DisplaySlot, Team, per-player scoreboards
+│   ├── adventure/
+│   │   ├── SKILL.md                 ← Adventure Component system, MiniMessage overview
+│   │   └── components.md            ← ClickEvent, HoverEvent, Title, serialisers
+│   ├── teleportation/
+│   │   ├── SKILL.md                 ← Sync vs async teleport, safe-location detection
+│   │   └── teleport-patterns.md     ← CountdownTeleport, EntityTeleportEvent, cross-world
+│   ├── effects/
+│   │   ├── SKILL.md                 ← Particles & sounds overview
+│   │   ├── particles.md             ← Particle types, geometric patterns, rate-limiting
+│   │   └── sounds.md                ← Sound enum, SoundCategory, custom resource-pack sounds
+│   ├── permissions/
+│   │   ├── SKILL.md                 ← hasPermission, PermissionAttachment, Vault overview
+│   │   └── vault-economy.md         ← Vault Economy hook, balance/deposit/withdraw
+│   └── testing/
+│       ├── SKILL.md                 ← MockBukkit unit testing strategy
+│       └── mockbukkit-patterns.md   ← Gradle setup, player/world mocks, scheduler ticks
 │
 ├── purpur/
 │   ├── OVERVIEW.md                  ← Purpur-specific APIs, extends Paper
@@ -81,6 +113,17 @@ When generating Minecraft plugin code, Claude Code should:
 | Persisting data on entities/blocks | `paper/storage/pdc.md` |
 | MySQL/SQLite with connection pooling | `paper/storage/database-hikari.md` |
 | Cross-server communication | `paper/messaging/plugin-channels.md` |
+| Scheduling delayed / repeating tasks | `paper/scheduling/scheduler-tasks.md` |
+| Creating or modifying items | `paper/items/SKILL.md` → `item-meta.md` |
+| Registering custom recipes | `paper/items/recipes.md` |
+| Building custom inventory GUIs | `paper/inventory/SKILL.md` → `inventory-events.md` |
+| Spawning / customising entities | `paper/entities/entity-management.md` |
+| Sidebar / tab-list scoreboards | `paper/scoreboard/scoreboard-objectives.md` |
+| Adventure components, MiniMessage | `paper/adventure/components.md` |
+| Teleporting players safely | `paper/teleportation/teleport-patterns.md` |
+| Spawning particles or playing sounds | `paper/effects/SKILL.md` → `particles.md` / `sounds.md` |
+| Permission checks + Vault economy | `paper/permissions/vault-economy.md` |
+| Unit testing with MockBukkit | `paper/testing/mockbukkit-patterns.md` |
 | Using Purpur-specific APIs | `purpur/OVERVIEW.md` + `purpur/events/SKILL.md` |
 | Setting up a Velocity proxy plugin | `velocity/OVERVIEW.md` |
 | Velocity event handling | `velocity/events/connection-events.md` or `proxy-events.md` |
