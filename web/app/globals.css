@@ -21,6 +21,7 @@
   --color-text-muted: #484f58;
   /* Status */
   --color-error: #f85149;
+  --color-warning: #e3b341;
 }
 
 html {
@@ -129,4 +130,50 @@ pre code {
   );
   background-size: 200% 100%;
   animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Focus ring utility */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)];
+}
+
+/* Accent color-mix backgrounds */
+.bg-accent-subtle {
+  background-color: color-mix(in srgb, var(--color-accent) 8%, transparent);
+}
+
+.bg-accent-faint {
+  background-color: color-mix(in srgb, var(--color-accent) 5%, transparent);
+}
+
+/* Accent color-mix borders */
+.border-accent-soft {
+  border-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.border-accent-dim {
+  border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+/* Skill detail prose content */
+.skill-prose {
+  @apply prose prose-invert max-w-none
+    prose-headings:text-[var(--color-text)] prose-headings:font-semibold prose-headings:tracking-tight
+    prose-h1:text-2xl
+    prose-h2:text-xl prose-h2:border-b prose-h2:border-[var(--color-border)] prose-h2:pb-3 prose-h2:mt-10
+    prose-h3:text-base prose-h3:text-[var(--color-accent)]
+    prose-p:text-[var(--color-text-secondary)] prose-p:leading-7
+    prose-a:text-[var(--color-accent)] prose-a:no-underline hover:prose-a:underline
+    prose-strong:text-[var(--color-text)] prose-strong:font-semibold
+    prose-code:text-[var(--color-accent)] prose-code:bg-[var(--color-surface-2)] prose-code:border prose-code:border-[var(--color-border-strong)] prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[0.85em] prose-code:before:content-none prose-code:after:content-none
+    prose-pre:bg-[var(--color-surface-2)] prose-pre:border prose-pre:border-[var(--color-border-strong)] prose-pre:rounded-lg prose-pre:shadow-lg
+    prose-blockquote:border-l-[var(--color-accent)] prose-blockquote:bg-[var(--color-surface-2)] prose-blockquote:rounded-r-md prose-blockquote:not-italic prose-blockquote:text-[var(--color-text-secondary)]
+    prose-table:text-sm
+    prose-thead:border-b prose-thead:border-[var(--color-border-strong)]
+    prose-th:text-[var(--color-text-secondary)] prose-th:font-semibold prose-th:uppercase prose-th:text-xs prose-th:tracking-wider
+    prose-td:text-[var(--color-text-secondary)] prose-td:border-b prose-td:border-[var(--color-border)]
+    prose-li:text-[var(--color-text-secondary)]
+    prose-ul:marker:text-[var(--color-accent)]
+    prose-hr:border-[var(--color-border)]
+    prose-img:rounded-lg prose-img:border prose-img:border-[var(--color-border-strong)];
 }

@@ -28,6 +28,15 @@ export function statusLabel(status: SkillStatus): string {
   }
 }
 
+export function statusTextColor(status: SkillStatus): string {
+  switch (status) {
+    case 'active':
+      return 'text-[var(--color-accent)]';
+    case 'deprecated':
+      return 'text-[var(--color-error)]';
+  }
+}
+
 export function cn(...classes: (string | undefined | false | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }

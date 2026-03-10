@@ -23,8 +23,8 @@ export function Header({ onSearchOpen }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_95%,transparent)] backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)] rounded-md">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] group-hover:bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] transition-colors">
+        <Link href="/" className="flex items-center gap-2.5 group shrink-0 focus-ring rounded-md">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] border border-accent-soft group-hover:bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] transition-colors">
             <PickaxeIcon className="h-4 w-4 text-[var(--color-accent)]" />
           </div>
           <div className="hidden sm:flex items-baseline gap-1.5">
@@ -39,9 +39,9 @@ export function Header({ onSearchOpen }: HeaderProps) {
             <Link
               key={link.href}
               href={link.href}
-              className={`relative rounded-md px-3 py-1.5 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)] ${
+              className={`relative rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-ring ${
                 pathname.startsWith(link.href)
-                  ? 'text-[var(--color-accent)] bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)]'
+                  ? 'text-[var(--color-accent)] bg-accent-subtle'
                   : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-2)]'
               }`}
             >
@@ -56,7 +56,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
         <div className="ml-auto flex items-center gap-2">
           <button
             onClick={onSearchOpen}
-            className="group flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
+            className="group flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] focus-ring"
             aria-label="搜尋 Skills"
           >
             <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,7 +72,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
             href={GITHUB_REPO_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border-strong)] focus-ring"
             aria-label="GitHub"
           >
             <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
 
           {/* Mobile menu toggle */}
           <button
-            className="flex md:hidden h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border-strong)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
+            className="flex md:hidden h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border-strong)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)] transition-colors focus-ring"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="選單"
           >
@@ -107,7 +107,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
               onClick={() => setMobileMenuOpen(false)}
               className={`flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-inset ${
                 pathname.startsWith(link.href)
-                  ? 'bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)] text-[var(--color-accent)]'
+                  ? 'bg-accent-subtle text-[var(--color-accent)]'
                   : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]'
               }`}
             >

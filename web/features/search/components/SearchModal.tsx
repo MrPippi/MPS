@@ -5,22 +5,13 @@ import Link from 'next/link';
 import Fuse, { type FuseResult } from 'fuse.js';
 import { createSearchIndex, search } from '@/features/search/api/search';
 import type { SearchIndex } from '@/types/skill';
+import { statusLabel, statusTextColor } from '@/lib/utils';
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
   searchData: SearchIndex[];
 }
-
-const STATUS_LABELS: Record<string, string> = {
-  active: '已發布',
-  deprecated: '已棄用',
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  active: 'text-[var(--color-accent)]',
-  deprecated: 'text-[var(--color-error)]',
-};
 
 export function SearchModal({ isOpen, onClose, searchData }: SearchModalProps) {
   const [query, setQuery] = useState('');
@@ -145,15 +136,15 @@ export function SearchModal({ isOpen, onClose, searchData }: SearchModalProps) {
                     onClick={onClose}
                     className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-inset ${
                       index === selectedIndex
-                        ? 'bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)] border border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)]'
+                        ? 'bg-accent-subtle border border-accent-soft'
                         : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-border)] border border-transparent'
                     }`}
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="font-medium truncate text-[var(--color-text)]">{result.item.titleZh}</span>
-                        <span className={`text-[11px] shrink-0 ${STATUS_COLORS[result.item.status]}`}>
-                          {STATUS_LABELS[result.item.status]}
+                        <span className={`text-[11px] shrink-0 ${statusTextColor(result.item.status)}`}>
+                          {statusLabel(result.item.status)}
                         </span>
                       </div>
                       <p className="truncate text-xs text-[var(--color-text-muted)] mt-0.5">

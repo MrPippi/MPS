@@ -8,6 +8,8 @@ import type { SkillMeta, SkillFull, Category, SearchIndex } from '@/types/skill'
 
 const SKILLS_DIR = path.join(process.cwd(), 'data', 'skills');
 
+let skillsCache: SkillMeta[] | null = null;
+
 function parseSkillFile(filename: string): SkillMeta | null {
   const fullPath = path.join(SKILLS_DIR, filename);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
@@ -38,12 +40,13 @@ function parseSkillFile(filename: string): SkillMeta | null {
 }
 
 export function getAllSkills(): SkillMeta[] {
+  if (skillsCache) return skillsCache;
   const filenames = fs.readdirSync(SKILLS_DIR).filter((f) => f.endsWith('.md'));
   const skills = filenames
     .map(parseSkillFile)
     .filter((s): s is SkillMeta => s !== null);
-
-  return skills.sort((a, b) => a.title.localeCompare(b.title));
+  skillsCache = skills.sort((a, b) => a.title.localeCompare(b.title));
+  return skillsCache;
 }
 
 export async function getSkillBySlug(slug: string): Promise<SkillFull | null> {

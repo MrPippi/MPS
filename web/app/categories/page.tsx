@@ -13,6 +13,17 @@ export default function CategoriesPage() {
   const categories = getCategories();
   const allSkills = getAllSkills();
 
+  const countsByCategory = allSkills.reduce<Map<string, { total: number; active: number }>>(
+    (map, skill) => {
+      const entry = map.get(skill.category) ?? { total: 0, active: 0 };
+      return map.set(skill.category, {
+        total: entry.total + 1,
+        active: entry.active + (skill.status === 'active' ? 1 : 0),
+      });
+    },
+    new Map()
+  );
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Page header */}
@@ -26,14 +37,13 @@ export default function CategoriesPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((cat) => {
-          const skills = allSkills.filter((s) => s.category === cat.id);
-          const activeCount = skills.filter((s) => s.status === 'active').length;
+          const counts = countsByCategory.get(cat.id) ?? { total: 0, active: 0 };
 
           return (
             <Link
               key={cat.id}
               href={`/categories/${cat.id}`}
-              className="group flex items-start gap-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-2)] p-6 transition-all hover:border-[color-mix(in_srgb,var(--color-accent)_40%,transparent)] card-hover focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
+              className="group flex items-start gap-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-2)] p-6 transition-all hover:border-accent-dim card-hover focus-ring"
             >
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-[var(--color-border-strong)] bg-[var(--color-border)] text-[var(--color-accent)] group-hover:border-[color-mix(in_srgb,var(--color-accent)_40%,transparent)] group-hover:bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)] transition-all">
                 <CategoryIcon category={cat.id} className="h-5 w-5" />
@@ -44,11 +54,11 @@ export default function CategoriesPage() {
                 </h2>
                 <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{cat.labelEn}</p>
                 <div className="mt-3 flex items-center gap-3">
-                  <span className="text-xs text-[var(--color-text-secondary)]">{cat.count} 個 Skills</span>
-                  {activeCount > 0 && (
+                  <span className="text-xs text-[var(--color-text-secondary)]">{counts.total} 個 Skills</span>
+                  {counts.active > 0 && (
                     <span className="inline-flex items-center gap-1 text-xs text-[var(--color-accent)]">
                       <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] pulse-dot" />
-                      {activeCount} 個已發布
+                      {counts.active} 個已發布
                     </span>
                   )}
                 </div>

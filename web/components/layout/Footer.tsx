@@ -15,7 +15,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-4">
           <div className="sm:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)]">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] border border-accent-soft">
                 <PickaxeIcon className="h-4 w-4 text-[var(--color-accent)]" />
               </div>
               <span className="text-sm font-bold text-[var(--color-text)]">MPS</span>

@@ -41,7 +41,7 @@ export default async function CategoryPage({ params }: Props) {
       {/* Page header */}
       <div className="mb-10 border-b border-[var(--color-border)] pb-8">
         <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] mb-4">
-          <Link href="/categories" className="hover:text-[var(--color-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)] rounded">分類</Link>
+          <Link href="/categories" className="hover:text-[var(--color-accent)] transition-colors focus-ring rounded">分類</Link>
           <span>/</span>
           <span className="text-[var(--color-text-secondary)]">{cat!.label}</span>
         </div>

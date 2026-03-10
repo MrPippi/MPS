@@ -17,9 +17,9 @@ export function Sidebar({ categories, activeCategory }: SidebarProps) {
           <li>
             <Link
               href="/skills"
-              className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)] ${
+              className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-all focus-ring ${
                 !activeCategory
-                  ? 'bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)] text-[var(--color-accent)] border border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)]'
+                  ? 'bg-accent-subtle text-[var(--color-accent)] border border-accent-soft'
                   : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)] border border-transparent'
               }`}
             >
@@ -30,9 +30,9 @@ export function Sidebar({ categories, activeCategory }: SidebarProps) {
             <li key={cat.id}>
               <Link
                 href={`/categories/${cat.id}`}
-                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)] ${
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-all focus-ring ${
                   activeCategory === cat.id
-                    ? 'bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)] text-[var(--color-accent)] border border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)]'
+                    ? 'bg-accent-subtle text-[var(--color-accent)] border border-accent-soft'
                     : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)] border border-transparent'
                 }`}
               >

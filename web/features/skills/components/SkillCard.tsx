@@ -12,7 +12,7 @@ export function SkillCard({ skill }: SkillCardProps) {
   return (
     <Link
       href={`/skills/${skill.slug}`}
-      className="group relative flex flex-col gap-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-2)] p-5 transition-all duration-200 hover:border-[color-mix(in_srgb,var(--color-accent)_40%,transparent)] card-hover focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
+      className="group relative flex flex-col gap-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-2)] p-5 transition-all duration-200 hover:border-accent-dim card-hover focus-ring"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
