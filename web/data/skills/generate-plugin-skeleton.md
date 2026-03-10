@@ -1,4 +1,4 @@
-﻿---
+---
 id: generate-plugin-skeleton
 title: Generate Plugin Skeleton
 titleZh: 插件骨架生成器
@@ -17,7 +17,7 @@ triggerKeywords:
   - "建立專案"
 updatedAt: "2026-03-05"
 githubPath: Skills/generate-plugin-skeleton/SKILL.md
-featured: false
+featured: true
 ---
 
 # Generate Plugin Skeleton Skill

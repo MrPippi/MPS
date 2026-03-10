@@ -1,204 +1,118 @@
-# Multi-Platform Minecraft Skills Library
+# MPS Agent Skills
 
-A reference library for building Minecraft server plugins and proxy plugins across Paper, Purpur, Velocity, and Waterfall platforms. Designed for use by Claude Code as a code-generation guide and by human developers as technical reference.
+此資料夾存放 MPS — Minecraft Plugin Studio 所有 Cursor Agent Skills 的**對外可讀版本**。
+
+> **開發者注意**：Cursor Agent 實際載入的 Skill 路徑為 `.cursor/skills/`，本目錄為同步鏡像，供瀏覽器 / GitHub 直接閱讀使用。兩處內容需保持一致。
 
 ---
 
-## Directory Structure
+## 目錄結構
 
 ```
-skills/
-├── README.md                        ← This file
-├── CONVENTIONS.md                   ← Global naming, package structure, Gradle templates
+Skills/
+├── README.md                              ← 本文件
+├── skills-registry.yml                    ← Skills 索引（含 category / inputs / outputs）
 │
-├── paper/
-│   ├── OVERVIEW.md                  ← Paper setup: deps, plugin.yml, main class, API diff
-│   ├── events/
-│   │   ├── SKILL.md                 ← Event system overview & Claude Code guide
-│   │   ├── player-events.md         ← PlayerJoinEvent, PlayerQuitEvent, PlayerMoveEvent, etc.
-│   │   ├── world-events.md          ← ChunkLoadEvent, BlockBreakEvent, EntityDamageEvent, etc.
-│   │   ├── custom-events.md         ← Creating & firing custom events
-│   │   └── async-events.md          ← AsyncChatEvent, threading rules
-│   ├── commands/
-│   │   ├── SKILL.md                 ← Commands overview, Brigadier vs legacy
-│   │   ├── brigadier-commands.md    ← Paper 1.21 native Brigadier system
-│   │   └── command-completion.md    ← Tab completion & SuggestionProvider
-│   ├── storage/
-│   │   ├── SKILL.md                 ← Storage overview, when to use each approach
-│   │   ├── config-yml.md            ← FileConfiguration, ConfigurationSection
-│   │   ├── pdc.md                   ← PersistentDataContainer full usage
-│   │   └── database-hikari.md       ← HikariCP + MySQL/SQLite connection pooling
-│   ├── messaging/
-│   │   ├── SKILL.md                 ← Plugin messaging overview
-│   │   └── plugin-channels.md       ← PluginMessageChannel & BungeeCord communication
-│   ├── scheduling/
-│   │   ├── SKILL.md                 ← BukkitScheduler overview & task type guide
-│   │   └── scheduler-tasks.md       ← runTask/Async/Later/Timer, BukkitTask, CompletableFuture
-│   ├── items/
-│   │   ├── SKILL.md                 ← ItemStack lifecycle, ItemMeta vs PDC decision
-│   │   ├── item-meta.md             ← ItemMeta hierarchy, lore, enchants, skull, potion, leather
-│   │   └── recipes.md               ← Shaped/shapeless/furnace recipes, RecipeChoice
-│   ├── inventory/
-│   │   ├── SKILL.md                 ← Custom GUI inventories, InventoryHolder pattern
-│   │   └── inventory-events.md      ← InventoryClickEvent, DragEvent, OpenEvent, CloseEvent
-│   ├── entities/
-│   │   ├── SKILL.md                 ← Entity spawning, attributes, equipment overview
-│   │   └── entity-management.md     ← Attribute modifiers, Display entities, removal
-│   ├── scoreboard/
-│   │   ├── SKILL.md                 ← Scoreboard overview, sidebar, tab-list
-│   │   └── scoreboard-objectives.md ← Criteria, DisplaySlot, Team, per-player scoreboards
-│   ├── adventure/
-│   │   ├── SKILL.md                 ← Adventure Component system, MiniMessage overview
-│   │   └── components.md            ← ClickEvent, HoverEvent, Title, serialisers
-│   ├── teleportation/
-│   │   ├── SKILL.md                 ← Sync vs async teleport, safe-location detection
-│   │   └── teleport-patterns.md     ← CountdownTeleport, EntityTeleportEvent, cross-world
-│   ├── effects/
-│   │   ├── SKILL.md                 ← Particles & sounds overview
-│   │   ├── particles.md             ← Particle types, geometric patterns, rate-limiting
-│   │   └── sounds.md                ← Sound enum, SoundCategory, custom resource-pack sounds
-│   ├── permissions/
-│   │   ├── SKILL.md                 ← hasPermission, PermissionAttachment, Vault overview
-│   │   └── vault-economy.md         ← Vault Economy hook, balance/deposit/withdraw
-│   └── testing/
-│       ├── SKILL.md                 ← MockBukkit unit testing strategy
-│       └── mockbukkit-patterns.md   ← Gradle setup, player/world mocks, scheduler ticks
+├── spigot-paper-api-caller/               ✅ 已建立
+│   ├── SKILL.md
+│   └── api-reference.md
 │
-├── purpur/
-│   ├── OVERVIEW.md                  ← Purpur-specific APIs, extends Paper
-│   ├── events/
-│   │   └── SKILL.md                 ← Purpur-only events
-│   ├── commands/
-│   │   └── SKILL.md                 ← Purpur command extensions
-│   └── storage/
-│       └── SKILL.md                 ← Purpur config extensions
+├── generate-plugin-skeleton/              ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
 │
-├── velocity/
-│   ├── OVERVIEW.md                  ← Velocity setup: deps, plugin.json, main class, API diff
-│   ├── events/
-│   │   ├── SKILL.md                 ← Velocity event system overview
-│   │   ├── connection-events.md     ← LoginEvent, ServerConnectedEvent, PreLoginEvent
-│   │   └── proxy-events.md          ← PostLoginEvent, DisconnectEvent, initial server selection
-│   ├── commands/
-│   │   ├── SKILL.md                 ← Velocity commands overview
-│   │   └── velocity-commands.md     ← SimpleCommand, RawCommand, BrigadierCommand
-│   ├── storage/
-│   │   └── SKILL.md                 ← Velocity storage (no Bukkit APIs)
-│   └── messaging/
-│       ├── SKILL.md                 ← Plugin messaging overview
-│       └── plugin-messages.md       ← PluginMessageEvent & backend communication
+├── generate-config-yml/                   ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
 │
-└── waterfall/
-    ├── OVERVIEW.md                  ← Waterfall setup & comparison with Velocity
-    ├── events/
-    │   └── SKILL.md                 ← BungeeCord event system
-    └── messaging/
-        ├── SKILL.md                 ← Waterfall plugin messaging overview
-        └── bungeecord-channels.md   ← BungeeCord channel protocol & SubChannels
+├── generate-command-handler/              ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-event-listener/               ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-test-suite/                   ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-cicd-workflow/                ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-database-manager/             ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-placeholder-expansion/        ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+├── generate-permission-system/            ✅ 已建立
+│   ├── SKILL.md
+│   └── examples.md
+│
+└── generate-message-system/               ✅ 已建立
+    ├── SKILL.md
+    └── examples.md
 ```
 
 ---
 
-## How Claude Code Uses This Library
+## Skills 一覽
 
-When generating Minecraft plugin code, Claude Code should:
-
-| Task | Consult |
-|------|---------|
-| Setting up a new Paper plugin | `paper/OVERVIEW.md` |
-| Handling player or world events | `paper/events/SKILL.md` → specific event file |
-| Registering commands (Paper 1.21+) | `paper/commands/brigadier-commands.md` |
-| Tab completion logic | `paper/commands/command-completion.md` |
-| Saving plugin config | `paper/storage/config-yml.md` |
-| Persisting data on entities/blocks | `paper/storage/pdc.md` |
-| MySQL/SQLite with connection pooling | `paper/storage/database-hikari.md` |
-| Cross-server communication | `paper/messaging/plugin-channels.md` |
-| Scheduling delayed / repeating tasks | `paper/scheduling/scheduler-tasks.md` |
-| Creating or modifying items | `paper/items/SKILL.md` → `item-meta.md` |
-| Registering custom recipes | `paper/items/recipes.md` |
-| Building custom inventory GUIs | `paper/inventory/SKILL.md` → `inventory-events.md` |
-| Spawning / customising entities | `paper/entities/entity-management.md` |
-| Sidebar / tab-list scoreboards | `paper/scoreboard/scoreboard-objectives.md` |
-| Adventure components, MiniMessage | `paper/adventure/components.md` |
-| Teleporting players safely | `paper/teleportation/teleport-patterns.md` |
-| Spawning particles or playing sounds | `paper/effects/SKILL.md` → `particles.md` / `sounds.md` |
-| Permission checks + Vault economy | `paper/permissions/vault-economy.md` |
-| Unit testing with MockBukkit | `paper/testing/mockbukkit-patterns.md` |
-| Using Purpur-specific APIs | `purpur/OVERVIEW.md` + `purpur/events/SKILL.md` |
-| Setting up a Velocity proxy plugin | `velocity/OVERVIEW.md` |
-| Velocity event handling | `velocity/events/connection-events.md` or `proxy-events.md` |
-| Velocity proxy commands | `velocity/commands/velocity-commands.md` |
-| Velocity ↔ backend messaging | `velocity/messaging/plugin-messages.md` |
-| Setting up a Waterfall plugin | `waterfall/OVERVIEW.md` |
-| BungeeCord channel protocol | `waterfall/messaging/bungeecord-channels.md` |
-| Naming conventions / package structure | `CONVENTIONS.md` |
+| # | Skill ID | 功能說明 | 類別 | 狀態 |
+|---|----------|----------|------|------|
+| 01 | [spigot-paper-api-caller](spigot-paper-api-caller/SKILL.md) | 產生正確的 Spigot/Paper Java API 調用代碼 | integration | ✅ |
+| 02 | [generate-plugin-skeleton](generate-plugin-skeleton/SKILL.md) | 產生完整 Maven 插件骨架（pom.xml、plugin.yml、主類） | scaffold | ✅ |
+| 03 | [generate-config-yml](generate-config-yml/SKILL.md) | 依功能清單產生結構化 config.yml + ConfigManager | config | ✅ |
+| 04 | [generate-command-handler](generate-command-handler/SKILL.md) | 產生 CommandExecutor + TabCompleter 處理類 | command | ✅ |
+| 05 | [generate-event-listener](generate-event-listener/SKILL.md) | 產生 Event Listener 骨架 | event | ✅ |
+| 06 | [generate-test-suite](generate-test-suite/SKILL.md) | 產生 JUnit5 + MockBukkit 測試套件 | testing | ✅ |
+| 07 | [generate-cicd-workflow](generate-cicd-workflow/SKILL.md) | 產生 GitHub Actions CI/CD workflow | devops | ✅ |
+| 08 | [generate-database-manager](generate-database-manager/SKILL.md) | 產生 SQLite/MySQL + HikariCP DatabaseManager 類 | database | ✅ |
+| 09 | [generate-placeholder-expansion](generate-placeholder-expansion/SKILL.md) | 產生 PlaceholderAPI Expansion 類 | integration | ✅ |
+| 10 | [generate-permission-system](generate-permission-system/SKILL.md) | 產生 PermissionManager + plugin.yml 權限節點宣告 | permission | ✅ |
+| 11 | [generate-message-system](generate-message-system/SKILL.md) | 產生 messages.yml + MessageManager（MiniMessage 支援） | config | ✅ |
 
 ---
 
-## Version Compatibility Matrix
+## Skill 目錄規範
 
-| Feature | Paper 1.21 | Paper 1.21.1 | Purpur 1.21.1 |
-|---------|-----------|--------------|---------------|
-| Brigadier Commands (native) | ✓ `LifecycleEvents.COMMANDS` | ✓ same | ✓ inherits Paper |
-| `AsyncChatEvent` | ✓ | ✓ | ✓ |
-| `AsyncPlayerChatEvent` | Deprecated | Deprecated | Deprecated |
-| `PlayerMoveEvent` (fine-grained) | ✓ `hasExplicitlyMoved()` | ✓ | ✓ |
-| `PersistentDataContainer` custom types | ✓ | ✓ | ✓ |
-| Folia compatibility | Partial | Partial | ✗ |
+每個 Skill 目錄包含以下檔案：
 
-| Feature | Velocity 3.3 | Waterfall 1.21 |
-|---------|-------------|---------------|
-| Modern forwarding | ✓ (recommended) | ✗ (BungeeCord forwarding only) |
-| Native Brigadier | ✓ `BrigadierCommand` | Partial |
-| Plugin channels | ✓ `PluginMessageEvent` | ✓ `PluginMessageEvent` |
-| Adventure API | ✓ native | Partial (via adapter) |
-| Event cancellation | `ResultedEvent` pattern | `Cancellable` pattern |
+| 檔案 | 必要 | 說明 |
+|------|------|------|
+| `SKILL.md` | ✅ | Skill 主文件（含 YAML frontmatter、輸入/輸出規格、產生步驟） |
+| `examples.md` | ✅ | 具體輸入/輸出範例，幫助 AI 理解使用情境 |
+| `api-reference.md` | 選用 | 詳細 API 參考（適用於 API caller 類 Skill） |
+
+**`examples.md` 格式：**
+```markdown
+## 範例 1：[場景描述]
+
+**Input:**
+（列出具體的輸入參數）
+
+**Output — [產出檔名]:**
+（展示完整或節錄的輸出代碼）
+```
 
 ---
 
-## Contributing a New Skill File
+## 新增 Skill 流程
 
-1. **SKILL.md** — every topic directory must have one. Follow this structure exactly:
+1. 在此資料夾下建立新目錄（小寫英文 + 連字號命名）
+2. 同步在 `.cursor/skills/` 建立相同目錄
+3. 撰寫 `SKILL.md`（含 YAML frontmatter：`name`、`description`、`version`）
+4. 撰寫 `examples.md`（至少 2 個具體範例）
+5. 更新 `.cursor/skills/skills-registry.yml`（含 `category`、`inputs`、`outputs`）
 
-   ```markdown
-   # [Topic] Skill — [Platform]
+## Skill 狀態說明
 
-   ## Purpose
-   One sentence explaining what this skill covers and when to reference it.
-
-   ## When to Use This Skill
-   - Condition one
-   - Condition two
-
-   ## API Quick Reference
-   | Class / Method | Purpose | Notes |
-   |---------------|---------|-------|
-
-   ## Code Pattern
-   ```java
-   // Complete runnable example with imports and edge case handling
-   ```
-
-   ## Common Pitfalls
-   - Pitfall (cause + correct approach)
-
-   ## Version Notes
-   - 1.21: ...
-   - 1.21.1: ...
-
-   ## Related Skills
-   - [relative link to related SKILL.md]
-   ```
-
-2. **Topic files** (e.g., `player-events.md`) — detailed reference for a specific API area. Include:
-   - Full class/method signatures
-   - At least one complete, runnable Java 21 example
-   - Thread-safety notes where applicable
-
-3. **Java code rules**:
-   - Java 21 syntax (records, sealed classes, pattern matching where appropriate)
-   - Correct import statements included
-   - Thread safety respected: main thread for Bukkit objects, async for IO/DB
-   - Gradle Groovy DSL for all build file examples (not Kotlin DSL)
-
-4. **Naming**: file names use kebab-case (e.g., `player-events.md`)
+| 狀態 | 說明 |
+|------|------|
+| `active` | 已建立且可使用 |
+| `planned` | 規劃中，尚未建立 |
+| `deprecated` | 已棄用，請改用替代 Skill |

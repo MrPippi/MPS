@@ -18,8 +18,8 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  active: 'text-[#3fb950]',
-  deprecated: 'text-[#f85149]',
+  active: 'text-[var(--color-accent)]',
+  deprecated: 'text-[var(--color-error)]',
 };
 
 export function SearchModal({ isOpen, onClose, searchData }: SearchModalProps) {
@@ -96,15 +96,14 @@ export function SearchModal({ isOpen, onClose, searchData }: SearchModalProps) {
       className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-[#030712]/80 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-bg)_80%,transparent)] backdrop-blur-md" />
 
       <div
-        className="relative w-full max-w-xl rounded-xl border border-[#30363d] bg-[#161b22] shadow-2xl shadow-black/60"
+        className="relative w-full max-w-xl rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] shadow-2xl shadow-black/60"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Search input */}
-        <div className="flex items-center gap-3 border-b border-[#21262d] px-4 py-3.5">
-          <svg className="h-4 w-4 shrink-0 text-[#484f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="flex items-center gap-3 border-b border-[var(--color-border)] px-4 py-3.5">
+          <svg className="h-4 w-4 shrink-0 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
@@ -114,26 +113,25 @@ export function SearchModal({ isOpen, onClose, searchData }: SearchModalProps) {
             value={query}
             onChange={(e) => handleSearch(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent text-sm text-[#e6edf3] placeholder-[#484f58] outline-none"
+            className="flex-1 bg-transparent text-sm text-[var(--color-text)] placeholder-[var(--color-text-muted)] outline-none focus:ring-0"
           />
           <button
             onClick={onClose}
-            className="shrink-0 rounded border border-[#30363d] bg-[#21262d] px-2 py-0.5 text-xs text-[#484f58] hover:text-[#8b949e] transition-colors font-mono"
+            className="shrink-0 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] px-2 py-0.5 text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors font-mono focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface-2)]"
           >
             ESC
           </button>
         </div>
 
-        {/* Results */}
         <div className="max-h-[360px] overflow-y-auto">
           {query === '' && (
-            <div className="py-12 text-center text-sm text-[#30363d]">
+            <div className="py-12 text-center text-sm text-[var(--color-text-muted)]">
               輸入關鍵字搜尋 Skills、標籤或分類...
             </div>
           )}
 
           {query !== '' && results.length === 0 && (
-            <div className="py-12 text-center text-sm text-[#30363d]">
+            <div className="py-12 text-center text-sm text-[var(--color-text-muted)]">
               找不到「{query}」相關的 Skill
             </div>
           )}
@@ -145,24 +143,24 @@ export function SearchModal({ isOpen, onClose, searchData }: SearchModalProps) {
                   <Link
                     href={`/skills/${result.item.slug}`}
                     onClick={onClose}
-                    className={`flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-all ${
+                    className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-inset ${
                       index === selectedIndex
-                        ? 'bg-[#3fb950]/8 border border-[#3fb950]/20'
-                        : 'text-[#c9d1d9] hover:bg-[#21262d] border border-transparent'
+                        ? 'bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)] border border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)]'
+                        : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-border)] border border-transparent'
                     }`}
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium truncate text-[#e6edf3]">{result.item.titleZh}</span>
+                        <span className="font-medium truncate text-[var(--color-text)]">{result.item.titleZh}</span>
                         <span className={`text-[11px] shrink-0 ${STATUS_COLORS[result.item.status]}`}>
                           {STATUS_LABELS[result.item.status]}
                         </span>
                       </div>
-                      <p className="truncate text-xs text-[#484f58] mt-0.5">
+                      <p className="truncate text-xs text-[var(--color-text-muted)] mt-0.5">
                         {result.item.descriptionZh}
                       </p>
                     </div>
-                    <svg className="h-3.5 w-3.5 shrink-0 text-[#30363d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-3.5 w-3.5 shrink-0 text-[var(--color-border-strong)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </Link>
@@ -172,18 +170,17 @@ export function SearchModal({ isOpen, onClose, searchData }: SearchModalProps) {
           )}
         </div>
 
-        {/* Footer hints */}
-        <div className="flex items-center gap-4 border-t border-[#21262d] px-4 py-2.5 text-[11px] text-[#30363d]">
+        <div className="flex items-center gap-4 border-t border-[var(--color-border)] px-4 py-2.5 text-[11px] text-[var(--color-text-muted)]">
           <span className="flex items-center gap-1.5">
-            <kbd className="rounded border border-[#30363d] bg-[#21262d] px-1.5 py-0.5 font-mono">↑↓</kbd>
+            <kbd className="rounded border border-[var(--color-border-strong)] bg-[var(--color-border)] px-1.5 py-0.5 font-mono">↑↓</kbd>
             導覽
           </span>
           <span className="flex items-center gap-1.5">
-            <kbd className="rounded border border-[#30363d] bg-[#21262d] px-1.5 py-0.5 font-mono">↵</kbd>
+            <kbd className="rounded border border-[var(--color-border-strong)] bg-[var(--color-border)] px-1.5 py-0.5 font-mono">↵</kbd>
             開啟
           </span>
           <span className="flex items-center gap-1.5">
-            <kbd className="rounded border border-[#30363d] bg-[#21262d] px-1.5 py-0.5 font-mono">ESC</kbd>
+            <kbd className="rounded border border-[var(--color-border-strong)] bg-[var(--color-border)] px-1.5 py-0.5 font-mono">ESC</kbd>
             關閉
           </span>
         </div>

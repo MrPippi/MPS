@@ -39,14 +39,14 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Page header */}
-      <div className="mb-10 border-b border-[#21262d] pb-8">
-        <div className="flex items-center gap-2 text-xs text-[#484f58] mb-4">
-          <Link href="/categories" className="hover:text-[#3fb950] transition-colors">分類</Link>
+      <div className="mb-10 border-b border-[var(--color-border)] pb-8">
+        <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] mb-4">
+          <Link href="/categories" className="hover:text-[var(--color-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)] rounded">分類</Link>
           <span>/</span>
-          <span className="text-[#8b949e]">{cat!.label}</span>
+          <span className="text-[var(--color-text-secondary)]">{cat!.label}</span>
         </div>
-        <h1 className="text-3xl font-bold text-[#e6edf3]">{cat!.label}</h1>
-        <p className="mt-2 text-sm text-[#484f58]">
+        <h1 className="text-3xl font-bold text-[var(--color-text)]">{cat!.label}</h1>
+        <p className="mt-2 text-sm text-[var(--color-text-muted)]">
           {cat!.labelEn} · {skills.length} 個 Skills
         </p>
       </div>

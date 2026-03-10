@@ -13,9 +13,9 @@ export function formatDate(dateStr: string): string {
 export function statusColor(status: SkillStatus): string {
   switch (status) {
     case 'active':
-      return 'bg-[#3fb950]/10 text-[#3fb950] border-[#3fb950]/25';
+      return 'bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] text-[var(--color-accent)] border-[color-mix(in_srgb,var(--color-accent)_25%,transparent)]';
     case 'deprecated':
-      return 'bg-[#f85149]/10 text-[#f85149] border-[#f85149]/25';
+      return 'bg-[color-mix(in_srgb,var(--color-error)_10%,transparent)] text-[var(--color-error)] border-[color-mix(in_srgb,var(--color-error)_25%,transparent)]';
   }
 }
 

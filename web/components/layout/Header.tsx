@@ -21,34 +21,32 @@ export function Header({ onSearchOpen }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#21262d] bg-[#0d1117]/95 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_95%,transparent)] backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#3fb950]/10 border border-[#3fb950]/20 group-hover:bg-[#3fb950]/20 transition-colors">
-            <PickaxeIcon className="h-4 w-4 text-[#3fb950]" />
+        <Link href="/" className="flex items-center gap-2.5 group shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)] rounded-md">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] group-hover:bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] transition-colors">
+            <PickaxeIcon className="h-4 w-4 text-[var(--color-accent)]" />
           </div>
           <div className="hidden sm:flex items-baseline gap-1.5">
-            <span className="text-sm font-bold text-[#e6edf3] tracking-tight">MPS</span>
-            <span className="text-xs text-[#484f58] font-normal">Minecraft Plugin Studio</span>
+            <span className="text-sm font-bold text-[var(--color-text)] tracking-tight">MPS</span>
+            <span className="text-xs text-[var(--color-text-muted)] font-normal">Minecraft Plugin Studio</span>
           </div>
-          <span className="block sm:hidden text-sm font-bold text-[#e6edf3]">MPS</span>
+          <span className="block sm:hidden text-sm font-bold text-[var(--color-text)]">MPS</span>
         </Link>
 
-        {/* Nav */}
         <nav className="hidden md:flex items-center gap-0.5 ml-2">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`relative rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+              className={`relative rounded-md px-3 py-1.5 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)] ${
                 pathname.startsWith(link.href)
-                  ? 'text-[#3fb950] bg-[#3fb950]/8'
-                  : 'text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#161b22]'
+                  ? 'text-[var(--color-accent)] bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)]'
+                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-2)]'
               }`}
             >
               {pathname.startsWith(link.href) && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-4 rounded-full bg-[#3fb950]" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-4 rounded-full bg-[var(--color-accent)]" />
               )}
               {link.label}
             </Link>
@@ -56,27 +54,25 @@ export function Header({ onSearchOpen }: HeaderProps) {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
-          {/* Search */}
           <button
             onClick={onSearchOpen}
-            className="group flex items-center gap-2 rounded-md border border-[#30363d] bg-[#161b22] px-3 py-1.5 text-sm text-[#8b949e] transition-all hover:border-[#484f58] hover:text-[#e6edf3]"
+            className="group flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
             aria-label="搜尋 Skills"
           >
             <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <span className="hidden sm:block">搜尋 Skills...</span>
-            <kbd className="hidden sm:inline-flex items-center rounded bg-[#21262d] border border-[#30363d] px-1.5 py-0.5 text-[10px] text-[#484f58] font-mono">
+            <kbd className="hidden sm:inline-flex items-center rounded bg-[var(--color-border)] border border-[var(--color-border-strong)] px-1.5 py-0.5 text-[10px] text-[var(--color-text-muted)] font-mono">
               ⌘K
             </kbd>
           </button>
 
-          {/* GitHub */}
           <a
             href={GITHUB_REPO_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-[#30363d] bg-[#21262d] text-[#8b949e] transition-all hover:border-[#484f58] hover:text-[#e6edf3] hover:bg-[#30363d]"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
             aria-label="GitHub"
           >
             <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -86,7 +82,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
 
           {/* Mobile menu toggle */}
           <button
-            className="flex md:hidden h-8 w-8 items-center justify-center rounded-md border border-[#30363d] text-[#8b949e] hover:bg-[#161b22] hover:text-[#e6edf3] transition-colors"
+            className="flex md:hidden h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border-strong)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="選單"
           >
@@ -103,16 +99,16 @@ export function Header({ onSearchOpen }: HeaderProps) {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="border-t border-[#21262d] bg-[#0d1117] px-4 py-3 md:hidden">
+        <div className="border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 md:hidden">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className={`flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+              className={`flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-inset ${
                 pathname.startsWith(link.href)
-                  ? 'bg-[#3fb950]/8 text-[#3fb950]'
-                  : 'text-[#8b949e] hover:bg-[#161b22] hover:text-[#e6edf3]'
+                  ? 'bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)] text-[var(--color-accent)]'
+                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]'
               }`}
             >
               {link.label}

@@ -10,18 +10,17 @@ const GITHUB_SVG = (
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#21262d] bg-[#0d1117]">
+    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-4">
-          {/* Brand */}
           <div className="sm:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#3fb950]/10 border border-[#3fb950]/20">
-                <PickaxeIcon className="h-4 w-4 text-[#3fb950]" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)]">
+                <PickaxeIcon className="h-4 w-4 text-[var(--color-accent)]" />
               </div>
-              <span className="text-sm font-bold text-[#e6edf3]">MPS</span>
+              <span className="text-sm font-bold text-[var(--color-text)]">MPS</span>
             </div>
-            <p className="text-sm leading-relaxed text-[#8b949e] max-w-xs">
+            <p className="text-sm leading-relaxed text-[var(--color-text-secondary)] max-w-xs">
               Minecraft Plugin Studio — 基於 AI 的 Cursor Agent Skills 工具集，協助開發者自動生成高品質的 Spigot / Paper 插件程式碼。
             </p>
             <div className="mt-5 flex items-center gap-3">
@@ -29,7 +28,7 @@ export function Footer() {
                 href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-md border border-[#30363d] bg-[#21262d] px-3 py-1.5 text-xs text-[#8b949e] transition-all hover:border-[#484f58] hover:text-[#e6edf3]"
+                className="flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] px-3 py-1.5 text-xs text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)]"
               >
                 {GITHUB_SVG}
                 GitHub
@@ -37,9 +36,8 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Navigation */}
           <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#484f58]">導覽</h3>
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">導覽</h3>
             <ul className="space-y-2.5">
               {[
                 { href: '/', label: '首頁' },
@@ -50,7 +48,7 @@ export function Footer() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-[#8b949e] hover:text-[#3fb950] transition-colors"
+                    className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] rounded"
                   >
                     {item.label}
                   </Link>
@@ -59,9 +57,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Resources */}
           <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#484f58]">資源</h3>
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">資源</h3>
             <ul className="space-y-2.5">
               {[
                 { href: GITHUB_REPO_URL, label: 'GitHub 專案' },
@@ -73,7 +70,7 @@ export function Footer() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm text-[#8b949e] hover:text-[#3fb950] transition-colors"
+                    className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] rounded"
                   >
                     {item.label}
                   </a>
@@ -83,12 +80,11 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-10 border-t border-[#21262d] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#484f58]">
+        <div className="mt-10 border-t border-[var(--color-border)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--color-text-muted)]">
           <p>© {new Date().getFullYear()} {SITE_NAME}. Open Source.</p>
           <p className="flex items-center gap-1.5">
             Built with
-            <span className="text-[#3fb950]">Cursor Agent Skills</span>
+            <span className="text-[var(--color-accent)]">Cursor Agent Skills</span>
           </p>
         </div>
       </div>

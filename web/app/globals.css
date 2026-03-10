@@ -3,16 +3,24 @@
 @plugin "@tailwindcss/typography";
 
 :root {
+  /* Backgrounds */
   --color-bg: #030712;
   --color-surface: #0d1117;
   --color-surface-2: #161b22;
+  /* Borders */
   --color-border: #21262d;
+  --color-border-strong: #30363d;
   --color-border-muted: #161b22;
+  /* Accent (primary green) */
   --color-accent: #3fb950;
+  --color-accent-hover: #56d364;
   --color-accent-muted: #238636;
+  /* Text */
   --color-text: #e6edf3;
   --color-text-secondary: #8b949e;
   --color-text-muted: #484f58;
+  /* Status */
+  --color-error: #f85149;
 }
 
 html {
@@ -34,25 +42,25 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #30363d;
+  background: var(--color-border-strong);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #484f58;
+  background: var(--color-text-muted);
 }
 
 /* Glow effects */
 .glow-accent {
-  box-shadow: 0 0 20px rgba(63, 185, 80, 0.15);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 15%, transparent);
 }
 
 .glow-accent-sm {
-  box-shadow: 0 0 10px rgba(63, 185, 80, 0.1);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #3fb950 0%, #58a6ff 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #58a6ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -61,8 +69,8 @@ body {
 /* Grid pattern */
 .grid-pattern {
   background-image:
-    linear-gradient(rgba(63, 185, 80, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(63, 185, 80, 0.03) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--color-accent) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 3%, transparent) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
@@ -116,7 +124,7 @@ pre code {
 .shimmer {
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(63, 185, 80, 0.08) 50%,
+    color-mix(in srgb, var(--color-accent) 8%, transparent) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
