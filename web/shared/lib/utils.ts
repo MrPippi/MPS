@@ -1,4 +1,4 @@
-import type { SkillStatus } from '@/types/skill';
+import type { SkillStatus } from '@/shared/types/skill';
 
 export function formatDate(dateStr: string): string {
   if (!dateStr) return '';
@@ -40,9 +40,3 @@ export function statusTextColor(status: SkillStatus): string {
 export function cn(...classes: (string | undefined | false | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
-
-export const GITHUB_REPO_URL = 'https://github.com/MrPippi/MPS';
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mps.vercel.app';
-export const SITE_NAME = 'MPS — Minecraft Plugin Studio';
-export const SITE_DESCRIPTION =
-  'AI-powered development toolkit for Spigot / Paper plugins. A collection of Cursor Agent Skills that help developers generate high-quality Minecraft plugin code automatically.';

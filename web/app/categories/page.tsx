@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getCategories, getAllSkills } from '@/features/skills';
-import { SITE_NAME } from '@/lib/utils';
-import { CategoryIcon } from '@/components/ui/CategoryIcon';
+import { SITE_NAME } from '@/config/site';
+import { CategoryIcon } from '@/features/categories';
 
 export const metadata: Metadata = {
   title: `分類瀏覽 | ${SITE_NAME}`,

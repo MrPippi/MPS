@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getAllSkills, getFeaturedSkills, getCategories, SkillCard } from '@/features/skills';
-import { CategoryIcon } from '@/components/ui/CategoryIcon';
-import { GITHUB_REPO_URL } from '@/lib/utils';
+import { CategoryIcon } from '@/features/categories';
+import { GITHUB_REPO_URL } from '@/config/site';
 
 export default function HomePage() {
   const featuredSkills = getFeaturedSkills();

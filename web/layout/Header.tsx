@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { GITHUB_REPO_URL } from '@/lib/utils';
-import { PickaxeIcon } from '@/components/ui/PickaxeIcon';
+import { GITHUB_REPO_URL } from '@/config/site';
+import { PickaxeIcon } from '@/shared/ui';
 
 const NAV_LINKS = [
   { href: '/skills', label: 'Skills' },

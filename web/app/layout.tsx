@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import { AppShell } from '@/components/layout/AppShell';
+import { AppShell } from '@/layout';
 import { getSearchIndex } from '@/features/skills';
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '@/lib/utils';
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '@/config/site';
 
 const inter = Inter({
   variable: '--font-inter',

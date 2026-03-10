@@ -23,9 +23,9 @@ MPS/
 │   ├── rules/                       ← Cursor Agent rule files (.mdc)
 │   └── skills/                      ← Cursor Agent runtime (15 skills)
 │       └── skills-registry.yml      ← Agent skill registry (v3.0.0)
-├── Skills/                          ← Public GitHub mirror (12 skills)
+├── Skills/                          ← Public GitHub mirror (12 skills, excludes Cursor-only)
 │   ├── README.md
-│   └── skills-registry.yml          ← Must stay identical to .cursor version
+│   └── skills-registry.yml          ← Public subset of .cursor registry (12 entries)
 └── web/                             ← Next.js documentation site
 ```
 
@@ -56,9 +56,9 @@ npm start        # run production server
 
 ### Architecture
 
-- **Data source**: Skill content is read at build/request time from `web/data/skills/*.md` (Markdown with YAML frontmatter) via `lib/skills.ts` — no database
-- **View counter**: Optional Upstash Redis (`lib/redis.ts`). Requires `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` env vars; degrades gracefully if absent. View key format: `mps:views:{slug}`
-- **Search**: Client-side fuzzy search via Fuse.js; search index built in `lib/skills.ts:getSearchIndex()` and passed through the layout
+- **Data source**: Skill content is read at build/request time from `web/data/skills/*.md` (Markdown with YAML frontmatter) via `features/skills/api/skills.ts` — no database
+- **View counter**: Optional Upstash Redis (`shared/lib/redis.ts`). Requires `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` env vars; degrades gracefully if absent. View key format: `mps:views:{slug}`
+- **Search**: Client-side fuzzy search via Fuse.js; search index built in `features/skills/api/skills.ts:getSearchIndex()` and passed through the layout
 - **i18n**: Full bilingual support — English + Traditional Chinese (繁體中文) throughout all data and UI
 
 ### Key Paths
@@ -66,22 +66,21 @@ npm start        # run production server
 | Path | Purpose |
 |------|---------|
 | `web/data/skills/` | One `.md` per skill; YAML frontmatter drives all metadata |
-| `web/lib/skills.ts` | All skill data access functions (single source of truth) |
-| `web/lib/redis.ts` | Upstash Redis wrapper for view counting |
-| `web/lib/search.ts` | Fuse.js configuration |
-| `web/lib/utils.ts` | Shared utilities |
-| `web/types/skill.ts` | TypeScript interfaces: `SkillMeta`, `SkillFull`, `Category`, `SearchIndex` |
+| `web/config/site.ts` | Site-wide constants (SITE_NAME, GITHUB_REPO_URL, etc.) |
+| `web/shared/types/skill.ts` | TypeScript interfaces: `SkillMeta`, `SkillFull`, `Category`, `SearchIndex` |
+| `web/shared/lib/utils.ts` | Shared formatting utilities (formatDate, statusColor, cn, etc.) |
+| `web/shared/lib/redis.ts` | Upstash Redis wrapper for view counting |
+| `web/shared/ui/` | Brand-level UI components (PickaxeIcon) |
+| `web/features/skills/` | Skills feature: data access, components (SkillCard, SkillDetail, etc.) |
+| `web/features/categories/` | Categories feature: CategoryIcon, Sidebar navigation |
+| `web/features/search/` | Search feature: Fuse.js config, SearchModal |
+| `web/layout/` | App shell components: AppShell, Header, Footer |
 | `web/app/skills/[slug]/` | Dynamic skill detail page |
 | `web/app/categories/[category]/` | Category browsing page |
 | `web/app/guide/` | Documentation/guide pages |
 | `web/app/api/views/[slug]/` | API route for Upstash Redis view counts |
-| `web/components/layout/` | Header, footer, navigation |
-| `web/components/skills/` | Skill-related UI components |
-| `web/components/search/` | Search modal and input |
-| `web/components/ui/` | Base UI components |
-| `web/components/icons/` | Icon components |
 
-### Data Model (`web/types/skill.ts`)
+### Data Model (`web/shared/types/skill.ts`)
 
 ```typescript
 type SkillStatus = 'active' | 'deprecated';
@@ -107,7 +106,7 @@ interface SearchIndex {
 }
 ```
 
-### Data Access Functions (`web/lib/skills.ts`)
+### Data Access Functions (`web/features/skills/api/skills.ts`)
 
 | Function | Returns |
 |----------|---------|
@@ -305,10 +304,14 @@ When modifying agent behavior or adding skills, update the `.mdc` rule files as 
 
 ## Key Invariants
 
-1. **Dual-path sync**: Every change to `Skills/<slug>/` must be mirrored in `.cursor/skills/<slug>/` and vice versa.
-2. **Registry parity**: `Skills/skills-registry.yml` and `.cursor/skills/skills-registry.yml` must always be identical.
+1. **Registry hierarchy** (intentionally asymmetric):
+   - `.cursor/skills/skills-registry.yml` is the **authoritative superset** — 13 skills including Cursor-only ones (`sync-website-skill`, etc.)
+   - `Skills/skills-registry.yml` is the **public mirror** — 12 skills, excludes Cursor-only skills. Must mirror all public `Skills/<slug>/` directories.
+   - `web/data/skills/*.md` is the **web presentation layer** — 12 files, independently maintained; use `sync-website-skill` Cursor skill to auto-generate.
+2. **Dual-path sync**: Every public skill added to `.cursor/skills/<slug>/` must also be added to `Skills/<slug>/`. Cursor-only skills (meta/devops tools) are the only exception and must not have a `Skills/` directory.
 3. **Frontmatter completeness**: All 14 required frontmatter fields must be present in `web/data/skills/*.md`.
 4. **Thread safety**: All generated Java code must respect Bukkit main-thread / async boundaries.
 5. **Bilingual**: All skill titles, descriptions, and categories must have both English and Traditional Chinese (繁體中文) values.
 6. **No database**: The web app reads directly from the filesystem; do not introduce a database dependency.
 7. **Graceful degradation**: Redis view counting is optional — the app must work without it.
+8. **Feature-driven web structure**: New web features go into `web/features/<name>/` with `components/`, `api/` (if needed), and `index.ts` barrel. Shared cross-feature code belongs in `web/shared/`. Site constants belong in `web/config/site.ts`.

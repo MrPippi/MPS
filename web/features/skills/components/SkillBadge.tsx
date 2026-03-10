@@ -1,5 +1,5 @@
-import { statusColor, statusLabel } from '@/lib/utils';
-import type { SkillStatus } from '@/types/skill';
+import { statusColor, statusLabel } from '@/shared/lib/utils';
+import type { SkillStatus } from '@/shared/types/skill';
 
 interface SkillBadgeProps {
   status: SkillStatus;

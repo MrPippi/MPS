@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { GITHUB_REPO_URL } from '@/lib/utils';
+import { GITHUB_REPO_URL } from '@/config/site';
 
 export const metadata: Metadata = {
   title: '使用方法 — MPS Minecraft Plugin Studio',

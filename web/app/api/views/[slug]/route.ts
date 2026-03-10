@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getRedis, viewKey } from '@/lib/redis';
+import { getRedis, viewKey } from '@/shared/lib/redis';
 
 interface Params {
   params: Promise<{ slug: string }>;

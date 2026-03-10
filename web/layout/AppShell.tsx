@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { SearchModal } from '@/features/search';
-import type { SearchIndex } from '@/types/skill';
+import type { SearchIndex } from '@/shared/types/skill';
 
 interface AppShellProps {
   children: React.ReactNode;

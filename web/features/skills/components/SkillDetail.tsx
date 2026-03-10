@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import type { SkillFull } from '@/types/skill';
+import type { SkillFull } from '@/shared/types/skill';
 import { SkillBadge } from './SkillBadge';
-import { formatDate, GITHUB_REPO_URL } from '@/lib/utils';
-import { CategoryIcon } from '@/components/ui/CategoryIcon';
+import { formatDate } from '@/shared/lib/utils';
+import { GITHUB_REPO_URL } from '@/config/site';
+import { CategoryIcon } from '@/features/categories';
 import { ViewCounter } from './ViewCounter';
 
 interface SkillDetailProps {

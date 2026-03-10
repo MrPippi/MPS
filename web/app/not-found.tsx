@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { PickaxeIcon } from '@/components/ui/PickaxeIcon';
+import { PickaxeIcon } from '@/shared/ui';
 
 export default function NotFound() {
   return (

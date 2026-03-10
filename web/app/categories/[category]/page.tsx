@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getCategories, getSkillsByCategory, SkillGrid } from '@/features/skills';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { SITE_NAME } from '@/lib/utils';
+import { Sidebar } from '@/features/categories';
+import { SITE_NAME } from '@/config/site';
 import Link from 'next/link';
 
 interface Props {

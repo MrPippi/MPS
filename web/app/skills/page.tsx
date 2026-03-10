@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getAllSkills, getCategories, SkillGrid } from '@/features/skills';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { SITE_NAME } from '@/lib/utils';
+import { Sidebar } from '@/features/categories';
+import { SITE_NAME } from '@/config/site';
 
 export const metadata: Metadata = {
   title: `所有 Skills | ${SITE_NAME}`,

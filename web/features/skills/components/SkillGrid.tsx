@@ -1,4 +1,4 @@
-import type { SkillMeta } from '@/types/skill';
+import type { SkillMeta } from '@/shared/types/skill';
 import { SkillCard } from './SkillCard';
 
 interface SkillGridProps {
