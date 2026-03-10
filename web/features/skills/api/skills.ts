@@ -4,7 +4,7 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import remarkGfm from 'remark-gfm';
 import remarkHtml from 'remark-html';
-import type { SkillMeta, SkillFull, Category, SearchIndex } from '@/types/skill';
+import type { SkillMeta, SkillFull, Category, SearchIndex } from '@/shared/types/skill';
 
 const SKILLS_DIR = path.join(process.cwd(), 'data', 'skills');
 

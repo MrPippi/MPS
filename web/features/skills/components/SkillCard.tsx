@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import type { SkillMeta } from '@/types/skill';
+import type { SkillMeta } from '@/shared/types/skill';
 import { SkillBadge } from './SkillBadge';
-import { formatDate } from '@/lib/utils';
-import { CategoryIcon } from '@/components/ui/CategoryIcon';
+import { formatDate } from '@/shared/lib/utils';
+import { CategoryIcon } from '@/features/categories';
 
 interface SkillCardProps {
   skill: SkillMeta;

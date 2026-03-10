@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { Category } from '@/types/skill';
+import type { Category } from '@/shared/types/skill';
 
 interface SidebarProps {
   categories: Category[];

@@ -1,7 +1,7 @@
 'use client';
 
 import Fuse from 'fuse.js';
-import type { SearchIndex } from '@/types/skill';
+import type { SearchIndex } from '@/shared/types/skill';
 
 let fuseInstance: Fuse<SearchIndex> | null = null;
 

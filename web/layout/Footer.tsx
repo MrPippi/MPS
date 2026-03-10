@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { GITHUB_REPO_URL, SITE_NAME } from '@/lib/utils';
-import { PickaxeIcon } from '@/components/ui/PickaxeIcon';
+import { GITHUB_REPO_URL, SITE_NAME } from '@/config/site';
+import { PickaxeIcon } from '@/shared/ui';
 
 const GITHUB_SVG = (
   <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">

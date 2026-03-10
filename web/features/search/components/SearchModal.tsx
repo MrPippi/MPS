@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import Fuse, { type FuseResult } from 'fuse.js';
 import { createSearchIndex, search } from '@/features/search/api/search';
-import type { SearchIndex } from '@/types/skill';
-import { statusLabel, statusTextColor } from '@/lib/utils';
+import type { SearchIndex } from '@/shared/types/skill';
+import { statusLabel, statusTextColor } from '@/shared/lib/utils';
 
 interface SearchModalProps {
   isOpen: boolean;
