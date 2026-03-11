@@ -44,7 +44,7 @@ MPS/
 │   │   ├── generate-waterfall-plugin-skeleton/SKILL.md
 │   │   └── generate-bungeecord-channel/SKILL.md
 │   └── [12 legacy flat skills]          ← Paper/Spigot skills (flat layout, pre-v4)
-├── skills/                              ← Supplementary API reference docs (read-only reference)
+├── docs/                                ← Supplementary API reference docs (read-only reference)
 │   ├── CONVENTIONS.md                   ← Cross-platform coding conventions
 │   ├── paper/                           ← Detailed Paper API reference
 │   ├── purpur/                          ← Detailed Purpur API reference
@@ -53,7 +53,7 @@ MPS/
 └── web/                                 ← Next.js documentation site
 ```
 
-> **Note**: `skills/` (lowercase) contains detailed API reference guides (scheduling, events, storage, messaging sub-skills). These are supplementary reading — not the authoritative Skill definitions. The authoritative definitions are in `Skills/`.
+> **Note**: `docs/` contains detailed API reference guides (scheduling, events, storage, messaging sub-skills). These are supplementary reading — not the authoritative Skill definitions. The authoritative definitions are in `Skills/`.
 
 ---
 
@@ -65,7 +65,7 @@ When asked to generate Minecraft plugin code, always follow this order:
 2. **Read the corresponding `SKILL.md`** before generating any code
 3. **Check the platform's `PLATFORM.md`** for the correct build.gradle, plugin descriptor, and API patterns
 4. **For cross-platform work**, read `Skills/_shared/` for async patterns and messaging conventions
-5. **For deep API reference**, consult `skills/<platform>/` sub-skill files (scheduling, events, storage, etc.)
+5. **For deep API reference**, consult `docs/<platform>/` sub-skill files (scheduling, events, storage, etc.)
 
 Never generate Minecraft plugin code from memory — always read the relevant SKILL.md and PLATFORM.md first.
 
