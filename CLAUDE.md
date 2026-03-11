@@ -170,13 +170,11 @@ npm start        # run production server
 | Styling | Tailwind CSS v4, Tailwind Typography v0.5.19 |
 | Markdown | gray-matter, remark, remark-gfm, remark-html |
 | Search | Fuse.js v7.1.0 (client-side fuzzy) |
-| Analytics | Upstash Redis (optional view counter) |
 | Deployment | Vercel (via GitHub Actions) |
 
 ### Architecture
 
 - **Data source**: Skill content is read at build/request time from `web/data/skills/*.md` (Markdown with YAML frontmatter) via `features/skills/api/skills.ts` — no database
-- **View counter**: Optional Upstash Redis (`shared/lib/redis.ts`). Requires `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` env vars; degrades gracefully if absent. View key format: `mps:views:{slug}`
 - **Search**: Client-side fuzzy search via Fuse.js; search index built in `features/skills/api/skills.ts:getSearchIndex()` and passed through the layout
 - **i18n**: Full bilingual support — English + Traditional Chinese (繁體中文) throughout all data and UI
 
@@ -188,7 +186,6 @@ npm start        # run production server
 | `web/config/site.ts` | Site-wide constants (SITE_NAME, GITHUB_REPO_URL, etc.) |
 | `web/shared/types/skill.ts` | TypeScript interfaces: `SkillMeta`, `SkillFull`, `Category`, `SearchIndex` |
 | `web/shared/lib/utils.ts` | Shared formatting utilities (formatDate, statusColor, cn, etc.) |
-| `web/shared/lib/redis.ts` | Upstash Redis wrapper for view counting |
 | `web/shared/ui/` | Brand-level UI components (PickaxeIcon) |
 | `web/features/skills/` | Skills feature: data access, components (SkillCard, SkillDetail, etc.) |
 | `web/features/categories/` | Categories feature: CategoryIcon, Sidebar navigation |
@@ -197,7 +194,6 @@ npm start        # run production server
 | `web/app/skills/[slug]/` | Dynamic skill detail page |
 | `web/app/categories/[category]/` | Category browsing page |
 | `web/app/guide/` | Documentation/guide pages |
-| `web/app/api/views/[slug]/` | API route for Upstash Redis view counts |
 
 ### Data Model (`web/shared/types/skill.ts`)
 
@@ -241,8 +237,6 @@ interface SearchIndex {
 ```bash
 # web/.env.local (copy from .env.local.example)
 NEXT_PUBLIC_SITE_URL=https://mps.vercel.app
-UPSTASH_REDIS_REST_URL=https://xxxx.upstash.io   # optional
-UPSTASH_REDIS_REST_TOKEN=your_token_here          # optional
 ```
 
 ### Adding a New Skill Page
@@ -398,6 +392,4 @@ When modifying agent behavior or adding skills, update the `.mdc` rule files as 
 
 7. **No database**: The web app reads directly from the filesystem; do not introduce a database dependency.
 
-8. **Graceful degradation**: Redis view counting is optional — the app must work without it.
-
-9. **Feature-driven web structure**: New web features go into `web/features/<name>/` with `components/`, `api/` (if needed), and `index.ts` barrel. Shared cross-feature code belongs in `web/shared/`. Site constants belong in `web/config/site.ts`.
+8. **Feature-driven web structure**: New web features go into `web/features/<name>/` with `components/`, `api/` (if needed), and `index.ts` barrel. Shared cross-feature code belongs in `web/shared/`. Site constants belong in `web/config/site.ts`.
