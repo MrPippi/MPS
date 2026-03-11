@@ -1,6 +1,6 @@
-version: "3.0.0"
-updated: "2026-03-05"
-description: MPS — Minecraft Plugin Studio Agent Skills 總覽索引
+version: "4.0.0"
+updated: "2026-03-10"
+description: MPS — Minecraft Plugin Studio Agent Skills 總覽索引（Paper / Purpur / Velocity / Waterfall）
 
 skills:
   - id: spigot-paper-api-caller
@@ -271,3 +271,158 @@ skills:
       - "幫我整合 Vault"
       - "Vault Economy"
       - "餘額查詢"
+
+  # ────────────────────────────────────────────────
+  # Purpur Platform Skills
+  # ────────────────────────────────────────────────
+
+  - id: purpur-api-caller
+    version: "1.0.0"
+    status: active
+    platform: purpur
+    category: integration
+    description: 為 Purpur 伺服器插件產生正確的 Purpur-specific API 調用代碼，含 PlayerAFKEvent、EntityAirChangeEvent、Purpur/Paper 雙平台相容執行環境守衛
+    skill_file: purpur/purpur-api-caller/SKILL.md
+    inputs:
+      - api_type
+      - plugin_package
+      - purpur_only
+    outputs:
+      - Purpur API Java 代碼片段或完整監聽器類別
+    tags: [purpur, api, java, afk, event]
+    trigger_keywords:
+      - "Purpur API"
+      - "PlayerAFKEvent"
+      - "purpur.yml"
+      - "Purpur 特有功能"
+      - "purpur event"
+      - "EntityAirChangeEvent"
+
+  # ────────────────────────────────────────────────
+  # Velocity Platform Skills
+  # ────────────────────────────────────────────────
+
+  - id: generate-velocity-plugin-skeleton
+    version: "1.0.0"
+    status: active
+    platform: velocity
+    category: scaffold
+    description: 依輸入參數產生完整的 Velocity proxy plugin Gradle 骨架，包含 @Plugin 主類、Guice 注入、ConnectionListener、HubCommand，以及 annotation processor 設定（自動生成 velocity-plugin.json）
+    skill_file: velocity/generate-velocity-plugin-skeleton/SKILL.md
+    inputs:
+      - plugin_id
+      - plugin_name
+      - group_id
+      - description
+      - authors
+    outputs:
+      - build.gradle
+      - settings.gradle
+      - "{PluginName}.java"
+      - "listeners/ConnectionListener.java"
+      - "commands/HubCommand.java"
+    tags: [scaffold, gradle, velocity, proxy, plugin]
+    trigger_keywords:
+      - "建立 Velocity 插件"
+      - "Velocity plugin skeleton"
+      - "proxy plugin 骨架"
+      - "generate velocity plugin"
+      - "新建代理插件"
+
+  - id: generate-proxy-event-listener
+    version: "1.0.0"
+    status: active
+    platform: velocity
+    category: event
+    description: 為 Velocity proxy plugin 產生 @Subscribe 事件監聽器，涵蓋連線事件（LoginEvent、PostLoginEvent、DisconnectEvent）和伺服器切換事件（ServerConnectedEvent、PlayerChooseInitialServerEvent）
+    skill_file: velocity/generate-proxy-event-listener/SKILL.md
+    inputs:
+      - listener_name
+      - events
+      - plugin_package
+      - deny_on_login
+    outputs:
+      - "{ListenerName}.java"
+    tags: [event, listener, velocity, proxy, subscribe]
+    trigger_keywords:
+      - "監聽 Velocity 事件"
+      - "proxy event listener"
+      - "@Subscribe"
+      - "LoginEvent"
+      - "ServerConnectedEvent"
+      - "PlayerChooseInitialServerEvent"
+
+  - id: generate-plugin-message-handler
+    version: "1.0.0"
+    status: active
+    platform: velocity
+    category: integration
+    description: 為 Velocity proxy plugin 產生 PluginMessageEvent 處理器，包含 MinecraftChannelIdentifier 頻道註冊、ByteStreams 序列化、ForwardResult 設定、proxy-to-backend 回應範例
+    skill_file: velocity/generate-plugin-message-handler/SKILL.md
+    inputs:
+      - plugin_package
+      - channel_namespace
+      - channel_name
+      - actions
+    outputs:
+      - "messaging/ProxyMessagingHandler.java"
+    tags: [messaging, channel, velocity, proxy, plugin-message]
+    trigger_keywords:
+      - "plugin messaging on Velocity"
+      - "PluginMessageEvent"
+      - "MinecraftChannelIdentifier"
+      - "proxy channel"
+      - "傳訊息給後端伺服器"
+
+  # ────────────────────────────────────────────────
+  # Waterfall Platform Skills
+  # ────────────────────────────────────────────────
+
+  - id: generate-waterfall-plugin-skeleton
+    version: "1.0.0"
+    status: active
+    platform: waterfall
+    category: scaffold
+    description: 依輸入參數產生完整的 Waterfall/BungeeCord proxy plugin Gradle 骨架，包含 plugin.yml、繼承 net.md_5.bungee.api.plugin.Plugin 的主類、ConnectionListener、HubCommand
+    skill_file: waterfall/generate-waterfall-plugin-skeleton/SKILL.md
+    inputs:
+      - plugin_name
+      - group_id
+      - description
+      - author
+    outputs:
+      - build.gradle
+      - settings.gradle
+      - "src/main/resources/plugin.yml"
+      - "{PluginName}.java"
+      - "listeners/ConnectionListener.java"
+      - "commands/HubCommand.java"
+    tags: [scaffold, gradle, waterfall, bungeecord, proxy]
+    trigger_keywords:
+      - "建立 Waterfall 插件"
+      - "BungeeCord plugin skeleton"
+      - "bungeecord proxy plugin"
+      - "generate waterfall plugin"
+      - "新建 BungeeCord 插件"
+
+  - id: generate-bungeecord-channel
+    version: "1.0.0"
+    status: active
+    platform: waterfall
+    category: integration
+    description: 為 Waterfall/BungeeCord proxy plugin 產生 PluginMessageEvent 處理器，支援自訂頻道和 BungeeCord 內建 sub-channel（Connect、GetServer、PlayerCount 等），含 setCancelled() 正確用法
+    skill_file: waterfall/generate-bungeecord-channel/SKILL.md
+    inputs:
+      - plugin_package
+      - channel_name
+      - actions
+      - intercept_bungee
+    outputs:
+      - "messaging/WaterfallMessagingHandler.java"
+    tags: [messaging, channel, waterfall, bungeecord, plugin-message]
+    trigger_keywords:
+      - "BungeeCord channel"
+      - "PluginMessageEvent on Waterfall"
+      - "plugin messaging BungeeCord"
+      - "自訂頻道 Waterfall"
+      - "ByteStreams BungeeCord"
