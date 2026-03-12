@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { getAllSkills, getCategories } from '@/features/skills';
 import { SITE_URL } from '@/config/site';
 
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const skills = getAllSkills();
   const categories = getCategories();
