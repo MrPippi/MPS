@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getAllSkills, getFeaturedSkills, getCategories, SkillCard } from '@/features/skills';
 import { CategoryIcon } from '@/features/categories';
-import { GITHUB_REPO_URL } from '@/config/site';
+import { GITHUB_REPO_URL, GITHUB_CONTRIBUTE_URL } from '@/config/site';
 
 export default function HomePage() {
   const featuredSkills = getFeaturedSkills();
@@ -168,11 +168,12 @@ export default function HomePage() {
             <div>
               <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">想要貢獻新的 Skill？</h2>
               <p className="text-sm text-[var(--color-text-secondary)] max-w-md">
-                歡迎 Fork 本專案，按照規範新增 Skill 並送出 Pull Request。社群的力量讓工具更完整。
+                歡迎 Fork 本專案，按照規範新增 Skill 並送出 Pull Request。更多 Skills（含 Velocity、Waterfall、Purpur）請見{' '}
+                <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline focus-ring rounded">GitHub 專案</a>。社群的力量讓工具更完整。
               </p>
             </div>
             <a
-              href={`${GITHUB_REPO_URL}#貢獻指南`}
+              href={GITHUB_CONTRIBUTE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-accent-dim bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-accent)] transition-all hover:bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] hover:border-[color-mix(in_srgb,var(--color-accent)_60%,transparent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)]"
