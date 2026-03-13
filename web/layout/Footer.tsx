@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { GITHUB_REPO_URL, SITE_NAME } from '@/config/site';
+import { GITHUB_REPO_URL, GITHUB_CONTRIBUTE_URL, SITE_NAME } from '@/config/site';
 import { PickaxeIcon } from '@/shared/ui';
 
 const GITHUB_SVG = (
@@ -62,7 +62,7 @@ export function Footer() {
             <ul className="space-y-2.5">
               {[
                 { href: GITHUB_REPO_URL, label: 'GitHub 專案' },
-                { href: `${GITHUB_REPO_URL}/blob/main/README.md`, label: '貢獻指南' },
+                { href: GITHUB_CONTRIBUTE_URL, label: '貢獻指南' },
                 { href: `${GITHUB_REPO_URL}/blob/main/LICENSE`, label: '授權條款' },
               ].map((item) => (
                 <li key={item.href}>

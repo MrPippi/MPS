@@ -26,7 +26,7 @@ export function AppShell({ children, searchData }: AppShellProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col">
       <Header onSearchOpen={() => setSearchOpen(true)} />
       <main className="flex-1">{children}</main>
       <Footer />

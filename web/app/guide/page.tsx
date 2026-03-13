@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { GITHUB_REPO_URL } from '@/config/site';
+import { GITHUB_REPO_URL, GITHUB_CONTRIBUTE_URL } from '@/config/site';
 
 export const metadata: Metadata = {
   title: '使用方法 — MPS Minecraft Plugin Studio',
@@ -105,7 +105,8 @@ export default function GuidePage() {
             </h1>
             <p className="mt-5 text-base leading-relaxed text-[var(--color-text-secondary)] max-w-lg">
               透過 Cursor Agent Skills，只需輸入一句自然語言，即可自動生成完整的 Spigot / Paper 插件程式碼。
-              以下教學將引導你完成安裝、觸發與使用流程。
+              以下教學將引導你完成安裝、觸發與使用流程。本網站主要展示 Paper/Bukkit Skills；更多 Skills（含 Velocity、Waterfall、Purpur）請見{' '}
+              <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline focus-ring rounded">GitHub 專案</a>。
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -316,7 +317,7 @@ export default function GuidePage() {
                 </svg>
               </Link>
               <a
-                href={`${GITHUB_REPO_URL}#貢獻指南`}
+                href={GITHUB_CONTRIBUTE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-secondary)] hover:bg-[var(--color-border-strong)] focus-ring"
