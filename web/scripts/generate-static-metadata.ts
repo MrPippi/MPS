@@ -76,6 +76,7 @@ Sitemap: ${SITE_URL}/sitemap.xml
     { url: SITE_URL, changeFrequency: 'weekly', priority: 1 },
     { url: `${SITE_URL}/skills`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE_URL}/categories`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${SITE_URL}/guide`, changeFrequency: 'weekly', priority: 0.8 },
   ];
 
   const skillEntries = skills.map((s) => ({
