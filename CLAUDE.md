@@ -49,7 +49,13 @@ MPS/
 │       ├── nms-reflection-bridge/{SKILL.md, examples.md}
 │       └── nms-version-adapter/{SKILL.md, examples.md}
 ├── .cursor/                             ← Cursor 設定（歷史殘留，不再維護）
-└── web/                                 ← Next.js 文件站（內容待更新至 NMS）
+├── docs/
+│   └── paper-nms/                       ← NMS API 速查表（深度參考資料）
+│       ├── packets.md                   ← Clientbound/Serverbound 封包目錄
+│       ├── entities.md                  ← 實體類層次、Goal 系統、Attribute 常數
+│       ├── network.md                   ← Netty pipeline 結構與執行緒模型
+│       └── bukkit-nms-bridge.md         ← Bukkit ↔ NMS 橋接轉換表
+└── web/                                 ← Next.js 文件站
 ```
 
 ---
@@ -63,8 +69,13 @@ MPS/
 3. **查看 `examples.md`** — 理解多種使用情境
 4. **讀取 `paper-nms/PLATFORM.md`** — 確認正確的 `build.gradle` 與依賴聲明
 5. **閱讀 `_shared/nms-threading.md` 與 `_shared/nms-obfuscation.md`** — 理解執行緒與映射規則
+6. **深度 API 查詢**：若 SKILL.md 範本無法涵蓋需求，查閱 `docs/paper-nms/`：
+   - `docs/paper-nms/packets.md` — 封包類名與建構子簽名
+   - `docs/paper-nms/entities.md` — 實體 AI、Goal 系統、Attribute 常數
+   - `docs/paper-nms/network.md` — Netty pipeline 與執行緒模型
+   - `docs/paper-nms/bukkit-nms-bridge.md` — CraftXxx 橋接轉換
 
-**絕對不要** 憑記憶產生 NMS 代碼 — 一律先讀取相關 `SKILL.md` 與 `PLATFORM.md`。
+**絕對不要** 憑記憶產生 NMS 代碼 — 一律先讀取相關 `SKILL.md`、`PLATFORM.md` 與 `docs/paper-nms/`。
 
 ---
 

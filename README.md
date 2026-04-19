@@ -1,119 +1,63 @@
-# MPS — Minecraft Plugin Studio
+# MPS — Minecraft NMS Claude Code Skills
 
-**AI-powered development toolkit for Minecraft plugin development across Paper, Purpur, Velocity, and Waterfall.**
+**A curated library of [Claude Code Agent Skills](https://docs.anthropic.com/en/docs/claude-code) for low-level Minecraft NMS (net.minecraft.server) development on Paper 1.21.x with Mojang mappings.**
 
-MPS is a curated library of [Cursor Agent Skills](https://docs.cursor.com/agent/skills) that automate common Minecraft plugin development tasks — from project scaffolding to CI/CD deployment — across all major server and proxy platforms.
+MPS provides production-ready NMS skill templates that Claude Code reads before generating plugin code — covering packet sending, Netty pipeline interception, custom entity AI, reflection-based cross-version access, and multi-version adapter patterns.
 
 > 繁體中文說明請見 [README.zh-TW.md](README.zh-TW.md)
 
 ---
 
-## Features
+## Platform
 
-**Paper / Spigot (Backend)**
-- **Scaffold** — Generate a complete Maven plugin project (pom.xml, plugin.yml, main class)
-- **Commands** — Generate `CommandExecutor` + `TabCompleter` with sub-command routing and permission checks
-- **Events** — Generate `@EventHandler` listener skeletons with `EventPriority` and field access examples
-- **Config** — Generate structured `config.yml` + `ConfigManager` class
-- **Messages** — Generate `messages.yml` + `MessageManager` supporting MiniMessage / Legacy formats
-- **Permissions** — Generate `PermissionManager` + `plugin.yml` permission node declarations
-- **Database** — Generate SQLite / MySQL dual-mode `DatabaseManager` with HikariCP connection pool
-- **Integration** — Generate PlaceholderAPI `Expansion` class; produce correct Paper API call code; integrate Vault economy API
-- **Testing** — Generate JUnit 5 + MockBukkit test suite skeleton
-- **DevOps** — Generate GitHub Actions CI/CD workflow (build → test → release JAR)
-
-**Platform-Specific**
-- **Purpur** — Purpur-specific API code generation (PlayerAFKEvent, purpur.yml, runtime guards)
-- **Velocity** — Velocity proxy plugin scaffold, `@Subscribe` event listeners, PluginMessageEvent handler
-- **Waterfall** — Waterfall/BungeeCord proxy plugin scaffold, BungeeCord channel handler
+| Item | Details |
+|------|---------|
+| **MC Versions** | 1.21 – 1.21.3 |
+| **NMS Mapping** | Mojang mappings (Paper 1.20.5+ native) |
+| **Build Tool** | Paperweight userdev `1.7.2+` |
+| **Java** | 21 (toolchain) |
+| **Runtime** | `.claude/skills/` (Claude Code) |
 
 ---
 
 ## Skills
 
-### Paper / Spigot Skills
-
-| Skill | Category | Description |
-|-------|----------|-------------|
-| [`generate-plugin-skeleton`](Skills/generate-plugin-skeleton/SKILL.md) | scaffold | Complete Maven plugin project: `pom.xml`, `plugin.yml`, main class |
-| [`generate-command-handler`](Skills/generate-command-handler/SKILL.md) | command | `CommandExecutor` + `TabCompleter` with sub-command routing, permissions, argument validation |
-| [`generate-event-listener`](Skills/generate-event-listener/SKILL.md) | event | `Listener` skeleton with `@EventHandler`, `EventPriority`, `ignoreCancelled`, field access examples |
-| [`generate-config-yml`](Skills/generate-config-yml/SKILL.md) | config | Structured `config.yml` with defaults and `ConfigManager` class |
-| [`generate-message-system`](Skills/generate-message-system/SKILL.md) | config | `messages.yml` + `MessageManager` — MiniMessage and Legacy format, PlaceholderAPI support |
-| [`generate-permission-system`](Skills/generate-permission-system/SKILL.md) | permission | `PermissionManager` + `plugin.yml` permission nodes with inheritance tree |
-| [`generate-database-manager`](Skills/generate-database-manager/SKILL.md) | database | SQLite / MySQL dual-mode `DatabaseManager` with HikariCP, async queries, CRUD examples |
-| [`generate-placeholder-expansion`](Skills/generate-placeholder-expansion/SKILL.md) | integration | PlaceholderAPI `Expansion` class with placeholder routing logic |
-| [`spigot-paper-api-caller`](Skills/spigot-paper-api-caller/SKILL.md) | integration | Correct Paper Java API usage — events, schedulers, NBT, Adventure API |
-| [`integrate-vault`](Skills/integrate-vault/SKILL.md) | integration | Vault economy API integration — `EconomyManager`, deposit/withdraw, balance query |
-| [`generate-test-suite`](Skills/generate-test-suite/SKILL.md) | testing | JUnit 5 + MockBukkit test suite: `pom.xml` dependencies, server init, player/event/command tests |
-| [`generate-cicd-workflow`](Skills/generate-cicd-workflow/SKILL.md) | devops | GitHub Actions workflow: build, test, and auto-release JAR on tag push |
-
-### Platform-Specific Skills
-
-| Skill | Platform | Category | Description |
-|-------|----------|----------|-------------|
-| [`purpur-api-caller`](Skills/purpur/purpur-api-caller/SKILL.md) | Purpur | integration | Purpur-specific API code — `PlayerAFKEvent`, `purpur.yml`, runtime platform guards |
-| [`generate-velocity-plugin-skeleton`](Skills/velocity/generate-velocity-plugin-skeleton/SKILL.md) | Velocity | scaffold | Velocity proxy plugin Gradle skeleton — `@Plugin`, Guice injection, `velocity-plugin.json` |
-| [`generate-proxy-event-listener`](Skills/velocity/generate-proxy-event-listener/SKILL.md) | Velocity | event | `@Subscribe` event listener — `LoginEvent`, `ServerConnectedEvent`, `PlayerChooseInitialServerEvent` |
-| [`generate-plugin-message-handler`](Skills/velocity/generate-plugin-message-handler/SKILL.md) | Velocity | integration | `PluginMessageEvent` handler — `MinecraftChannelIdentifier`, `ByteStreams`, proxy-to-backend messaging |
-| [`generate-waterfall-plugin-skeleton`](Skills/waterfall/generate-waterfall-plugin-skeleton/SKILL.md) | Waterfall | scaffold | Waterfall/BungeeCord proxy plugin Gradle skeleton — extends `Plugin`, `plugin.yml` |
-| [`generate-bungeecord-channel`](Skills/waterfall/generate-bungeecord-channel/SKILL.md) | Waterfall | integration | BungeeCord channel handler — custom channels, built-in sub-channels, `ByteStreams` serialization |
+| Skill ID | Category | Purpose |
+|----------|----------|---------|
+| [`nms-packet-sender`](Skills/nms/nms-packet-sender/SKILL.md) | nms-packet | Send Clientbound packets via `ServerPlayer.connection.send()` |
+| [`nms-packet-interceptor`](Skills/nms/nms-packet-interceptor/SKILL.md) | nms-packet | Inject `ChannelDuplexHandler` into Netty pipeline to intercept/modify packets |
+| [`nms-custom-entity`](Skills/nms/nms-custom-entity/SKILL.md) | nms-entity | Extend NMS mob classes with custom `PathfinderGoal` AI behavior |
+| [`nms-reflection-bridge`](Skills/nms/nms-reflection-bridge/SKILL.md) | nms-bridge | Access NMS via `MethodHandle` cache without Paperweight compile dependency |
+| [`nms-version-adapter`](Skills/nms/nms-version-adapter/SKILL.md) | nms-bridge | Multi-version compatibility via abstract adapter interface + runtime dispatch |
 
 ---
 
 ## Quick Start
 
-Open a Cursor Agent chat and describe your need in natural language. The agent will automatically load the matching Skill:
+### 1. Install the Skill Runtime
+
+Clone or copy `.claude/skills/` into your project root:
+
+```bash
+cp -r /path/to/MPS/.claude/skills/ .claude/skills/
+```
+
+### 2. Configure Claude Code
+
+Ensure Claude Code picks up local skills (no extra config needed — `.claude/skills/` is auto-loaded).
+
+### 3. Use a Skill
+
+In a Claude Code session, describe what you want using trigger keywords:
 
 ```
-Create a plugin skeleton named MyPlugin targeting MC 1.21
-→ applies generate-plugin-skeleton
-
-Generate a listener for PlayerJoinEvent
-→ applies generate-event-listener
-
-Add /shop buy sell list subcommands
-→ applies generate-command-handler
-
-Generate config.yml with economy and cooldown sections
-→ applies generate-config-yml
-
-Build a message system using MiniMessage format
-→ applies generate-message-system
-
-Add permission nodes myplugin.admin and myplugin.use
-→ applies generate-permission-system
-
-Write MockBukkit unit tests for my plugin
-→ applies generate-test-suite
-
-Set up GitHub Actions to auto-publish the JAR
-→ applies generate-cicd-workflow
-
-Build a DatabaseManager supporting SQLite and MySQL
-→ applies generate-database-manager
-
-Write a PlaceholderAPI expansion for %myplugin_balance%
-→ applies generate-placeholder-expansion
-
-Integrate Vault economy API
-→ applies integrate-vault
-
-Create a Velocity proxy plugin for my network
-→ applies generate-velocity-plugin-skeleton
-
-Listen for LoginEvent and ServerConnectedEvent on Velocity
-→ applies generate-proxy-event-listener
-
-Handle plugin messaging between Velocity and backend servers
-→ applies generate-plugin-message-handler
-
-Create a Waterfall/BungeeCord proxy plugin
-→ applies generate-waterfall-plugin-skeleton
-
-Set up a BungeeCord plugin messaging channel
-→ applies generate-bungeecord-channel
+# Examples:
+"幫我實作封包發送器，發送 Action Bar 訊息給玩家"
+"我需要攔截 ServerboundChatPacket，過濾特定詞彙"
+"建立一個繼承 Zombie、有自訂 AI 追蹤行為的自定義實體"
 ```
+
+Claude Code will read the matching `SKILL.md` and generate production-ready code.
 
 ---
 
@@ -121,56 +65,43 @@ Set up a BungeeCord plugin messaging channel
 
 ```
 MPS/
-├── README.md                            ← This file (English)
-├── README.zh-TW.md                      ← Traditional Chinese version
-├── Skills/                              ← Canonical Skill definitions (18 skills)
-│   ├── README.md
-│   ├── skills-registry.yml              ← Skills index (category / inputs / outputs)
-│   ├── _shared/                         ← Cross-platform shared patterns
-│   │   ├── async-patterns.md
-│   │   └── cross-server-messaging.md
-│   ├── paper/PLATFORM.md                ← Paper build setup and API reference
-│   ├── purpur/
-│   │   ├── PLATFORM.md                  ← Purpur build setup and API reference
-│   │   └── purpur-api-caller/SKILL.md
-│   ├── velocity/
-│   │   ├── PLATFORM.md                  ← Velocity build setup and API reference
-│   │   ├── generate-velocity-plugin-skeleton/SKILL.md
-│   │   ├── generate-proxy-event-listener/SKILL.md
-│   │   └── generate-plugin-message-handler/SKILL.md
-│   ├── waterfall/
-│   │   ├── PLATFORM.md                  ← Waterfall build setup and API reference
-│   │   ├── generate-waterfall-plugin-skeleton/SKILL.md
-│   │   └── generate-bungeecord-channel/SKILL.md
-│   └── [12 legacy flat skills]          ← Paper/Spigot skills (flat layout)
-├── docs/                                ← Supplementary API reference (read-only)
-│   ├── CONVENTIONS.md
-│   ├── paper/
-│   ├── purpur/
-│   ├── velocity/
-│   └── waterfall/
-├── .cursor/
-│   ├── rules/
-│   │   └── minecraft-plugin-agent-skills.mdc   ← Agent behavior rules
-│   └── skills/                                 ← Cursor Agent runtime (19 skills)
-│       └── skills-registry.yml
-└── web/                                 ← Next.js documentation site
+├── .claude/skills/          ← Claude Code runtime (mirrors Skills/)
+│   ├── skills-registry.yml
+│   ├── _shared/
+│   └── nms/
+├── Skills/                  ← Canonical skill sources
+│   ├── skills-registry.yml  ← v5.0.0
+│   ├── _shared/
+│   │   ├── nms-threading.md
+│   │   └── nms-obfuscation.md
+│   ├── paper-nms/
+│   │   └── PLATFORM.md      ← Paperweight build.gradle template
+│   └── nms/
+│       ├── nms-packet-sender/
+│       ├── nms-packet-interceptor/
+│       ├── nms-custom-entity/
+│       ├── nms-reflection-bridge/
+│       └── nms-version-adapter/
+└── docs/paper-nms/          ← NMS API quick reference
+    ├── packets.md
+    ├── entities.md
+    ├── network.md
+    └── bukkit-nms-bridge.md
 ```
 
 ---
 
-## Contributing
+## Adding New Skills
 
-1. Fork this repository
-2. Create a new Skill directory under both `Skills/<platform>/<slug>/` and `.cursor/skills/<platform>/<slug>/`
-3. Write `SKILL.md` (with YAML frontmatter `name` and `description`) and `examples.md` (at least 2 examples)
-4. Add an entry to both `Skills/skills-registry.yml` and `.cursor/skills/skills-registry.yml` with `status: active`
-5. Open a Pull Request
+1. Create `Skills/nms/<slug>/SKILL.md` + `examples.md` (≥2 examples required)
+2. Mirror to `.claude/skills/nms/<slug>/`
+3. Add entry to both `skills-registry.yml` files
+4. Reference relevant `docs/paper-nms/` files in the SKILL.md Fallback section
 
-See [`.cursor/rules/minecraft-plugin-agent-skills.mdc`](.cursor/rules/minecraft-plugin-agent-skills.mdc) for the full contribution specification.
+See `CLAUDE.md` for the complete 7-step process and invariants.
 
 ---
 
 ## License
 
-This project is released under the [LICENSE](LICENSE).
+MIT

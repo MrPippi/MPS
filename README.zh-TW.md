@@ -1,176 +1,107 @@
-# MPS — Minecraft Plugin Studio
+# MPS — Minecraft NMS Claude Code Skills
 
-**專為 Minecraft 插件開發設計的 AI 輔助開發工具包，支援 Paper、Purpur、Velocity 與 Waterfall 四大平台。**
+**專為 Paper 1.21.x Mojang-mapped NMS 底層開發設計的 [Claude Code Agent Skills](https://docs.anthropic.com/en/docs/claude-code) 函式庫。**
 
-MPS 是一個精心整理的 [Cursor Agent Skills](https://docs.cursor.com/agent/skills) 函式庫，自動化 Minecraft 插件的常見開發任務，涵蓋從專案骨架建立到 CI/CD 部署的完整開發生命週期，適用於後端伺服器與代理伺服器插件開發。
+MPS 提供生產就緒的 NMS 技能範本，Claude Code 在產生插件代碼前會自動讀取這些範本，涵蓋封包發送、Netty pipeline 攔截、自定義實體 AI、反射式跨版本橋接，以及多版本 Adapter 模式。
 
 > English documentation: [README.md](README.md)
 
 ---
 
-## 功能特色
+## 平台資訊
 
-**Paper / Spigot（後端伺服器）**
-- **骨架生成** — 產生完整 Maven 插件專案（pom.xml、plugin.yml、主類）
-- **指令處理** — 產生含子指令路由與權限檢查的 `CommandExecutor` + `TabCompleter`
-- **事件監聽** — 產生含 `EventPriority`、欄位存取範例的 `@EventHandler` 骨架
-- **設定管理** — 產生結構化 `config.yml` + `ConfigManager` 類別
-- **訊息系統** — 產生支援 MiniMessage / Legacy 格式的 `messages.yml` + `MessageManager`
-- **權限系統** — 產生 `PermissionManager` + `plugin.yml` 權限節點繼承樹宣告
-- **資料庫管理** — 產生 SQLite / MySQL 雙模式 `DatabaseManager`（HikariCP 連線池）
-- **整合擴充** — 產生 PlaceholderAPI `Expansion` 類別；產生正確的 Paper API 調用代碼；整合 Vault 經濟 API
-- **單元測試** — 產生 JUnit 5 + MockBukkit 測試套件骨架
-- **自動化部署** — 產生 GitHub Actions CI/CD workflow（build → test → 自動發布 JAR）
-
-**平台特定技能**
-- **Purpur** — Purpur 特有 API 代碼生成（PlayerAFKEvent、purpur.yml 設定、執行平台守衛）
-- **Velocity** — Velocity 代理插件骨架、`@Subscribe` 事件監聽器、PluginMessageEvent 處理器
-- **Waterfall** — Waterfall/BungeeCord 代理插件骨架、BungeeCord 頻道處理器
+| 項目 | 說明 |
+|------|------|
+| **MC 版本** | 1.21 – 1.21.3 |
+| **NMS 映射** | Mojang mappings（Paper 1.20.5+ 原生支援） |
+| **建置工具** | Paperweight userdev `1.7.2+` |
+| **Java** | 21（toolchain） |
+| **執行時** | `.claude/skills/`（Claude Code 專用） |
 
 ---
 
-## Skills 總覽
+## 技能列表
 
-### Paper / Spigot Skills
-
-| Skill | 類別 | 說明 |
-|-------|------|------|
-| [`generate-plugin-skeleton`](Skills/generate-plugin-skeleton/SKILL.md) | scaffold | 完整 Maven 插件專案：`pom.xml`、`plugin.yml`、主類骨架 |
-| [`generate-command-handler`](Skills/generate-command-handler/SKILL.md) | command | 含子指令路由、權限節點、參數驗證的 `CommandExecutor` + `TabCompleter` |
-| [`generate-event-listener`](Skills/generate-event-listener/SKILL.md) | event | 含 `@EventHandler`、`EventPriority`、`ignoreCancelled`、欄位存取範例的 `Listener` 骨架 |
-| [`generate-config-yml`](Skills/generate-config-yml/SKILL.md) | config | 含預設值與繁體中文註解的 `config.yml` + `ConfigManager` 類別 |
-| [`generate-message-system`](Skills/generate-message-system/SKILL.md) | config | `messages.yml` + `MessageManager`，支援 MiniMessage / Legacy 格式與 PlaceholderAPI |
-| [`generate-permission-system`](Skills/generate-permission-system/SKILL.md) | permission | `PermissionManager` + `plugin.yml` 權限節點宣告，含繼承樹設計 |
-| [`generate-database-manager`](Skills/generate-database-manager/SKILL.md) | database | SQLite / MySQL 雙模式 `DatabaseManager`，使用 HikariCP 連線池，含非同步查詢與 CRUD 範例 |
-| [`generate-placeholder-expansion`](Skills/generate-placeholder-expansion/SKILL.md) | integration | PlaceholderAPI `Expansion` 類別，含 placeholder 路由邏輯 |
-| [`spigot-paper-api-caller`](Skills/spigot-paper-api-caller/SKILL.md) | integration | 正確的 Paper Java API 調用：事件、排程器、NBT、Adventure API |
-| [`integrate-vault`](Skills/integrate-vault/SKILL.md) | integration | Vault 經濟 API 整合：`EconomyManager`、存款扣款、餘額查詢 |
-| [`generate-test-suite`](Skills/generate-test-suite/SKILL.md) | testing | JUnit 5 + MockBukkit 測試套件：`pom.xml` 依賴、伺服器初始化、玩家 / 事件 / 指令測試範例 |
-| [`generate-cicd-workflow`](Skills/generate-cicd-workflow/SKILL.md) | devops | GitHub Actions workflow：build、test，並在推送 Tag 時自動發布 JAR |
-
-### 平台特定 Skills
-
-| Skill | 平台 | 類別 | 說明 |
-|-------|------|------|------|
-| [`purpur-api-caller`](Skills/purpur/purpur-api-caller/SKILL.md) | Purpur | integration | Purpur 特有 API 代碼：`PlayerAFKEvent`、`purpur.yml`、執行平台守衛 |
-| [`generate-velocity-plugin-skeleton`](Skills/velocity/generate-velocity-plugin-skeleton/SKILL.md) | Velocity | scaffold | Velocity 代理插件 Gradle 骨架：`@Plugin`、Guice 注入、`velocity-plugin.json` |
-| [`generate-proxy-event-listener`](Skills/velocity/generate-proxy-event-listener/SKILL.md) | Velocity | event | `@Subscribe` 事件監聽器：`LoginEvent`、`ServerConnectedEvent`、`PlayerChooseInitialServerEvent` |
-| [`generate-plugin-message-handler`](Skills/velocity/generate-plugin-message-handler/SKILL.md) | Velocity | integration | `PluginMessageEvent` 處理器：`MinecraftChannelIdentifier`、`ByteStreams`、proxy 向後端傳訊 |
-| [`generate-waterfall-plugin-skeleton`](Skills/waterfall/generate-waterfall-plugin-skeleton/SKILL.md) | Waterfall | scaffold | Waterfall/BungeeCord 代理插件 Gradle 骨架：繼承 `Plugin`、`plugin.yml` |
-| [`generate-bungeecord-channel`](Skills/waterfall/generate-bungeecord-channel/SKILL.md) | Waterfall | integration | BungeeCord 頻道處理器：自訂頻道、內建 sub-channel、`ByteStreams` 序列化 |
+| Skill ID | 類別 | 功能 |
+|----------|------|------|
+| [`nms-packet-sender`](Skills/nms/nms-packet-sender/SKILL.md) | nms-packet | 透過 `ServerPlayer.connection.send()` 發送 Clientbound 封包 |
+| [`nms-packet-interceptor`](Skills/nms/nms-packet-interceptor/SKILL.md) | nms-packet | 注入 `ChannelDuplexHandler` 至 Netty pipeline 攔截/修改封包 |
+| [`nms-custom-entity`](Skills/nms/nms-custom-entity/SKILL.md) | nms-entity | 繼承 NMS Mob 類並加入自訂 `PathfinderGoal` AI 行為 |
+| [`nms-reflection-bridge`](Skills/nms/nms-reflection-bridge/SKILL.md) | nms-bridge | 以 `MethodHandle` 快取存取 NMS，不需 Paperweight 編譯依賴 |
+| [`nms-version-adapter`](Skills/nms/nms-version-adapter/SKILL.md) | nms-bridge | 抽象 Adapter 介面 + runtime dispatch 實現多版本 NMS 相容 |
 
 ---
 
 ## 快速開始
 
-在 Cursor Agent 對話中，直接用自然語言描述需求，Agent 會自動載入對應的 Skill：
+### 1. 安裝技能執行時
+
+將 `.claude/skills/` 複製到你的專案根目錄：
+
+```bash
+cp -r /path/to/MPS/.claude/skills/ .claude/skills/
+```
+
+### 2. 設定 Claude Code
+
+Claude Code 會自動掃描 `.claude/skills/`，無需額外設定。
+
+### 3. 使用技能
+
+在 Claude Code 工作階段中，用觸發關鍵字描述需求：
 
 ```
-建立名為 MyPlugin 的插件骨架，目標 MC 版本 1.21
-→ 自動套用 generate-plugin-skeleton
-
-產生監聽 PlayerJoinEvent 的 Listener 類
-→ 自動套用 generate-event-listener
-
-建立 /shop buy sell list 三個子指令
-→ 自動套用 generate-command-handler
-
-產生 config.yml，需要 economy 和 cooldown 設定
-→ 自動套用 generate-config-yml
-
-建立 MiniMessage 格式的訊息系統
-→ 自動套用 generate-message-system
-
-建立 myplugin.admin 和 myplugin.use 權限節點
-→ 自動套用 generate-permission-system
-
-寫 MockBukkit 單元測試
-→ 自動套用 generate-test-suite
-
-設定 GitHub Actions 自動發布 JAR
-→ 自動套用 generate-cicd-workflow
-
-建立支援 SQLite 和 MySQL 的 DatabaseManager
-→ 自動套用 generate-database-manager
-
-撰寫 %myplugin_balance% PlaceholderAPI 擴充
-→ 自動套用 generate-placeholder-expansion
-
-整合 Vault 經濟 API
-→ 自動套用 integrate-vault
-
-建立 Velocity proxy 插件
-→ 自動套用 generate-velocity-plugin-skeleton
-
-監聽 Velocity 的 LoginEvent 和 ServerConnectedEvent
-→ 自動套用 generate-proxy-event-listener
-
-處理 Velocity 與後端伺服器的 plugin messaging
-→ 自動套用 generate-plugin-message-handler
-
-建立 Waterfall/BungeeCord 代理插件
-→ 自動套用 generate-waterfall-plugin-skeleton
-
-設定 BungeeCord plugin messaging 頻道
-→ 自動套用 generate-bungeecord-channel
+# 範例：
+"幫我實作封包發送器，發送 Action Bar 訊息給玩家"
+"我需要攔截 ServerboundChatPacket，過濾特定詞彙"
+"建立一個繼承 Zombie、有自訂 AI 追蹤行為的自定義實體"
 ```
+
+Claude Code 會讀取匹配的 `SKILL.md` 並產生生產就緒的代碼。
 
 ---
 
-## 目錄結構
+## 倉庫結構
 
 ```
 MPS/
-├── README.md                            ← 英文說明（主文件）
-├── README.zh-TW.md                      ← 繁體中文說明（本文件）
-├── Skills/                              ← Skill 定義（18 個技能，canonical source）
-│   ├── README.md
-│   ├── skills-registry.yml              ← Skills 索引（含 category / inputs / outputs）
-│   ├── _shared/                         ← 跨平台共用模式
-│   │   ├── async-patterns.md
-│   │   └── cross-server-messaging.md
-│   ├── paper/PLATFORM.md                ← Paper 構建設定與 API 參考
-│   ├── purpur/
-│   │   ├── PLATFORM.md                  ← Purpur 構建設定與 API 參考
-│   │   └── purpur-api-caller/SKILL.md
-│   ├── velocity/
-│   │   ├── PLATFORM.md                  ← Velocity 構建設定與 API 參考
-│   │   ├── generate-velocity-plugin-skeleton/SKILL.md
-│   │   ├── generate-proxy-event-listener/SKILL.md
-│   │   └── generate-plugin-message-handler/SKILL.md
-│   ├── waterfall/
-│   │   ├── PLATFORM.md                  ← Waterfall 構建設定與 API 參考
-│   │   ├── generate-waterfall-plugin-skeleton/SKILL.md
-│   │   └── generate-bungeecord-channel/SKILL.md
-│   └── [12 個舊版 flat 技能]             ← Paper/Spigot 技能（flat 路徑）
-├── docs/                                ← 補充 API 參考文件（唯讀）
-│   ├── CONVENTIONS.md
-│   ├── paper/
-│   ├── purpur/
-│   ├── velocity/
-│   └── waterfall/
-├── .cursor/
-│   ├── rules/
-│   │   └── minecraft-plugin-agent-skills.mdc   ← Agent 行為規範
-│   └── skills/                                 ← Cursor Agent 實際載入目錄（19 個技能）
-│       └── skills-registry.yml
-└── web/                                 ← Next.js 文件網站
+├── .claude/skills/          ← Claude Code 執行時（與 Skills/ 鏡像）
+│   ├── skills-registry.yml
+│   ├── _shared/
+│   └── nms/
+├── Skills/                  ← 規範技能來源
+│   ├── skills-registry.yml  ← v5.0.0
+│   ├── _shared/
+│   │   ├── nms-threading.md   ← NMS 執行緒安全模式
+│   │   └── nms-obfuscation.md ← Mojang 映射說明
+│   ├── paper-nms/
+│   │   └── PLATFORM.md        ← Paperweight build.gradle 範本
+│   └── nms/
+│       ├── nms-packet-sender/
+│       ├── nms-packet-interceptor/
+│       ├── nms-custom-entity/
+│       ├── nms-reflection-bridge/
+│       └── nms-version-adapter/
+└── docs/paper-nms/          ← NMS API 速查表
+    ├── packets.md               ← Clientbound/Serverbound 封包目錄
+    ├── entities.md              ← 實體類層次、Goal 系統、Attribute 常數
+    ├── network.md               ← Netty pipeline 與執行緒模型
+    └── bukkit-nms-bridge.md     ← Bukkit ↔ NMS 橋接轉換表
 ```
 
 ---
 
-## 貢獻指南
+## 新增技能
 
-1. Fork 本專案
-2. 在 `Skills/<platform>/<slug>/` 與 `.cursor/skills/<platform>/<slug>/` 同步建立新 Skill 目錄
-3. 撰寫 `SKILL.md`（含 YAML frontmatter `name` 與 `description`）與 `examples.md`（至少 2 個具體範例）
-4. 在 `Skills/skills-registry.yml` 與 `.cursor/skills/skills-registry.yml` 新增條目（`status: active`）
-5. 送出 Pull Request
+1. 在 `Skills/nms/<slug>/` 建立 `SKILL.md` + `examples.md`（至少 2 個範例）
+2. 同步至 `.claude/skills/nms/<slug>/`
+3. 在兩份 `skills-registry.yml` 加入新條目
+4. 在 SKILL.md 的 Fallback 章節引用 `docs/paper-nms/` 相關文件
 
-詳細規範請見 [`.cursor/rules/minecraft-plugin-agent-skills.mdc`](.cursor/rules/minecraft-plugin-agent-skills.mdc)。
+完整 7 步流程與不變式見 `CLAUDE.md`。
 
 ---
 
 ## 授權
 
-本專案採用 [LICENSE](LICENSE) 授權。
+MIT
