@@ -18,7 +18,7 @@ MPS (Minecraft Plugin Studio) has two distinct parts:
 MPS/
 ├── CLAUDE.md                            ← This file (Claude Code entry point)
 ├── README.md / README.zh-TW.md
-├── .github/workflows/deploy.yml         ← CI/CD (typecheck + build + Vercel deploy)
+├── .github/workflows/nextjs.yml          ← CI/CD (typecheck + build + GitHub Pages deploy)
 ├── .cursor/
 │   ├── rules/                           ← Cursor Agent rule files (.mdc)
 │   └── skills/                          ← Cursor Agent runtime (19 skills)
@@ -156,10 +156,12 @@ proxyServer.getScheduler().buildTask(plugin, () -> { /* async work */ }).schedul
 
 ```bash
 cd web
-npm run dev      # start dev server (http://localhost:3000)
-npm run build    # production build (also runs type-check)
-npm start        # run production server
+npm run dev           # start dev server (http://localhost:3000)
+npx tsc --noEmit      # TypeScript type-check only
+npm run build         # generate sitemap/robots + next build → outputs to web/out/
 ```
+
+> `npm run build` runs `tsx scripts/generate-static-metadata.ts` first (generates `public/robots.txt` and `public/sitemap.xml`), then `next build`. The site uses `output: 'export'` (static HTML to `web/out/`), so `next start` does not work — serve `web/out/` with any static file server for local preview.
 
 ### Tech Stack
 
@@ -170,7 +172,7 @@ npm start        # run production server
 | Styling | Tailwind CSS v4, Tailwind Typography v0.5.19 |
 | Markdown | gray-matter, remark, remark-gfm, remark-html |
 | Search | Fuse.js v7.1.0 (client-side fuzzy) |
-| Deployment | Vercel (via GitHub Actions) |
+| Deployment | GitHub Pages via static export (`output: 'export'`) |
 
 ### Architecture
 
@@ -183,17 +185,15 @@ npm start        # run production server
 | Path | Purpose |
 |------|---------|
 | `web/data/skills/` | One `.md` per skill; YAML frontmatter drives all metadata |
-| `web/config/site.ts` | Site-wide constants (SITE_NAME, GITHUB_REPO_URL, etc.) |
+| `web/config/site.ts` | Site-wide constants: `SITE_NAME`, `GITHUB_REPO_URL`, `GITHUB_CONTRIBUTE_URL` |
 | `web/shared/types/skill.ts` | TypeScript interfaces: `SkillMeta`, `SkillFull`, `Category`, `SearchIndex` |
-| `web/shared/lib/utils.ts` | Shared formatting utilities (formatDate, statusColor, cn, etc.) |
+| `web/shared/lib/utils.ts` | Utilities: `formatDate`, `statusColor`, `statusLabel`, `statusTextColor`, `cn` |
 | `web/shared/ui/` | Brand-level UI components (PickaxeIcon) |
-| `web/features/skills/` | Skills feature: data access, components (SkillCard, SkillDetail, etc.) |
-| `web/features/categories/` | Categories feature: CategoryIcon, Sidebar navigation |
-| `web/features/search/` | Search feature: Fuse.js config, SearchModal |
-| `web/layout/` | App shell components: AppShell, Header, Footer |
-| `web/app/skills/[slug]/` | Dynamic skill detail page |
-| `web/app/categories/[category]/` | Category browsing page |
-| `web/app/guide/` | Documentation/guide pages |
+| `web/layout/` | App shell: `AppShell.tsx`, `Header.tsx`, `Footer.tsx` |
+| `web/features/skills/` | `api/skills.ts` (data access) + components: SkillCard, SkillDetail, SkillGrid, SkillBadge |
+| `web/features/categories/` | `CategoryIcon.tsx`, `Sidebar.tsx` |
+| `web/features/search/` | `api/search.ts` (Fuse.js config), `SearchModal.tsx` |
+| `web/app/globals.css` | CSS custom properties + utility classes (`.focus-ring`, `.bg-accent-subtle`, `.skill-prose`, etc.) |
 
 ### Data Model (`web/shared/types/skill.ts`)
 
@@ -225,7 +225,7 @@ interface SearchIndex {
 
 | Function | Returns |
 |----------|---------|
-| `getAllSkills()` | `SkillMeta[]` sorted by updatedAt desc |
+| `getAllSkills()` | `SkillMeta[]` sorted alphabetically by `title`; result is module-level cached |
 | `getSkillBySlug(slug)` | `SkillFull` with rendered HTML |
 | `getSkillsByCategory(categoryId)` | `SkillMeta[]` |
 | `getCategories()` | `Category[]` derived from skills metadata |
@@ -263,10 +263,11 @@ featured: false
 
 ### Deployment Pipeline
 
-1. Push to `main` triggers `.github/workflows/deploy.yml`
-2. Node 20 setup → `npm ci` in `web/` → TypeScript type-check → `npm run build`
-3. If `VERCEL_ENABLED == 'true'` and branch is `main`, deploy to Vercel production
-4. Required GitHub secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
+1. Push to `main` triggers `.github/workflows/nextjs.yml`
+2. Node 20 setup → `npm ci` in `web/` → `npx tsc --noEmit` → `npx next build`
+3. Static output uploaded to GitHub Pages as artifact, then deployed
+4. `NEXT_PUBLIC_SITE_URL` is set to the GitHub Pages URL during CI build
+5. The CI calls `npx next build` directly (not `npm run build`), so `generate-static-metadata.ts` is NOT run in CI — `web/app/robots.ts` and `web/app/sitemap.ts` handle metadata in Next.js static export instead
 
 ---
 
@@ -363,8 +364,7 @@ When modifying agent behavior or adding skills, update the `.mdc` rule files as 
 
 ## Git Workflow
 
-- Default development branch: `master`
-- CI/CD deploys from: `main`
+- Default branch: `main` (both development and CI/CD deploy)
 - Feature work: use `claude/*` or descriptive branch names
 - Commit messages: use imperative mood, reference skill IDs or component names where relevant
 - Never push directly to `main` without passing the CI build
@@ -392,4 +392,4 @@ When modifying agent behavior or adding skills, update the `.mdc` rule files as 
 
 7. **No database**: The web app reads directly from the filesystem; do not introduce a database dependency.
 
-8. **Feature-driven web structure**: New web features go into `web/features/<name>/` with `components/`, `api/` (if needed), and `index.ts` barrel. Shared cross-feature code belongs in `web/shared/`. Site constants belong in `web/config/site.ts`.
+8. **Feature-driven web structure**: New web features go into `web/features/<name>/` with `components/`, `api/` (if needed), and `index.ts` barrel. Shared cross-feature code belongs in `web/shared/`. App-shell components (Header, Footer, AppShell) belong in `web/layout/`. Site constants belong in `web/config/site.ts`.
