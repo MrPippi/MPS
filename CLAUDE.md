@@ -1,4 +1,4 @@
-# MPS — Minecraft Plugin Studio (Claude Code Guide)
+# MPS — Minecraft NMS Claude Code Skills
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -6,390 +6,265 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What is This Repository
 
-MPS (Minecraft Plugin Studio) has two distinct parts:
+MPS (Minecraft NMS Claude Code Skills) 是一套專注於 **Paper NMS（net.minecraft.server）底層開發** 的 Claude Code Agent Skills 集合。
 
-1. **Skills Library** — Agent Skills for automating Minecraft plugin development across Paper, Purpur, Velocity, and Waterfall. Canonical source: `Skills/`. Cursor runtime copy: `.cursor/skills/`.
+目標 MC 版本：**1.21 – 1.21.3**
+目標映射：**Mojang mappings**（透過 Paperweight userdev）
+執行時目錄：**`.claude/skills/`**（Claude Code 專用）
+規範來源：**`Skills/`**（authoritative source，與 `.claude/skills/` 內容相同）
 
-2. **Web App** — A Next.js 16 documentation site for browsing the skills library, located in `web/`.
+Web app（`web/`）暫時保留但內容待更新；當前優先是 Skills 結構。
 
 ### Repository Layout
 
 ```
 MPS/
-├── CLAUDE.md                            ← This file (Claude Code entry point)
+├── CLAUDE.md                            ← 本檔（Claude Code 入口）
 ├── README.md / README.zh-TW.md
-├── .github/workflows/nextjs.yml          ← CI/CD (typecheck + build + GitHub Pages deploy)
-├── .cursor/
-│   ├── rules/                           ← Cursor Agent rule files (.mdc)
-│   └── skills/                          ← Cursor Agent runtime (19 skills)
-│       └── skills-registry.yml          ← Authoritative superset (19 entries)
-├── Skills/                              ← Canonical public source (18 skills)
+├── .github/workflows/nextjs.yml
+├── .claude/
+│   └── skills/                          ← Claude Code 執行時
+│       ├── skills-registry.yml
+│       ├── _shared/
+│       │   ├── nms-threading.md
+│       │   └── nms-obfuscation.md
+│       └── nms/
+│           ├── nms-packet-sender/
+│           ├── nms-packet-interceptor/
+│           ├── nms-custom-entity/
+│           ├── nms-reflection-bridge/
+│           └── nms-version-adapter/
+├── Skills/                              ← Canonical source（與 .claude/skills/ 鏡像）
+│   ├── skills-registry.yml              ← v5.0.0，5 個 NMS 技能
 │   ├── README.md
-│   ├── skills-registry.yml              ← Public registry (18 entries, excl. Cursor-only)
-│   ├── _shared/                         ← Cross-platform shared patterns
-│   │   ├── async-patterns.md
-│   │   └── cross-server-messaging.md
-│   ├── paper/                           ← Paper platform
-│   │   └── PLATFORM.md
-│   ├── purpur/                          ← Purpur platform
-│   │   ├── PLATFORM.md
-│   │   └── purpur-api-caller/SKILL.md
-│   ├── velocity/                        ← Velocity proxy platform
-│   │   ├── PLATFORM.md
-│   │   ├── generate-velocity-plugin-skeleton/SKILL.md
-│   │   ├── generate-proxy-event-listener/SKILL.md
-│   │   └── generate-plugin-message-handler/SKILL.md
-│   ├── waterfall/                       ← Waterfall/BungeeCord proxy platform
-│   │   ├── PLATFORM.md
-│   │   ├── generate-waterfall-plugin-skeleton/SKILL.md
-│   │   └── generate-bungeecord-channel/SKILL.md
-│   └── [12 legacy flat skills]          ← Paper/Spigot skills (flat layout, pre-v4)
-├── docs/                                ← Supplementary API reference docs (read-only reference)
-│   ├── CONVENTIONS.md                   ← Cross-platform coding conventions
-│   ├── paper/                           ← Detailed Paper API reference
-│   ├── purpur/                          ← Detailed Purpur API reference
-│   ├── velocity/                        ← Detailed Velocity API reference
-│   └── waterfall/                       ← Detailed Waterfall API reference
-└── web/                                 ← Next.js documentation site
+│   ├── _shared/
+│   │   ├── nms-threading.md
+│   │   └── nms-obfuscation.md
+│   ├── paper-nms/
+│   │   └── PLATFORM.md                  ← Paperweight + Mojang 建置設定
+│   └── nms/
+│       ├── nms-packet-sender/{SKILL.md, examples.md}
+│       ├── nms-packet-interceptor/{SKILL.md, examples.md}
+│       ├── nms-custom-entity/{SKILL.md, examples.md}
+│       ├── nms-reflection-bridge/{SKILL.md, examples.md}
+│       └── nms-version-adapter/{SKILL.md, examples.md}
+├── .cursor/                             ← Cursor 設定（歷史殘留，不再維護）
+└── web/                                 ← Next.js 文件站（內容待更新至 NMS）
 ```
-
-> **Note**: `docs/` contains detailed API reference guides (scheduling, events, storage, messaging sub-skills). These are supplementary reading — not the authoritative Skill definitions. The authoritative definitions are in `Skills/`.
 
 ---
 
 ## How to Use This Skills Library
 
-When asked to generate Minecraft plugin code, always follow this order:
+當使用者要求產生 NMS 代碼時，一律遵循：
 
-1. **Check `Skills/skills-registry.yml`** first — find the skill whose `trigger_keywords` match the request
-2. **Read the corresponding `SKILL.md`** before generating any code
-3. **Check the platform's `PLATFORM.md`** for the correct build.gradle, plugin descriptor, and API patterns
-4. **For cross-platform work**, read `Skills/_shared/` for async patterns and messaging conventions
-5. **For deep API reference**, consult `docs/<platform>/` sub-skill files (scheduling, events, storage, etc.)
+1. **檢查 `.claude/skills/skills-registry.yml`** — 找出 `trigger_keywords` 匹配請求的技能
+2. **讀取對應的 `SKILL.md`** — 取得完整指引與範本
+3. **查看 `examples.md`** — 理解多種使用情境
+4. **讀取 `paper-nms/PLATFORM.md`** — 確認正確的 `build.gradle` 與依賴聲明
+5. **閱讀 `_shared/nms-threading.md` 與 `_shared/nms-obfuscation.md`** — 理解執行緒與映射規則
 
-Never generate Minecraft plugin code from memory — always read the relevant SKILL.md and PLATFORM.md first.
+**絕對不要** 憑記憶產生 NMS 代碼 — 一律先讀取相關 `SKILL.md` 與 `PLATFORM.md`。
 
 ---
 
 ## Platform Reference
 
-| Platform | Version | PLATFORM.md | Javadoc |
-|----------|---------|-------------|---------|
-| Paper | 1.21–1.21.1 | `Skills/paper/PLATFORM.md` | https://jd.papermc.io/paper/1.21/ |
-| Purpur | 1.21–1.21.1 | `Skills/purpur/PLATFORM.md` | https://purpurmc.org/docs/purpur/ |
-| Velocity | 3.3.x | `Skills/velocity/PLATFORM.md` | https://jd.papermc.io/velocity/3.3.0/ |
-| Waterfall | 1.21 | `Skills/waterfall/PLATFORM.md` | https://jd.papermc.io/waterfall/1.21/ |
+| 項目 | 內容 |
+|------|------|
+| MC 版本 | 1.21 – 1.21.3 |
+| Paper Dev Bundle | `1.21.1-R0.1-SNAPSHOT`（預設）、`1.21.3-R0.1-SNAPSHOT` |
+| Paperweight | `io.papermc.paperweight.userdev` 1.7.2+ |
+| Mapping | Mojang mappings（Paper 1.20.5+ runtime 原生支援） |
+| Java | 21（toolchain） |
+| 建置工具 | Gradle（Groovy DSL） |
+| Javadoc | https://jd.papermc.io/paper/1.21/ |
+| 平台檔案 | `Skills/paper-nms/PLATFORM.md` |
 
 ---
 
 ## Skills Index
 
-All skills are indexed in `Skills/skills-registry.yml`. Quick reference:
-
-### Paper / Spigot Skills (flat layout)
+所有技能以 `.claude/skills/skills-registry.yml` 為準。
 
 | Skill ID | Category | Purpose |
 |----------|----------|---------|
-| `generate-plugin-skeleton` | scaffold | Maven pom.xml, plugin.yml, main class |
-| `generate-command-handler` | command | CommandExecutor + TabCompleter |
-| `generate-event-listener` | event | @EventHandler, EventPriority |
-| `generate-config-yml` | config | config.yml + ConfigManager |
-| `generate-message-system` | config | messages.yml + MessageManager |
-| `generate-permission-system` | permission | PermissionManager + plugin.yml |
-| `generate-database-manager` | database | SQLite/MySQL + HikariCP |
-| `generate-placeholder-expansion` | integration | PlaceholderAPI Expansion |
-| `generate-test-suite` | testing | JUnit 5 + MockBukkit |
-| `generate-cicd-workflow` | devops | GitHub Actions workflow |
-| `spigot-paper-api-caller` | integration | Paper API code generation |
-| `integrate-vault` | integration | Vault economy/permissions |
-
-### Platform-Specific Skills (nested layout)
-
-| Skill ID | Platform | Purpose |
-|----------|----------|---------|
-| `purpur-api-caller` | purpur | Purpur-specific API code generation |
-| `generate-velocity-plugin-skeleton` | velocity | Velocity plugin boilerplate |
-| `generate-proxy-event-listener` | velocity | @Subscribe event listener |
-| `generate-plugin-message-handler` | velocity | PluginMessageEvent handler |
-| `generate-waterfall-plugin-skeleton` | waterfall | Waterfall/BungeeCord boilerplate |
-| `generate-bungeecord-channel` | waterfall | BungeeCord channel handler |
+| `nms-packet-sender` | nms-packet | 發送自定義 Clientbound 封包 |
+| `nms-packet-interceptor` | nms-packet | Netty pipeline 封包攔截與修改 |
+| `nms-custom-entity` | nms-entity | 自定義 NMS 實體 + PathfinderGoal AI |
+| `nms-reflection-bridge` | nms-bridge | 無 Paperweight 依賴的反射式 NMS 存取 |
+| `nms-version-adapter` | nms-bridge | 多版本 NMS 相容的 Adapter 模式 |
 
 ---
 
 ## Workflow Rules
 
-- **MC version target**: 1.21 to 1.21.1
-- **Build tool**: Gradle (Groovy DSL) — never Maven for new skills
-- **Language**: Java 21 (toolchain)
-- **Never mix** Bukkit sync API with Velocity async patterns in the same class
-- **Purpur extends Paper** — always check if Paper API already covers the need before using Purpur-specific API
-- **Plugin Messaging format differs** between Waterfall and Velocity — check `Skills/<platform>/PLATFORM.md` before generating messaging code
-- **Proxy plugins have no world/entity access** — Velocity and Waterfall only see network-level player info
+### 環境與版本
 
-### Thread Safety (All Platforms)
+- **MC 版本範圍**：1.21 – 1.21.3
+- **建置工具**：Gradle（Groovy DSL）— 不用 Maven
+- **Java**：21（toolchain）
+- **Paperweight**：預設所有 NMS skill 使用 Paperweight userdev
+- **描述檔**：預設 `paper-plugin.yml`（非 `plugin.yml`）以確保 NMS 載入順序
+- **註解**：所有存取 NMS 的類別加 `@SuppressWarnings("UnstableApiUsage")`
 
-| Platform | Main-thread operations | Async operations |
-|----------|----------------------|-----------------|
-| Paper | All Bukkit object mutations (Player, World, Entity, ItemStack) | IO, DB queries, HTTP |
-| Velocity | Event handlers run async by default | `@Subscribe` is already async |
-| Waterfall | Same sync model as Bukkit/Paper | `getProxy().getScheduler().runAsync()` |
+### 執行緒規則（NMS 特有）
 
-**Paper — switching threads:**
+| 情境 | 執行緒 |
+|------|-------|
+| 實體建立、世界寫入、`moveTo()`、`addFreshEntity()` | **Main thread** |
+| `ServerPlayer.connection.send(packet)` | Any thread（Netty 自動排入 write queue） |
+| 封包內容建構（依賴實體/世界狀態） | **Main thread** |
+| Netty `channelRead` / `write` 內部 | **Netty IO thread**（禁呼叫 Bukkit API） |
+| 阻塞 IO / DB / HTTP | Async（`Bukkit.getScheduler().runTaskAsynchronously`） |
+
+Netty → Main 執行緒切換範例：
+
 ```java
-// Async → main thread
-Bukkit.getScheduler().runTask(plugin, () -> player.sendMessage(result));
-
-// Main → async
-Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.query(...));
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    if (msg instanceof ServerboundChatPacket chat) {
+        // Netty 執行緒
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            // 主執行緒：可安全操作 Bukkit/NMS 世界
+            player.sendMessage(Component.text("Received"));
+        });
+    }
+    super.channelRead(ctx, msg);
+}
 ```
 
-**Velocity — scheduling:**
-```java
-proxyServer.getScheduler().buildTask(plugin, () -> { /* async work */ }).schedule();
+詳見 `Skills/_shared/nms-threading.md`。
+
+### 映射與混淆
+
+- **一律使用 Mojang mappings**（由 Paperweight 提供）
+- Paper 1.20.5+ runtime 原生使用 Mojang mappings，無需 remap
+- CraftBukkit 套件（如 `org.bukkit.craftbukkit.v1_21_R1`）的 `v1_21_R1` 部分**隨版本變動**；跨版本時用 `nms-reflection-bridge`
+- 詳見 `Skills/_shared/nms-obfuscation.md`
+
+### NMS 依賴宣告範本
+
+```groovy
+plugins {
+    id 'java'
+    id 'io.papermc.paperweight.userdev' version '1.7.2'
+}
+
+dependencies {
+    paperweight.paperDevBundle('1.21.1-R0.1-SNAPSHOT')
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
 ```
 
 ---
 
-## Web App (`web/`)
+## Skills Structure
 
-### Dev Commands
+### Registry
 
-```bash
-cd web
-npm run dev           # start dev server (http://localhost:3000)
-npx tsc --noEmit      # TypeScript type-check only
-npm run build         # generate sitemap/robots + next build → outputs to web/out/
-```
+`.claude/skills/skills-registry.yml` 與 `Skills/skills-registry.yml` **內容必須相同**，包含：
 
-> `npm run build` runs `tsx scripts/generate-static-metadata.ts` first (generates `public/robots.txt` and `public/sitemap.xml`), then `next build`. The site uses `output: 'export'` (static HTML to `web/out/`), so `next start` does not work — serve `web/out/` with any static file server for local preview.
+- `skills` 陣列：5 個 NMS 技能條目（`id`, `version`, `status`, `platform`, `category`, `skill_file`, `examples_file`, `inputs`, `outputs`, `tags`, `trigger_keywords`）
+- `platforms` 陣列：`paper-nms` 平台定義
+- `shared` 陣列：指向 `_shared/` 下的共享參考文件
 
-### Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 16.1.6 (App Router) |
-| UI | React 19.2.3, TypeScript (strict mode) |
-| Styling | Tailwind CSS v4, Tailwind Typography v0.5.19 |
-| Markdown | gray-matter, remark, remark-gfm, remark-html |
-| Search | Fuse.js v7.1.0 (client-side fuzzy) |
-| Deployment | GitHub Pages via static export (`output: 'export'`) |
-
-### Architecture
-
-- **Data source**: Skill content is read at build/request time from `web/data/skills/*.md` (Markdown with YAML frontmatter) via `features/skills/api/skills.ts` — no database
-- **Search**: Client-side fuzzy search via Fuse.js; search index built in `features/skills/api/skills.ts:getSearchIndex()` and passed through the layout
-- **i18n**: Full bilingual support — English + Traditional Chinese (繁體中文) throughout all data and UI
-
-### Key Paths
-
-| Path | Purpose |
-|------|---------|
-| `web/data/skills/` | One `.md` per skill; YAML frontmatter drives all metadata |
-| `web/config/site.ts` | Site-wide constants: `SITE_NAME`, `GITHUB_REPO_URL`, `GITHUB_CONTRIBUTE_URL` |
-| `web/shared/types/skill.ts` | TypeScript interfaces: `SkillMeta`, `SkillFull`, `Category`, `SearchIndex` |
-| `web/shared/lib/utils.ts` | Utilities: `formatDate`, `statusColor`, `statusLabel`, `statusTextColor`, `cn` |
-| `web/shared/ui/` | Brand-level UI components (PickaxeIcon) |
-| `web/layout/` | App shell: `AppShell.tsx`, `Header.tsx`, `Footer.tsx` |
-| `web/features/skills/` | `api/skills.ts` (data access) + components: SkillCard, SkillDetail, SkillGrid, SkillBadge |
-| `web/features/categories/` | `CategoryIcon.tsx`, `Sidebar.tsx` |
-| `web/features/search/` | `api/search.ts` (Fuse.js config), `SearchModal.tsx` |
-| `web/app/globals.css` | CSS custom properties + utility classes (`.focus-ring`, `.bg-accent-subtle`, `.skill-prose`, etc.) |
-
-### Data Model (`web/shared/types/skill.ts`)
-
-```typescript
-type SkillStatus = 'active' | 'deprecated';
-
-interface SkillMeta {
-  id, slug, title, titleZh, description, descriptionZh,
-  version, status, category, categoryLabel, categoryLabelEn,
-  tags[], triggerKeywords[], updatedAt, githubPath, featured
-}
-
-interface SkillFull extends SkillMeta {
-  content       // raw markdown
-  contentHtml   // rendered HTML
-}
-
-interface Category {
-  id, label, labelEn, count
-}
-
-interface SearchIndex {
-  id, slug, title, titleZh, description, descriptionZh,
-  tags[], category, status
-}
-```
-
-### Data Access Functions (`web/features/skills/api/skills.ts`)
-
-| Function | Returns |
-|----------|---------|
-| `getAllSkills()` | `SkillMeta[]` sorted alphabetically by `title`; result is module-level cached |
-| `getSkillBySlug(slug)` | `SkillFull` with rendered HTML |
-| `getSkillsByCategory(categoryId)` | `SkillMeta[]` |
-| `getCategories()` | `Category[]` derived from skills metadata |
-| `getFeaturedSkills()` | `SkillMeta[]` filtered by `featured: true` |
-| `getSearchIndex()` | Fuse.js-ready index array |
-
-### Environment Variables
-
-```bash
-# web/.env.local (copy from .env.local.example)
-NEXT_PUBLIC_SITE_URL=https://mps.vercel.app
-```
-
-### Adding a New Skill Page
-
-Add `web/data/skills/<slug>.md` with all required frontmatter:
-
-```yaml
-id: skill-id
-title: "Skill Title"
-titleZh: "技能標題"
-description: "English description"
-descriptionZh: "繁體中文說明"
-version: "1.0.0"
-status: active        # active | planned
-category: scaffold    # scaffold | config | command | event | integration | testing | devops | database | permission
-categoryLabel: "分類標籤"
-categoryLabelEn: "Category Label"
-tags: [tag1, tag2]
-triggerKeywords: ["keyword1"]
-updatedAt: "2026-01-01"
-githubPath: "Skills/skill-slug/SKILL.md"
-featured: false
-```
-
-### Deployment Pipeline
-
-1. Push to `main` triggers `.github/workflows/nextjs.yml`
-2. Node 20 setup → `npm ci` in `web/` → `npx tsc --noEmit` → `npx next build`
-3. Static output uploaded to GitHub Pages as artifact, then deployed
-4. `NEXT_PUBLIC_SITE_URL` is set to the GitHub Pages URL during CI build
-5. The CI calls `npx next build` directly (not `npm run build`), so `generate-static-metadata.ts` is NOT run in CI — `web/app/robots.ts` and `web/app/sitemap.ts` handle metadata in Next.js static export instead
-
----
-
-## Skills Library (`Skills/` and `.cursor/skills/`)
-
-### Registry Overview
-
-| Registry | Entries | Role |
-|----------|---------|------|
-| `.cursor/skills/skills-registry.yml` | 19 | **Authoritative superset** — includes Cursor-only skills |
-| `Skills/skills-registry.yml` | 18 | **Public mirror** — excludes `sync-website-skill` (Cursor-only) |
-
-Both files must be kept in sync for all public skills. Registry version: **4.0.0** (updated 2026-03-10).
-
-### Adding a New Public Skill (7 Steps)
-
-1. **Choose platform directory**: `Skills/<platform>/<slug>/` for new platform-specific skills; `Skills/<slug>/` for legacy Paper skills
-2. Create the directory in **both** `Skills/<platform>/<slug>/` and `.cursor/skills/<platform>/<slug>/`
-3. Write `SKILL.md` (with YAML frontmatter `name`, `description`) in **both** directories
-4. Write `examples.md` with **at least 2 examples** in **both** directories
-5. Add an entry to **both** `Skills/skills-registry.yml` and `.cursor/skills/skills-registry.yml` with `status: active`
-6. Add `web/data/skills/<slug>.md` with the frontmatter schema above
-7. Update `.cursor/rules/minecraft-plugin-agent-skills.mdc` skill count
-
-### Registry Entry Schema
-
-```yaml
-- id: skill-id
-  version: "1.0.0"
-  status: active           # active | planned | deprecated
-  platform: paper          # paper | purpur | velocity | waterfall (new field for platform skills)
-  category: scaffold
-  description: "繁體中文說明 / English description"
-  skill_file: platform/skill-id/SKILL.md   # nested for platform skills
-  examples_file: platform/skill-id/examples.md
-  inputs:
-    - name: param_name
-      description: "說明"
-      required: true
-  outputs:
-    - name: "FileName.java"
-      description: "說明"
-  tags: [tag1, tag2]
-  trigger_keywords: ["觸發關鍵字1", "trigger keyword 2"]
-```
-
-### SKILL.md Structure
+### SKILL.md 結構
 
 ```markdown
 ---
-name: skill-id
-description: "說明（支援中英混合）"
+name: nms-{skill-id}
+description: "中英雙語描述（含 NMS Paperweight 要求）"
 ---
 
 # Skill Title / 技能標題
 
 ## 技能名稱 / Skill Name
-[slug]
-
-## 目的（1 行）/ Purpose
-[核心功能說明 — one sentence, bilingual]
-
+## 目的 / Purpose
+## NMS 版本需求 / NMS Version Requirements
 ## 觸發條件 / Triggers
-[觸發關鍵字 / trigger keywords — both languages]
-
 ## 輸入參數 / Inputs
-[Table or list of required inputs]
-
 ## 輸出產物 / Outputs
-[List of generated files]
-
+## Paperweight 建置設定 / Build Setup
 ## 代碼範本 / Code Template
-[Full annotated code examples]
-
 ## 推薦目錄結構 / Recommended Directory Structure
-[Directory layout diagram]
-
+## 執行緒安全注意事項 / Thread Safety
 ## 失敗回退 / Fallback
-[Error handling and fallback guidance]
 ```
+
+### 新增技能流程（7 步）
+
+1. 在 `Skills/nms/<slug>/` 建立目錄
+2. 撰寫 `SKILL.md`（含 YAML frontmatter：`name`, `description`）
+3. 撰寫 `examples.md`（**至少 2 個範例**，涵蓋不同使用情境）
+4. 同步至 `.claude/skills/nms/<slug>/`
+5. 將新條目加入 `Skills/skills-registry.yml` 與 `.claude/skills/skills-registry.yml`
+6. 若涉及新平台，建立 `Skills/<platform>/PLATFORM.md`
+7. 驗證觸發關鍵字無與既有技能衝突
 
 ---
 
-## Cursor Agent Rules (`.cursor/rules/`)
+## Web App (`web/`)
 
-Two rule files govern agent behavior:
+Web 文件站（Next.js 16，靜態匯出至 `web/out/`）目前仍含舊 Paper 技能內容；**待後續更新至 NMS**。當前 NMS 轉換的核心工作是 Skills 結構，Web 內容同步延後。
 
-- **`minecraft-plugin-agent-skills.mdc`** (`alwaysApply: true`): Registers all skills, enforces dual-path sync, defines skill workflow, thread-safety requirements, and platform-path conventions.
-- **`Front-End Developer.mdc`**: Front-end development conventions for the web app.
+開發指令（保留自舊版）：
 
-When modifying agent behavior or adding skills, update the `.mdc` rule files as well as the registry.
+```bash
+cd web
+npm run dev           # dev server（http://localhost:3000）
+npx tsc --noEmit      # TypeScript 型別檢查
+npm run build         # 靜態匯出至 web/out/
+```
+
+### 技術堆疊
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16.1.6（App Router） |
+| UI | React 19.2.3, TypeScript（strict） |
+| Styling | Tailwind CSS v4 |
+| Markdown | gray-matter, remark, remark-gfm, remark-html |
+| Search | Fuse.js v7.1.0 |
+| Deployment | GitHub Pages（`output: 'export'`） |
+
+### 關鍵路徑
+
+| Path | Purpose |
+|------|---------|
+| `web/data/skills/` | 每個技能一個 `.md`；YAML frontmatter 驅動所有元資料 |
+| `web/config/site.ts` | `SITE_NAME`, `GITHUB_REPO_URL` 等常數 |
+| `web/shared/types/skill.ts` | TypeScript 介面 |
+| `web/features/skills/api/skills.ts` | 資料存取（模組級快取） |
 
 ---
 
 ## Git Workflow
 
-- Default branch: `main` (both development and CI/CD deploy)
-- Feature work: use `claude/*` or descriptive branch names
-- Commit messages: use imperative mood, reference skill IDs or component names where relevant
-- Never push directly to `main` without passing the CI build
+- 預設分支：`main`（開發與 CI/CD deploy）
+- 功能分支：`claude/*` 或描述性名稱
+- Commit message：使用 imperative mood，引用技能 ID 或元件名
+- 絕不跳過 CI 直接推 `main`
 
 ---
 
 ## Key Invariants
 
-1. **Registry hierarchy** (intentionally asymmetric):
-   - `.cursor/skills/skills-registry.yml` is the **authoritative superset** — 19 skills including Cursor-only (`sync-website-skill`)
-   - `Skills/skills-registry.yml` is the **public mirror** — 18 skills, excludes `sync-website-skill`
-   - `web/data/skills/*.md` is the **web presentation layer** — independently maintained; use `sync-website-skill` Cursor skill to auto-generate
+1. **雙路徑同步**：`Skills/nms/<path>/` 與 `.claude/skills/nms/<path>/` 內容必須相同。`skills-registry.yml` 同理。
 
-2. **Dual-path sync**: Every public skill in `Skills/<path>/` must have an identical copy in `.cursor/skills/<path>/`. The only exception is `sync-website-skill` (Cursor-only, no `Skills/` entry).
+2. **`.cursor/` 不再維護**：歷史殘留，日後可能移除；Claude Code 工作一律以 `.claude/skills/` 為準。
 
-3. **Path convention**:
-   - Legacy Paper skills: `Skills/<slug>/` (flat) — preserved for backward compatibility
-   - New platform skills: `Skills/<platform>/<slug>/` (nested) — required for all new skills
+3. **MC 版本範圍**：所有技能預設支援 1.21 – 1.21.3；若需擴展版本，更新 `paper-nms/PLATFORM.md` 的對照表。
 
-4. **Frontmatter completeness**: All 14 required frontmatter fields must be present in `web/data/skills/*.md`.
+4. **Mojang mappings 強制**：不產生 Spigot/CraftBukkit 混淆映射的代碼。
 
-5. **Thread safety**: All generated Java code must respect platform-specific threading rules (see Workflow Rules above).
+5. **執行緒安全**：所有產生的 Java 代碼必須遵守平台執行緒規則（見 Workflow Rules）。
 
-6. **Bilingual**: All skill titles, descriptions, and trigger keywords must have both English and Traditional Chinese (繁體中文) values.
+6. **雙語要求**：技能標題、描述、觸發關鍵字皆須中英並陳。
 
-7. **No database**: The web app reads directly from the filesystem; do not introduce a database dependency.
+7. **無資料庫**：Web app 直讀檔案系統，不引入 DB。
 
-8. **Feature-driven web structure**: New web features go into `web/features/<name>/` with `components/`, `api/` (if needed), and `index.ts` barrel. Shared cross-feature code belongs in `web/shared/`. App-shell components (Header, Footer, AppShell) belong in `web/layout/`. Site constants belong in `web/config/site.ts`.
+8. **Paperweight 依賴預設**：五個核心 NMS 技能皆預設使用 Paperweight；若需避免，使用 `nms-reflection-bridge`。

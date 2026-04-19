@@ -1,0 +1,193 @@
+---
+name: nms-packet-sender
+description: "產生封包發送工具類，透過 ServerPlayer.connection 將 Clientbound 封包推送至客戶端（Paper NMS + Mojang-mapped）/ Generate packet sender utility to push Clientbound packets via ServerPlayer.connection"
+---
+
+# NMS Packet Sender / NMS 封包發送器
+
+## 技能名稱 / Skill Name
+
+`nms-packet-sender`
+
+## 目的 / Purpose
+
+產生標準的 NMS 封包發送工具類，涵蓋單人、多人、廣播、延遲發送等情境。所有發送點透過 `ServerPlayer.connection.send(Packet<?>)` 進入 Netty write queue。
+
+## NMS 版本需求 / NMS Version Requirements
+
+- Paper 1.21 – 1.21.3
+- Paperweight userdev 1.7.2+
+- Mojang mappings（已由 Paper 1.20.5+ 原生支援）
+
+## 觸發條件 / Triggers
+
+- 「封包發送」「packet sender」「自定義封包」「custom packet」
+- 「Clientbound」「推送封包」「send packet」
+- 「PacketPlayOut」「ProtocolLib 替代」
+
+## 輸入參數 / Inputs
+
+| 參數 | 範例 | 說明 |
+|------|------|------|
+| `package_name` | `com.example.network` | 產出類別所在 package |
+| `class_name` | `PacketSender` | 工具類名稱 |
+| `include_batch` | `true` | 是否產生批次/廣播方法 |
+| `include_async` | `true` | 是否產生延遲/非同步發送方法 |
+
+## 輸出產物 / Outputs
+
+- `PacketSender.java` — 主工具類（static 方法）
+- `PacketBuilder.java`（選）— 常見 Clientbound 封包建構器
+
+## Paperweight 建置設定 / Build Setup
+
+參見 `Skills/paper-nms/PLATFORM.md`。關鍵依賴：
+
+```groovy
+dependencies {
+    paperweight.paperDevBundle('1.21.1-R0.1-SNAPSHOT')
+}
+```
+
+## 代碼範本 / Code Template
+
+### `PacketSender.java`
+
+```java
+package com.example.network;
+
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+import java.util.Collection;
+import java.util.Objects;
+
+@SuppressWarnings("UnstableApiUsage")
+public final class PacketSender {
+
+    private PacketSender() {}
+
+    /** 發送封包給單一玩家（任意執行緒皆可）。 */
+    public static void send(Player player, Packet<?> packet) {
+        Objects.requireNonNull(player, "player");
+        Objects.requireNonNull(packet, "packet");
+
+        ServerPlayer nms = ((CraftPlayer) player).getHandle();
+        if (nms.connection == null) return; // 玩家已離線
+        nms.connection.send(packet);
+    }
+
+    /** 批次發送給多位玩家。 */
+    public static void sendAll(Collection<? extends Player> players, Packet<?> packet) {
+        for (Player p : players) send(p, packet);
+    }
+
+    /** 對伺服器全體玩家廣播封包。 */
+    public static void broadcast(Packet<?> packet) {
+        sendAll(Bukkit.getOnlinePlayers(), packet);
+    }
+
+    /** 對指定世界的玩家廣播封包。 */
+    public static void broadcastWorld(World world, Packet<?> packet) {
+        sendAll(world.getPlayers(), packet);
+    }
+
+    /** 延遲 N tick 後在主執行緒發送。 */
+    public static void sendLater(Plugin plugin, Player player, Packet<?> packet, long delayTicks) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> send(player, packet), delayTicks);
+    }
+
+    /**
+     * 以非同步方式發送（封包需已建構完成，不可在此存取世界狀態）。
+     * 適合大量封包批次，不阻塞主執行緒。
+     */
+    public static void sendAsync(Plugin plugin, Player player, Packet<?> packet) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> send(player, packet));
+    }
+}
+```
+
+### `PacketBuilder.java`（常見 Clientbound 範例）
+
+```java
+package com.example.network;
+
+import io.netty.buffer.Unpooled;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
+import net.minecraft.resources.ResourceLocation;
+
+@SuppressWarnings("UnstableApiUsage")
+public final class PacketBuilder {
+
+    private PacketBuilder() {}
+
+    /** 建立 Action Bar 文字封包。 */
+    public static ClientboundSetActionBarTextPacket actionBar(Component message) {
+        String json = GsonComponentSerializer.gson().serialize(message);
+        MutableComponent nmsComponent = net.minecraft.network.chat.Component.Serializer
+                .fromJson(json, net.minecraft.core.RegistryAccess.EMPTY);
+        return new ClientboundSetActionBarTextPacket(nmsComponent);
+    }
+
+    /** 建立 Title 封包。 */
+    public static ClientboundSetTitleTextPacket title(Component title) {
+        String json = GsonComponentSerializer.gson().serialize(title);
+        MutableComponent nmsComponent = net.minecraft.network.chat.Component.Serializer
+                .fromJson(json, net.minecraft.core.RegistryAccess.EMPTY);
+        return new ClientboundSetTitleTextPacket(nmsComponent);
+    }
+
+    /** 建立自定義 Plugin Message 封包（CustomPayload）。 */
+    public static ClientboundCustomPayloadPacket customPayload(ResourceLocation channel, byte[] data) {
+        CustomPacketPayload payload = new CustomPacketPayload() {
+            @Override
+            public void write(FriendlyByteBuf buf) {
+                buf.writeBytes(data);
+            }
+            @Override
+            public ResourceLocation id() {
+                return channel;
+            }
+        };
+        return new ClientboundCustomPayloadPacket(payload);
+    }
+}
+```
+
+## 推薦目錄結構 / Recommended Directory Structure
+
+```
+src/main/java/com/example/
+├── MyNmsPlugin.java
+└── network/
+    ├── PacketSender.java
+    └── PacketBuilder.java
+```
+
+## 執行緒安全注意事項 / Thread Safety
+
+- ✅ `PacketSender.send()` 內部呼叫 `connection.send()`，**可在任何執行緒呼叫**（Netty 會自行排入 write queue）
+- ⚠️ **封包建構**若依賴世界狀態（Entity ID、Block position），必須在主執行緒完成
+- ⚠️ `connection` 欄位在玩家離線時為 `null`，send 前需檢查
+- 詳見 `Skills/_shared/nms-threading.md`
+
+## 失敗回退 / Fallback
+
+| 錯誤 | 原因 | 解法 |
+|------|------|------|
+| `NullPointerException: connection` | 玩家已離線 | 加上 `if (nms.connection == null) return;` |
+| `NoSuchMethodError: send` | NMS 版本不匹配 | 確認 `paperweight.paperDevBundle` 版本與伺服器一致 |
+| 封包無效果 | 玩家 tab 未處於 game 階段 | 確認玩家已完成登入（等 `PlayerJoinEvent`） |
+| `ClassCastException: CraftPlayer` | 其他外掛替換 Player 實作 | 改用 `player.getClass().getMethod("getHandle")` 反射取得 |
