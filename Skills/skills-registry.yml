@@ -1,4 +1,4 @@
-version: "5.0.0"
+version: "6.0.0"
 updated: "2026-04-19"
 description: "MPS — Minecraft NMS Claude Code Skills / NMS 技能索引（Paper 1.21.x + Mojang mappings）"
 
@@ -184,6 +184,350 @@ skills:
       - "multi-version"
       - "多版本相容"
       - "adapter pattern NMS"
+
+  - id: nms-nbt-manipulation
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-data
+    description: "直接操作 CompoundTag 讀寫物品、實體、方塊實體的 NBT 資料 / Read and write NBT data on items, entities, and block entities via CompoundTag"
+    skill_file: nms/nms-nbt-manipulation/SKILL.md
+    examples_file: nms/nms-nbt-manipulation/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: target
+        description: "操作目標：item / entity / block"
+        required: false
+      - name: class_name
+        description: "工具類名稱"
+        required: false
+    outputs:
+      - name: "ItemNbtHelper.java"
+        description: "物品 NBT 讀寫工具"
+      - name: "EntityNbtHelper.java"
+        description: "實體 NBT 讀寫工具"
+      - name: "NbtSerializer.java"
+        description: "自定義物件序列化工具"
+    tags: [nms, nbt, compound-tag, persistence, item, entity]
+    trigger_keywords:
+      - "NBT"
+      - "CompoundTag"
+      - "NBT 讀寫"
+      - "物品 NBT"
+      - "實體 NBT"
+      - "nbt manipulation"
+      - "nbt persistence"
+      - "持久化"
+
+  - id: nms-custom-menu
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-ui
+    description: "繼承 AbstractContainerMenu 建立自定義容器 GUI，支援 slot 事件攔截與資料同步 / Build custom container GUIs by extending AbstractContainerMenu"
+    skill_file: nms/nms-custom-menu/SKILL.md
+    examples_file: nms/nms-custom-menu/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: menu_class_name
+        description: "Menu 類名稱"
+        required: false
+      - name: menu_type
+        description: "MenuType（如 GENERIC_9x3）"
+        required: false
+      - name: rows
+        description: "列數"
+        required: false
+    outputs:
+      - name: "CustomMenu.java"
+        description: "AbstractContainerMenu 實作"
+      - name: "CustomMenuProvider.java"
+        description: "MenuProvider 實作"
+      - name: "CustomMenuListener.java"
+        description: "Bukkit 事件橋接"
+    tags: [nms, inventory, gui, container, menu, abstractcontainermenu]
+    trigger_keywords:
+      - "自定義 GUI"
+      - "custom menu"
+      - "AbstractContainerMenu"
+      - "自定義容器"
+      - "custom inventory"
+      - "NMS GUI"
+      - "container menu"
+
+  - id: nms-scoreboard
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-display
+    description: "透過 NMS Scoreboard/Objective/Team API 操作 sidebar、tablist 顯示名稱與計分板 / Operate sidebar, tablist, and scoreboard via NMS Scoreboard/Objective/Team API"
+    skill_file: nms/nms-scoreboard/SKILL.md
+    examples_file: nms/nms-scoreboard/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: manager_class_name
+        description: "管理器類名稱"
+        required: false
+      - name: display_slot
+        description: "顯示位置：sidebar / list / below_name"
+        required: false
+      - name: per_player
+        description: "是否每人獨立計分板"
+        required: false
+    outputs:
+      - name: "ScoreboardManager.java"
+        description: "計分板建立與更新工具"
+      - name: "SidebarDisplay.java"
+        description: "Sidebar 行內容管理"
+      - name: "TeamManager.java"
+        description: "Team prefix/suffix/tablist 管理"
+    tags: [nms, scoreboard, objective, team, sidebar, tablist]
+    trigger_keywords:
+      - "scoreboard"
+      - "sidebar"
+      - "tablist"
+      - "Objective NMS"
+      - "計分板"
+      - "nms scoreboard"
+      - "prefix suffix"
+
+  - id: nms-player-profile
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-player
+    description: "操作 GameProfile 進行 skin 注入，用於 NPC 外觀設定與假玩家實體 / Manipulate GameProfile for skin injection used in NPC appearance and fake player entities"
+    skill_file: nms/nms-player-profile/SKILL.md
+    examples_file: nms/nms-player-profile/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: class_name
+        description: "Profile 建立器類名"
+        required: false
+      - name: fetch_async
+        description: "是否非同步抓取 skin"
+        required: false
+    outputs:
+      - name: "ProfileBuilder.java"
+        description: "GameProfile 建立與 skin 注入工具"
+      - name: "SkinFetcher.java"
+        description: "非同步從 Mojang API 抓取 skin texture"
+      - name: "SkullBuilder.java"
+        description: "頭顱 ItemStack skin 設定"
+    tags: [nms, gameprofile, skin, npc, texture]
+    trigger_keywords:
+      - "GameProfile"
+      - "skin injection"
+      - "NPC 皮膚"
+      - "player profile"
+      - "skin NPC"
+      - "fake player"
+      - "假玩家"
+
+  - id: nms-particle-effect
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-world
+    description: "透過 ClientboundLevelParticlesPacket 實現進階 NMS 粒子效果：客戶端專屬、大量粒子、自定義參數 / Advanced NMS particle effects via ClientboundLevelParticlesPacket"
+    skill_file: nms/nms-particle-effect/SKILL.md
+    examples_file: nms/nms-particle-effect/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: class_name
+        description: "效果工具類名稱"
+        required: false
+      - name: include_shapes
+        description: "是否產生預設形狀"
+        required: false
+    outputs:
+      - name: "ParticleEffect.java"
+        description: "粒子封包發送工具"
+      - name: "ParticleBuilder.java"
+        description: "粒子封包 Builder 封裝"
+      - name: "ParticleShapes.java"
+        description: "預設形狀（circle、line、helix）"
+    tags: [nms, particle, effect, levelparticles, visual]
+    trigger_keywords:
+      - "粒子效果"
+      - "particle effect"
+      - "LevelParticles"
+      - "NMS 粒子"
+      - "custom particle"
+      - "客戶端粒子"
+      - "per-player particle"
+
+  - id: nms-attribute-modifier
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-entity
+    description: "透過 NMS AttributeMap/AttributeModifier 動態修改實體屬性（MAX_HEALTH、ATTACK_DAMAGE 等） / Dynamically modify entity attributes via NMS AttributeMap/AttributeModifier"
+    skill_file: nms/nms-attribute-modifier/SKILL.md
+    examples_file: nms/nms-attribute-modifier/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: class_name
+        description: "工具類名稱"
+        required: false
+    outputs:
+      - name: "AttributeUtil.java"
+        description: "屬性讀寫工具"
+      - name: "ModifierBuilder.java"
+        description: "AttributeModifier 建立器"
+    tags: [nms, attribute, modifier, attributemap, stats, rpg]
+    trigger_keywords:
+      - "attribute modifier"
+      - "屬性修改"
+      - "AttributeMap"
+      - "動態屬性"
+      - "entity attribute"
+      - "MAX_HEALTH"
+      - "ATTACK_DAMAGE"
+      - "Buff Debuff"
+
+  - id: nms-block-entity
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-world
+    description: "實作自定義 NMS BlockEntity（含 NBT 序列化、Tick 邏輯、客戶端同步） / Implement custom NMS BlockEntity with NBT serialization, tick logic, and client sync"
+    skill_file: nms/nms-block-entity/SKILL.md
+    examples_file: nms/nms-block-entity/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: entity_class_name
+        description: "BlockEntity 子類名"
+        required: false
+      - name: has_ticker
+        description: "是否需要 tick 邏輯"
+        required: false
+      - name: base_block
+        description: "用哪個 NMS 方塊作為載體"
+        required: false
+    outputs:
+      - name: "CustomBlockEntity.java"
+        description: "BlockEntity 實作（含 NBT load/save）"
+      - name: "CustomBlockEntityTicker.java"
+        description: "ServerLevel tick 邏輯"
+      - name: "BlockEntityHelper.java"
+        description: "在世界中取得/設定 BlockEntity 工具"
+    tags: [nms, block-entity, tile-entity, nbt, blockentitytype]
+    trigger_keywords:
+      - "BlockEntity"
+      - "TileEntity"
+      - "自定義方塊實體"
+      - "block entity"
+      - "tile entity"
+      - "方塊 tick"
+      - "BlockEntityTicker"
+
+  - id: nms-data-component
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-data
+    description: "操作 Minecraft 1.21 DataComponentType 物品組件系統，讀寫 CustomData、MaxStackSize、Enchantments 等組件 / Read and write 1.21 DataComponentType item components"
+    skill_file: nms/nms-data-component/SKILL.md
+    examples_file: nms/nms-data-component/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: class_name
+        description: "工具類名稱"
+        required: false
+    outputs:
+      - name: "ItemComponentUtil.java"
+        description: "DataComponent 讀寫工具"
+      - name: "CustomDataHelper.java"
+        description: "CustomData 組件操作"
+    tags: [nms, data-component, item, 1.21, datacomponenttype, customdata]
+    trigger_keywords:
+      - "DataComponent"
+      - "data component"
+      - "物品組件"
+      - "1.21 item data"
+      - "ItemStack component"
+      - "DataComponentType"
+      - "CustomData component"
+
+  - id: nms-chunk-access
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-world
+    description: "透過 NMS LevelChunk 直接讀寫方塊、高度圖、ChunkSection 資料，比 Bukkit Chunk API 更快更底層 / Direct LevelChunk block, heightmap, and ChunkSection access for high-performance operations"
+    skill_file: nms/nms-chunk-access/SKILL.md
+    examples_file: nms/nms-chunk-access/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: class_name
+        description: "工具類名稱"
+        required: false
+    outputs:
+      - name: "ChunkAccessUtil.java"
+        description: "LevelChunk 讀寫工具"
+      - name: "BulkBlockEditor.java"
+        description: "批次方塊操作"
+    tags: [nms, chunk, levelchunk, block, heightmap, chunkSection]
+    trigger_keywords:
+      - "chunk access"
+      - "LevelChunk"
+      - "區塊操作"
+      - "chunk data"
+      - "直接讀寫方塊"
+      - "高效能方塊操作"
+      - "bulk block"
+
+  - id: nms-boss-event
+    version: "1.0.0"
+    status: active
+    platform: paper-nms
+    category: nms-display
+    description: "透過 NMS ServerBossEvent 操作 Boss Bar 進度條、顏色、風格、可見性，實現每人獨立 Boss Bar / Operate Boss Bar progress, color, style, and per-player visibility via NMS ServerBossEvent"
+    skill_file: nms/nms-boss-event/SKILL.md
+    examples_file: nms/nms-boss-event/examples.md
+    inputs:
+      - name: package_name
+        description: "產出類別所在 package"
+        required: true
+      - name: class_name
+        description: "管理器類名稱"
+        required: false
+      - name: per_player
+        description: "是否每人獨立 Boss Bar"
+        required: false
+    outputs:
+      - name: "NmsBossBar.java"
+        description: "單一 ServerBossEvent 封裝"
+      - name: "BossBarManager.java"
+        description: "Boss Bar 建立與管理"
+    tags: [nms, boss-bar, bossevent, display, overlay, per-player]
+    trigger_keywords:
+      - "boss bar"
+      - "BossEvent"
+      - "boss 進度條"
+      - "NMS boss bar"
+      - "ServerBossEvent"
+      - "per-player boss bar"
+      - "每人 boss bar"
 
 platforms:
   - id: paper-nms
