@@ -3,25 +3,26 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  /* Backgrounds */
-  --color-bg: #030712;
-  --color-surface: #0d1117;
-  --color-surface-2: #161b22;
-  /* Borders */
-  --color-border: #21262d;
-  --color-border-strong: #30363d;
-  --color-border-muted: #161b22;
-  /* Accent (primary green) */
-  --color-accent: #3fb950;
-  --color-accent-hover: #56d364;
-  --color-accent-muted: #238636;
-  /* Text */
-  --color-text: #e6edf3;
-  --color-text-secondary: #8b949e;
-  --color-text-muted: #484f58;
+  /* Backgrounds — deep space blue-black */
+  --color-bg:        #040911;
+  --color-surface:   #080f1c;
+  --color-surface-2: #0c1525;
+  /* Borders — blue-tinted dark */
+  --color-border:        #142035;
+  --color-border-strong: #1e3050;
+  --color-border-muted:  #0c1525;
+  /* Accent — electric teal-green */
+  --color-accent:       #00c896;
+  --color-accent-hover: #00e5aa;
+  --color-accent-muted: #007d5e;
+  /* Text — blue-white, easy on the eyes */
+  --color-text:           #eef4ff;
+  --color-text-secondary: #7b93b8;
+  --color-text-muted:     #3d5270;
   /* Status */
-  --color-error: #f85149;
+  --color-error:   #f85149;
   --color-warning: #e3b341;
+  --color-info:    #58a6ff;
 }
 
 html {
@@ -95,12 +96,13 @@ body {
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-/* Card hover lift */
-.card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+/* Card glow hover — replaces card-hover lift */
+.card-glow {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
-.card-hover:hover {
-  transform: translateY(-2px);
+.card-glow:hover {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 35%, transparent),
+              0 4px 24px color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
 /* Code highlight */

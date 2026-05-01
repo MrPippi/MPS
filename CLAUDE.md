@@ -1,4 +1,4 @@
-# MPS — Minecraft NMS Claude Code Skills
+# MJP-Claude-Skills — Minecraft NMS Claude Code Skills
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What is This Repository
 
-MPS (Minecraft NMS Claude Code Skills) 是一套專注於 **Paper NMS（net.minecraft.server）底層開發** 的 Claude Code Agent Skills 集合。
+MJP-Claude-Skills (Minecraft NMS Claude Code Skills) 是一套專注於 **Paper NMS（net.minecraft.server）底層開發** 的 Claude Code Agent Skills 集合。
 
 目標 MC 版本：**1.21 – 1.21.3**
 目標映射：**Mojang mappings**（透過 Paperweight userdev）
@@ -18,7 +18,7 @@ Web app（`web/`）暫時保留但內容待更新；當前優先是 Skills 結�
 ### Repository Layout
 
 ```
-MPS/
+MJP-Claude-Skills/
 ├── CLAUDE.md                            ← 本檔（Claude Code 入口）
 ├── README.md / README.zh-TW.md
 ├── .github/workflows/nextjs.yml
@@ -35,7 +35,7 @@ MPS/
 │           ├── nms-reflection-bridge/
 │           └── nms-version-adapter/
 ├── Skills/                              ← Canonical source（與 .claude/skills/ 鏡像）
-│   ├── skills-registry.yml              ← v5.0.0，5 個 NMS 技能
+│   ├── skills-registry.yml              ← v6.0.0，15 個 NMS 技能
 │   ├── README.md
 │   ├── _shared/
 │   │   ├── nms-threading.md

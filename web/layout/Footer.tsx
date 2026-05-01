@@ -10,25 +10,29 @@ const GITHUB_SVG = (
 
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
+    <footer className="bg-[var(--color-surface)]">
+      {/* Gradient divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border-strong)] to-transparent" />
+
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-4">
-          <div className="sm:col-span-2">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
+          {/* Left: Brand + description + GitHub button */}
+          <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] border border-accent-soft">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_12%,transparent)] border border-accent-soft">
                 <PickaxeIcon className="h-4 w-4 text-[var(--color-accent)]" />
               </div>
-              <span className="text-sm font-bold text-[var(--color-text)]">MPS</span>
+              <span className="text-sm font-extrabold text-[var(--color-text)]">MJP-Claude-Skills</span>
             </div>
             <p className="text-sm leading-relaxed text-[var(--color-text-secondary)] max-w-xs">
-              Minecraft Plugin Studio — 基於 AI 的 Cursor Agent Skills 工具集，協助開發者自動生成高品質的 Spigot / Paper 插件程式碼。
+              Paper 1.21.x NMS 底層開發的 Claude Code Agent Skills 函式庫，基於 Paperweight + Mojang mappings。
             </p>
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-5">
               <a
                 href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] px-3 py-1.5 text-xs text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)]"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] px-3 py-1.5 text-xs text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)]"
               >
                 {GITHUB_SVG}
                 GitHub
@@ -36,55 +40,56 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">導覽</h3>
-            <ul className="space-y-2.5">
-              {[
-                { href: '/', label: '首頁' },
-                { href: '/skills', label: '所有 Skills' },
-                { href: '/categories', label: '分類瀏覽' },
-                { href: '/guide', label: '使用方法' },
-              ].map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] rounded"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">資源</h3>
-            <ul className="space-y-2.5">
-              {[
-                { href: GITHUB_REPO_URL, label: 'GitHub 專案' },
-                { href: GITHUB_CONTRIBUTE_URL, label: '貢獻指南' },
-                { href: `${GITHUB_REPO_URL}/blob/main/LICENSE`, label: '授權條款' },
-              ].map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] rounded"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          {/* Right: Nav + Resources two-column */}
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">導覽</h3>
+              <ul className="space-y-2.5">
+                {[
+                  { href: '/', label: '首頁' },
+                  { href: '/skills', label: '所有 Skills' },
+                  { href: '/categories', label: '分類瀏覽' },
+                  { href: '/guide', label: '使用方法' },
+                ].map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] rounded"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">資源</h3>
+              <ul className="space-y-2.5">
+                {[
+                  { href: GITHUB_REPO_URL, label: 'GitHub 專案' },
+                  { href: GITHUB_CONTRIBUTE_URL, label: '貢獻指南' },
+                  { href: `${GITHUB_REPO_URL}/blob/main/LICENSE`, label: '授權條款' },
+                ].map((item) => (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] rounded"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
         <div className="mt-10 border-t border-[var(--color-border)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--color-text-muted)]">
-          <p>© {new Date().getFullYear()} {SITE_NAME}. Open Source.</p>
+          <p>© {new Date().getFullYear()} {SITE_NAME}. Open Source under MIT.</p>
           <p className="flex items-center gap-1.5">
-            Built with
-            <span className="text-[var(--color-accent)]">Cursor Agent Skills</span>
+            Built with <span className="text-[var(--color-accent)]">Claude Code Agent Skills</span>
           </p>
         </div>
       </div>

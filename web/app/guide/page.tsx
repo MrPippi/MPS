@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { GITHUB_REPO_URL, GITHUB_CONTRIBUTE_URL } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: '使用方法 — MPS Minecraft Plugin Studio',
-  description: '了解如何安裝並使用 MPS Cursor Agent Skills，快速在 Cursor IDE 中生成高品質的 Spigot / Paper 插件程式碼。',
+  title: '使用方法 — MJP-Claude-Skills',
+  description: '了解如何安裝並使用 MJP-Claude-Skills Claude Code Agent Skills，在 Paper 1.21.x NMS 底層開發中快速生成高品質的 Java 代碼。',
 };
 
 const STEPS = [
@@ -12,9 +12,9 @@ const STEPS = [
     number: '01',
     title: '安裝 Skills 到 Cursor',
     description:
-      '將 MPS 專案的 .cursor/skills/ 目錄複製到你的插件專案根目錄，或在 Cursor 設定中將 MPS 的 skills-registry.yml 加入 Agent Skills 來源路徑。',
-    code: 'git clone https://github.com/MrPippi/MPS.git\ncp -r MPS/.cursor/skills .cursor/skills',
-    note: '也可以直接 Fork 本專案，以 .cursor/skills/ 作為你插件專案的子目錄。',
+      '將 MJP-Claude-Skills 的 .claude/skills/ 目錄複製到你的插件專案根目錄，或直接在 Claude Code 中以 claude.ai/code 開啟專案使用 Agent Skills。',
+    code: 'git clone https://github.com/MrPippi/MJP-Claude-Skills.git\ncp -r MJP-Claude-Skills/.claude/skills .claude/skills',
+    note: '也可以直接 Fork 本專案，以 .claude/skills/ 作為你插件專案的 Claude Code Skills 來源。',
     links: [
       { label: '查看 GitHub 專案', href: GITHUB_REPO_URL },
       { label: '瀏覽所有 Skills', href: '/skills' },
@@ -101,7 +101,7 @@ export default function GuidePage() {
             <h1 className="text-4xl font-extrabold tracking-tight text-[var(--color-text)] sm:text-5xl leading-tight">
               三步驟開始使用
               <br />
-              <span className="gradient-text">MPS Skills</span>
+              <span className="gradient-text">MJP-Claude-Skills</span>
             </h1>
             <p className="mt-5 text-base leading-relaxed text-[var(--color-text-secondary)] max-w-lg">
               透過 Cursor Agent Skills，只需輸入一句自然語言，即可自動生成完整的 Spigot / Paper 插件程式碼。

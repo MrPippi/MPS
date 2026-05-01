@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GITHUB_REPO_URL } from '@/config/site';
 import { PickaxeIcon } from '@/shared/ui';
 
@@ -19,41 +19,47 @@ interface HeaderProps {
 export function Header({ onSearchOpen }: HeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMac, setIsMac] = useState(true);
+
+  useEffect(() => {
+    setIsMac(navigator.platform.toUpperCase().includes('MAC'));
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_95%,transparent)] backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_80%,transparent)] backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0 focus-ring rounded-md">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] border border-accent-soft group-hover:bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] transition-colors">
+
+        {/* Brand */}
+        <Link href="/" className="flex items-center gap-2 group shrink-0 focus-ring rounded-md">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--color-accent)_12%,transparent)] border border-accent-soft group-hover:bg-[color-mix(in_srgb,var(--color-accent)_22%,transparent)] transition-colors">
             <PickaxeIcon className="h-4 w-4 text-[var(--color-accent)]" />
           </div>
           <div className="hidden sm:flex items-baseline gap-1.5">
-            <span className="text-sm font-bold text-[var(--color-text)] tracking-tight">MPS</span>
-            <span className="text-xs text-[var(--color-text-muted)] font-normal">Minecraft Plugin Studio</span>
+            <span className="text-sm font-extrabold text-[var(--color-text)] tracking-tight">MJP</span>
+            <span className="text-xs text-[var(--color-text-muted)] font-light">Claude Skills</span>
           </div>
-          <span className="block sm:hidden text-sm font-bold text-[var(--color-text)]">MPS</span>
+          <span className="block sm:hidden text-sm font-extrabold text-[var(--color-text)]">MJP</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-0.5 ml-2">
+        {/* Desktop Nav — pill style */}
+        <nav className="hidden md:flex items-center gap-1 ml-2">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`relative rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-ring ${
+              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-all focus-ring border ${
                 pathname.startsWith(link.href)
-                  ? 'text-[var(--color-accent)] bg-accent-subtle'
-                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-2)]'
+                  ? 'bg-[color-mix(in_srgb,var(--color-accent)_12%,transparent)] text-[var(--color-accent)] border-accent-soft'
+                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)] border-transparent'
               }`}
             >
-              {pathname.startsWith(link.href) && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-4 rounded-full bg-[var(--color-accent)]" />
-              )}
               {link.label}
             </Link>
           ))}
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          {/* Search button with platform-aware shortcut */}
           <button
             onClick={onSearchOpen}
             className="group flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] focus-ring"
@@ -64,10 +70,11 @@ export function Header({ onSearchOpen }: HeaderProps) {
             </svg>
             <span className="hidden sm:block">搜尋 Skills...</span>
             <kbd className="hidden sm:inline-flex items-center rounded bg-[var(--color-border)] border border-[var(--color-border-strong)] px-1.5 py-0.5 text-[10px] text-[var(--color-text-muted)] font-mono">
-              ⌘K
+              {isMac ? '⌘K' : 'Ctrl+K'}
             </kbd>
           </button>
 
+          {/* GitHub link */}
           <a
             href={GITHUB_REPO_URL}
             target="_blank"

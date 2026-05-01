@@ -1,8 +1,8 @@
-# MPS — Minecraft NMS Claude Code Skills
+# MJP-Claude-Skills — Minecraft NMS Claude Code Skills
 
 **A curated library of [Claude Code Agent Skills](https://docs.anthropic.com/en/docs/claude-code) for low-level Minecraft NMS (net.minecraft.server) development on Paper 1.21.x with Mojang mappings.**
 
-MPS provides production-ready NMS skill templates that Claude Code reads before generating plugin code — covering packet sending, Netty pipeline interception, custom entity AI, reflection-based cross-version access, and multi-version adapter patterns.
+MJP-Claude-Skills provides production-ready NMS skill templates that Claude Code reads before generating plugin code — covering packet sending, Netty pipeline interception, custom entity AI, reflection-based cross-version access, and multi-version adapter patterns.
 
 > 繁體中文說明請見 [README.zh-TW.md](README.zh-TW.md)
 
@@ -39,7 +39,7 @@ MPS provides production-ready NMS skill templates that Claude Code reads before 
 Clone or copy `.claude/skills/` into your project root:
 
 ```bash
-cp -r /path/to/MPS/.claude/skills/ .claude/skills/
+cp -r /path/to/MJP-Claude-Skills/.claude/skills/ .claude/skills/
 ```
 
 ### 2. Configure Claude Code
@@ -64,7 +64,7 @@ Claude Code will read the matching `SKILL.md` and generate production-ready code
 ## Repository Structure
 
 ```
-MPS/
+MJP-Claude-Skills/
 ├── .claude/skills/          ← Claude Code runtime (mirrors Skills/)
 │   ├── skills-registry.yml
 │   ├── _shared/
