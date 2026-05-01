@@ -55,13 +55,12 @@ dependencies {
 package com.example.rpg;
 
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.bukkit.craftbukkit.v1_21_R1.entity.CraftLivingEntity;
-import org.bukkit.entity.LivingEntity as BukkitLivingEntity;
+import org.bukkit.entity.LivingEntity;
 
 import java.util.Optional;
 
@@ -72,32 +71,32 @@ public final class AttributeUtil {
 
     /** 取得屬性實例（若實體不支援該屬性則回傳 empty）。 */
     public static Optional<AttributeInstance> getInstance(
-            BukkitLivingEntity entity, Holder<Attribute> attribute) {
-        LivingEntity nms = ((CraftLivingEntity) entity).getHandle();
+            LivingEntity entity, Holder<Attribute> attribute) {
+        net.minecraft.world.entity.LivingEntity nms = ((CraftLivingEntity) entity).getHandle();
         return Optional.ofNullable(nms.getAttribute(attribute));
     }
 
     /** 讀取屬性最終值（含所有 modifier 計算後）。 */
-    public static double getValue(BukkitLivingEntity entity, Holder<Attribute> attribute) {
+    public static double getValue(LivingEntity entity, Holder<Attribute> attribute) {
         return getInstance(entity, attribute)
             .map(AttributeInstance::getValue)
             .orElse(0.0);
     }
 
     /** 讀取屬性基底值（不含 modifier）。 */
-    public static double getBaseValue(BukkitLivingEntity entity, Holder<Attribute> attribute) {
+    public static double getBaseValue(LivingEntity entity, Holder<Attribute> attribute) {
         return getInstance(entity, attribute)
             .map(AttributeInstance::getBaseValue)
             .orElse(0.0);
     }
 
     /** 設定屬性基底值。 */
-    public static void setBaseValue(BukkitLivingEntity entity, Holder<Attribute> attribute, double value) {
+    public static void setBaseValue(LivingEntity entity, Holder<Attribute> attribute, double value) {
         getInstance(entity, attribute).ifPresent(inst -> inst.setBaseValue(value));
     }
 
     /** 新增 AttributeModifier（若相同 id 已存在會先移除）。 */
-    public static void addModifier(BukkitLivingEntity entity, Holder<Attribute> attribute,
+    public static void addModifier(LivingEntity entity, Holder<Attribute> attribute,
                                    AttributeModifier modifier) {
         getInstance(entity, attribute).ifPresent(inst -> {
             inst.removeModifier(modifier.id());
@@ -106,33 +105,33 @@ public final class AttributeUtil {
     }
 
     /** 移除指定 id 的 AttributeModifier。 */
-    public static void removeModifier(BukkitLivingEntity entity, Holder<Attribute> attribute,
+    public static void removeModifier(LivingEntity entity, Holder<Attribute> attribute,
                                       java.util.UUID id) {
         getInstance(entity, attribute).ifPresent(inst -> inst.removeModifier(id));
     }
 
     /** 移除指定 id 的 AttributeModifier（ResourceLocation 版）。 */
-    public static void removeModifier(BukkitLivingEntity entity, Holder<Attribute> attribute,
+    public static void removeModifier(LivingEntity entity, Holder<Attribute> attribute,
                                       net.minecraft.resources.ResourceLocation id) {
         getInstance(entity, attribute).ifPresent(inst -> inst.removeModifier(id));
     }
 
     /** 移除全部 modifier（僅保留基底值）。 */
-    public static void clearModifiers(BukkitLivingEntity entity, Holder<Attribute> attribute) {
+    public static void clearModifiers(LivingEntity entity, Holder<Attribute> attribute) {
         getInstance(entity, attribute).ifPresent(inst ->
             inst.getModifiers().forEach(m -> inst.removeModifier(m.id())));
     }
 
     // ─── 常用屬性常數快捷 ───────────────────────────────────────────
 
-    public static double getMaxHealth(BukkitLivingEntity e) { return getValue(e, Attributes.MAX_HEALTH); }
-    public static void setMaxHealth(BukkitLivingEntity e, double v) { setBaseValue(e, Attributes.MAX_HEALTH, v); }
+    public static double getMaxHealth(LivingEntity e) { return getValue(e, Attributes.MAX_HEALTH); }
+    public static void setMaxHealth(LivingEntity e, double v) { setBaseValue(e, Attributes.MAX_HEALTH, v); }
 
-    public static double getAttackDamage(BukkitLivingEntity e) { return getValue(e, Attributes.ATTACK_DAMAGE); }
-    public static void setAttackDamage(BukkitLivingEntity e, double v) { setBaseValue(e, Attributes.ATTACK_DAMAGE, v); }
+    public static double getAttackDamage(LivingEntity e) { return getValue(e, Attributes.ATTACK_DAMAGE); }
+    public static void setAttackDamage(LivingEntity e, double v) { setBaseValue(e, Attributes.ATTACK_DAMAGE, v); }
 
-    public static double getMovementSpeed(BukkitLivingEntity e) { return getValue(e, Attributes.MOVEMENT_SPEED); }
-    public static void setMovementSpeed(BukkitLivingEntity e, double v) { setBaseValue(e, Attributes.MOVEMENT_SPEED, v); }
+    public static double getMovementSpeed(LivingEntity e) { return getValue(e, Attributes.MOVEMENT_SPEED); }
+    public static void setMovementSpeed(LivingEntity e, double v) { setBaseValue(e, Attributes.MOVEMENT_SPEED, v); }
 }
 ```
 

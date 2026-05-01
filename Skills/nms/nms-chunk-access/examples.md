@@ -53,8 +53,9 @@ public void fillCave(World world, int x1, int y1, int z1,
                 }
             }
 
+    int filled = editor.pendingCount();
     editor.commit(3); // flags=3: 觸發鄰居更新 + 發送封包
-    player.sendMessage("§a已填充 " + editor.pendingCount() + " 個空洞");
+    player.sendMessage("§a已填充 " + filled + " 個空洞");
 }
 ```
 
