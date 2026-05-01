@@ -36,11 +36,19 @@ export function SkillDetail({ skill }: SkillDetailProps) {
   useEffect(() => {
     if (!contentRef.current) return;
     const els = contentRef.current.querySelectorAll('h2, h3');
-    const parsed: Heading[] = Array.from(els).map((el) => ({
-      id: el.id || '',
-      text: el.textContent || '',
-      level: el.tagName === 'H2' ? 2 : 3,
-    })).filter((h) => h.id);
+    const parsed: Heading[] = Array.from(els).map((el) => {
+      if (!el.id) {
+        el.id = (el.textContent || '')
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w-]/g, '');
+      }
+      return {
+        id: el.id,
+        text: el.textContent || '',
+        level: el.tagName === 'H2' ? 2 : 3,
+      };
+    }).filter((h) => h.id);
     setHeadings(parsed);
   }, [skill.contentHtml]);
 
