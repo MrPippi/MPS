@@ -1,6 +1,6 @@
-# MPS Web — Minecraft Plugin Skills 網站
+# MJP-Claude-Skills Web — Minecraft NMS Claude Code Skills 網站
 
-MPS 官方網站，提供 Skills 瀏覽、搜尋與詳細頁功能。
+MJP-Claude-Skills 官方網站，提供 Skills 瀏覽、搜尋與詳細頁功能。
 
 ## 技術棧
 

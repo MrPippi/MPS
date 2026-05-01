@@ -1,8 +1,8 @@
-# MPS — Minecraft NMS Claude Code Skills
+# MJP-Claude-Skills — Minecraft NMS Claude Code Skills
 
 **專為 Paper 1.21.x Mojang-mapped NMS 底層開發設計的 [Claude Code Agent Skills](https://docs.anthropic.com/en/docs/claude-code) 函式庫。**
 
-MPS 提供生產就緒的 NMS 技能範本，Claude Code 在產生插件代碼前會自動讀取這些範本，涵蓋封包發送、Netty pipeline 攔截、自定義實體 AI、反射式跨版本橋接，以及多版本 Adapter 模式。
+MJP-Claude-Skills 提供生產就緒的 NMS 技能範本，Claude Code 在產生插件代碼前會自動讀取這些範本，涵蓋封包發送、Netty pipeline 攔截、自定義實體 AI、反射式跨版本橋接，以及多版本 Adapter 模式。
 
 > English documentation: [README.md](README.md)
 
@@ -39,7 +39,7 @@ MPS 提供生產就緒的 NMS 技能範本，Claude Code 在產生插件代碼�
 將 `.claude/skills/` 複製到你的專案根目錄：
 
 ```bash
-cp -r /path/to/MPS/.claude/skills/ .claude/skills/
+cp -r /path/to/MJP-Claude-Skills/.claude/skills/ .claude/skills/
 ```
 
 ### 2. 設定 Claude Code
@@ -64,7 +64,7 @@ Claude Code 會讀取匹配的 `SKILL.md` 並產生生產就緒的代碼。
 ## 倉庫結構
 
 ```
-MPS/
+MJP-Claude-Skills/
 ├── .claude/skills/          ← Claude Code 執行時（與 Skills/ 鏡像）
 │   ├── skills-registry.yml
 │   ├── _shared/

@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { getAllSkills, getCategories, SkillGrid } from '@/features/skills';
-import { Sidebar } from '@/features/categories';
+import { getAllSkills, getCategories, SkillsPageClient } from '@/features/skills';
 import { SITE_NAME } from '@/config/site';
 
 export const metadata: Metadata = {
   title: `所有 Skills | ${SITE_NAME}`,
-  description: '瀏覽所有 Minecraft Plugin Skills，包含 API 調用、骨架生成、指令處理、事件監聽等各種開發工具。',
+  description: '瀏覽所有 Minecraft NMS Claude Code Agent Skills，涵蓋封包發送、自定義實體 AI、反射式橋接、多版本 Adapter 等底層開發工具。',
 };
 
 export default function SkillsPage() {
@@ -23,21 +22,7 @@ export default function SkillsPage() {
         </p>
       </div>
 
-      <div className="flex gap-10">
-        {/* Sidebar */}
-        <div className="hidden lg:block">
-          <Sidebar categories={categories} />
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          {skills.length > 0 && (
-            <section className="mb-12">
-              <SkillGrid skills={skills} />
-            </section>
-          )}
-        </div>
-      </div>
+      <SkillsPageClient skills={skills} categories={categories} />
     </div>
   );
 }

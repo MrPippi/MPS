@@ -16,12 +16,16 @@ export default function HomePage() {
         {/* Background elements */}
         <div className="absolute inset-0 grid-pattern" />
         <div
-          className="hero-glow absolute -top-40 -left-40 h-80 w-80 opacity-30"
-          style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 40%, transparent) 0%, transparent 70%)' }}
+          className="hero-glow absolute -top-40 -left-40 h-96 w-96 opacity-25"
+          style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 50%, transparent) 0%, transparent 70%)' }}
         />
         <div
-          className="hero-glow absolute top-20 right-0 h-60 w-60 opacity-20"
-          style={{ background: 'radial-gradient(circle, rgba(88,166,255,0.4) 0%, transparent 70%)' }}
+          className="hero-glow absolute top-10 right-0 h-72 w-72 opacity-15"
+          style={{ background: 'radial-gradient(circle, rgba(88,166,255,0.5) 0%, transparent 70%)' }}
+        />
+        <div
+          className="hero-glow absolute -bottom-20 left-1/3 h-64 w-64 opacity-10"
+          style={{ background: 'radial-gradient(circle, rgba(227,179,65,0.4) 0%, transparent 70%)' }}
         />
 
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -29,20 +33,20 @@ export default function HomePage() {
             {/* Badge */}
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-soft bg-accent-faint px-3 py-1 text-xs text-[var(--color-accent)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] pulse-dot" />
-              Open Source · AI-powered · Cursor Agent Skills
+              <span>{activeCount} Skills</span>
+              <span className="text-[var(--color-text-muted)]">·</span>
+              Open Source · Claude Code Agent Skills
             </div>
 
             {/* Title */}
             <h1 className="text-5xl font-extrabold tracking-tight text-[var(--color-text)] sm:text-6xl lg:text-7xl leading-none">
-              Minecraft
+              MJP Claude
               <br />
-              Plugin{' '}
-              <span className="gradient-text">Studio</span>
+              <span className="gradient-text">Skills</span>
             </h1>
 
             <p className="mt-6 text-base leading-relaxed text-[var(--color-text-secondary)] max-w-xl">
-              一套基於 AI 的 Cursor Agent Skills 集合，協助開發者自動生成高品質的 Spigot / Paper 插件程式碼
-              —— 從插件骨架到 CI/CD 工作流程。
+              Paper 1.21.x NMS 底層開發的 Claude Code Agent Skills 函式庫——涵蓋封包發送、Netty 攔截、自定義實體 AI、反射式橋接與多版本 Adapter 模式。
             </p>
 
             {/* CTA Buttons */}
@@ -137,7 +141,7 @@ export default function HomePage() {
               <Link
                 key={cat.id}
                 href={`/categories/${cat.id}`}
-                className="group flex flex-col gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-2)] p-4 transition-all hover:border-accent-dim card-hover focus-ring"
+                className="group flex flex-col gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-2)] p-4 transition-all card-glow focus-ring"
               >
                 <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--color-border)] text-[var(--color-accent)] group-hover:bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] transition-colors">
                   <CategoryIcon category={cat.id} className="h-4 w-4" />
@@ -168,8 +172,8 @@ export default function HomePage() {
             <div>
               <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">想要貢獻新的 Skill？</h2>
               <p className="text-sm text-[var(--color-text-secondary)] max-w-md">
-                歡迎 Fork 本專案，按照規範新增 Skill 並送出 Pull Request。更多 Skills（含 Velocity、Waterfall、Purpur）請見{' '}
-                <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline focus-ring rounded">GitHub 專案</a>。社群的力量讓工具更完整。
+                歡迎 Fork 本專案，按照規範新增 NMS Skill 並送出 Pull Request。詳細說明請見{' '}
+                <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline focus-ring rounded">GitHub 專案</a>。
               </p>
             </div>
             <a

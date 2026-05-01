@@ -1,6 +1,6 @@
 version: "6.0.0"
-updated: "2026-04-19"
-description: "MPS — Minecraft NMS Claude Code Skills / NMS 技能索引（Paper 1.21.x + Mojang mappings）"
+updated: "2026-04-30"
+description: "MJP-Claude-Skills — Minecraft NMS Claude Code Skills / NMS 技能索引（Paper 1.21.x + Mojang mappings）"
 
 skills:
   - id: nms-packet-sender

@@ -1,6 +1,6 @@
 # Paper NMS Platform / Paper NMS 平台
 
-本平台定義 Paper NMS 開發的基礎建置設定，使用 Paperweight userdev 與 Mojang mappings。所有 MPS NMS 技能產出的代碼皆預設此平台。
+本平台定義 Paper NMS 開發的基礎建置設定，使用 Paperweight userdev 與 Mojang mappings。所有 MJP-Claude-Skills NMS 技能產出的代碼皆預設此平台。
 
 - **MC 版本範圍**：1.21 – 1.21.3
 - **Java**：21（toolchain）
