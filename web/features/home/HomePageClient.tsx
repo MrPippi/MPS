@@ -21,33 +21,22 @@ export function HomePageClient({ skills, featuredSkills, categories, activeCount
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
-        <div className="absolute inset-0 grid-pattern" />
         <div
-          className="hero-glow absolute -top-40 -left-40 h-96 w-96 opacity-25"
+          className="hero-glow absolute -top-40 -left-40 h-96 w-96 opacity-10"
           style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 50%, transparent) 0%, transparent 70%)' }}
-        />
-        <div
-          className="hero-glow absolute top-10 right-0 h-72 w-72 opacity-15"
-          style={{ background: 'radial-gradient(circle, rgba(88,166,255,0.5) 0%, transparent 70%)' }}
-        />
-        <div
-          className="hero-glow absolute -bottom-20 left-1/3 h-64 w-64 opacity-10"
-          style={{ background: 'radial-gradient(circle, rgba(227,179,65,0.4) 0%, transparent 70%)' }}
         />
 
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
           <div className="max-w-2xl">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-soft bg-accent-faint px-3 py-1 text-xs text-[var(--color-accent)]">
+            <div className="mb-6 inline-flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] font-mono">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] pulse-dot" />
-              <span>{activeCount} Skills</span>
-              <span className="text-[var(--color-text-muted)]">·</span>
-              {t.home.openSource}
+              <span>{activeCount} Skills · {t.home.openSource}</span>
             </div>
 
             <h1 className="text-5xl font-extrabold tracking-tight text-[var(--color-text)] sm:text-6xl lg:text-7xl leading-none">
               MJP Claude
               <br />
-              <span className="gradient-text">Skills</span>
+              <span className="text-[var(--color-accent)]">Skills</span>
             </h1>
 
             <p className="mt-6 text-base leading-relaxed text-[var(--color-text-secondary)] max-w-xl">
@@ -84,7 +73,7 @@ export function HomePageClient({ skills, featuredSkills, categories, activeCount
                 { value: categories.length, label: t.home.statsCategories },
               ].map((stat, i) => (
                 <div key={stat.label} className={`flex items-baseline gap-2 ${i > 0 ? 'border-l border-[var(--color-border)] pl-8' : ''}`}>
-                  <span className="text-3xl font-bold tabular-nums text-[var(--color-accent)]">{stat.value}</span>
+                  <span className="text-2xl font-bold tabular-nums text-[var(--color-accent)]">{stat.value}</span>
                   <span className="text-xs text-[var(--color-text-muted)]">{stat.label}</span>
                 </div>
               ))}
@@ -168,12 +157,8 @@ export function HomePageClient({ skills, featuredSkills, categories, activeCount
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-xl border border-accent-soft bg-[var(--color-surface)] p-10">
-          <div
-            className="hero-glow absolute -top-20 -right-20 h-40 w-40 opacity-40"
-            style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 50%, transparent) 0%, transparent 70%)' }}
-          />
-          <div className="relative flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-surface)] p-10">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
               <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">{t.home.ctaTitle}</h2>
               <p className="text-sm text-[var(--color-text-secondary)] max-w-md">

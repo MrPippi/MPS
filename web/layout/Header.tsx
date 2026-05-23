@@ -49,9 +49,9 @@ export function Header({ onSearchOpen }: HeaderProps) {
             <Link
               key={link.href}
               href={link.href}
-              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-all focus-ring border ${
+              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-ring border ${
                 pathname.startsWith(link.href)
-                  ? 'bg-[color-mix(in_srgb,var(--color-accent)_12%,transparent)] text-[var(--color-accent)] border-accent-soft'
+                  ? 'bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] text-[var(--color-accent)] border-[color-mix(in_srgb,var(--color-accent)_20%,transparent)]'
                   : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)] border-transparent'
               }`}
             >
