@@ -9,6 +9,34 @@ import { GITHUB_REPO_URL } from '@/config/site';
 import { CategoryIcon } from '@/features/categories';
 import { useLanguage } from '@/shared/i18n';
 
+const HEADING_TRANSLATIONS: Record<string, string> = {
+  '目的': 'Purpose',
+  '平台需求': 'Platform Requirements',
+  '產生的代碼': 'Generated Code',
+  '觸發條件': 'Triggers',
+  '輸入參數': 'Inputs',
+  '輸出產物': 'Outputs',
+  'NMS 版本需求': 'NMS Version Requirements',
+  'Paperweight 建置設定': 'Build Setup',
+  '代碼範本': 'Code Template',
+  '推薦目錄結構': 'Recommended Directory Structure',
+  '執行緒安全注意事項': 'Thread Safety',
+  '失敗回退': 'Fallback',
+  '技能名稱': 'Skill Name',
+  '使用情境': 'Use Cases',
+  '注意事項': 'Notes',
+  '範例': 'Examples',
+  '依賴宣告': 'Dependency Declaration',
+};
+
+function translateHeadings(html: string, lang: string): string {
+  if (lang !== 'en') return html;
+  return html.replace(/<(h[23])>([^<]+)<\/(h[23])>/g, (_match, openTag, text, closeTag) => {
+    const translated = HEADING_TRANSLATIONS[text.trim()] ?? text;
+    return `<${openTag}>${translated}</${closeTag}>`;
+  });
+}
+
 interface Heading {
   id: string;
   text: string;
@@ -52,7 +80,7 @@ export function SkillDetail({ skill }: SkillDetailProps) {
       };
     }).filter((h) => h.id);
     setHeadings(parsed);
-  }, [skill.contentHtml]);
+  }, [skill.contentHtml, lang]);
 
   useEffect(() => {
     if (headings.length === 0) return;
@@ -69,6 +97,8 @@ export function SkillDetail({ skill }: SkillDetailProps) {
     });
     return () => observer.disconnect();
   }, [headings]);
+
+  const displayHtml = translateHeadings(skill.contentHtml, lang);
 
   return (
     <div className="flex gap-12">
@@ -147,7 +177,7 @@ export function SkillDetail({ skill }: SkillDetailProps) {
         <div
           ref={contentRef}
           className="skill-prose"
-          dangerouslySetInnerHTML={{ __html: skill.contentHtml }}
+          dangerouslySetInnerHTML={{ __html: displayHtml }}
         />
       </div>
 

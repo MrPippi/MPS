@@ -76,15 +76,6 @@ body {
   background-size: 40px 40px;
 }
 
-/* Noise texture overlay */
-.noise-overlay::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  opacity: 0.4;
-}
 
 /* Badge animations */
 @keyframes pulse-dot {
@@ -96,13 +87,12 @@ body {
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-/* Card glow hover — replaces card-hover lift */
+/* Card hover — border accent only */
 .card-glow {
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: border-color 0.15s ease;
 }
 .card-glow:hover {
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 35%, transparent),
-              0 4px 24px color-mix(in srgb, var(--color-accent) 10%, transparent);
+  border-color: var(--color-border-strong);
 }
 
 /* Code highlight */
