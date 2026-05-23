@@ -1,8 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import type { SkillMeta } from '@/shared/types/skill';
 import { SkillBadge } from './SkillBadge';
 import { formatDate } from '@/shared/lib/utils';
 import { CategoryIcon } from '@/features/categories';
+import { useLanguage } from '@/shared/i18n';
 
 function categoryTopColor(category: string): string {
   switch (category) {
@@ -23,7 +26,10 @@ interface SkillCardProps {
 }
 
 export function SkillCard({ skill }: SkillCardProps) {
+  const { lang } = useLanguage();
   const topColor = categoryTopColor(skill.category);
+  const displayTitle = lang === 'en' ? skill.title : skill.titleZh;
+  const displayDesc = lang === 'en' ? skill.description : skill.descriptionZh;
 
   return (
     <Link
@@ -38,10 +44,10 @@ export function SkillCard({ skill }: SkillCardProps) {
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             <h3 className="text-sm font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-1">
-              {skill.titleZh}
+              {displayTitle}
             </h3>
             <p className="text-xs text-[var(--color-text-muted)] mt-0.5 font-mono truncate">
-              {skill.title}
+              {lang === 'en' ? skill.titleZh : skill.title}
             </p>
           </div>
           <div
@@ -53,7 +59,7 @@ export function SkillCard({ skill }: SkillCardProps) {
 
         {/* Row 2: Description (2-line clamp) */}
         <p className="line-clamp-2 text-xs leading-relaxed text-[var(--color-text-secondary)]">
-          {skill.descriptionZh}
+          {displayDesc}
         </p>
 
         {/* Row 3: Tags */}
@@ -83,7 +89,7 @@ export function SkillCard({ skill }: SkillCardProps) {
           </div>
           {skill.updatedAt && (
             <span className="text-[11px] text-[var(--color-border-strong)] group-hover:text-[var(--color-text-muted)] transition-colors">
-              {formatDate(skill.updatedAt)}
+              {formatDate(skill.updatedAt, lang === 'en' ? 'en-US' : 'zh-TW')}
             </span>
           )}
         </div>

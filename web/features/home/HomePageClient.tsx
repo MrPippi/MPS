@@ -1,0 +1,202 @@
+'use client';
+
+import Link from 'next/link';
+import type { SkillMeta, Category } from '@/shared/types/skill';
+import { SkillCard } from '@/features/skills/components/SkillCard';
+import { CategoryIcon } from '@/features/categories/components/CategoryIcon';
+import { GITHUB_REPO_URL, GITHUB_CONTRIBUTE_URL } from '@/config/site';
+import { useLanguage } from '@/shared/i18n';
+
+interface HomePageClientProps {
+  skills: SkillMeta[];
+  featuredSkills: SkillMeta[];
+  categories: Category[];
+  activeCount: number;
+}
+
+export function HomePageClient({ skills, featuredSkills, categories, activeCount }: HomePageClientProps) {
+  const { t, lang } = useLanguage();
+
+  return (
+    <div>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-[var(--color-border)]">
+        <div className="absolute inset-0 grid-pattern" />
+        <div
+          className="hero-glow absolute -top-40 -left-40 h-96 w-96 opacity-25"
+          style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 50%, transparent) 0%, transparent 70%)' }}
+        />
+        <div
+          className="hero-glow absolute top-10 right-0 h-72 w-72 opacity-15"
+          style={{ background: 'radial-gradient(circle, rgba(88,166,255,0.5) 0%, transparent 70%)' }}
+        />
+        <div
+          className="hero-glow absolute -bottom-20 left-1/3 h-64 w-64 opacity-10"
+          style={{ background: 'radial-gradient(circle, rgba(227,179,65,0.4) 0%, transparent 70%)' }}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+          <div className="max-w-2xl">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-soft bg-accent-faint px-3 py-1 text-xs text-[var(--color-accent)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] pulse-dot" />
+              <span>{activeCount} Skills</span>
+              <span className="text-[var(--color-text-muted)]">·</span>
+              {t.home.openSource}
+            </div>
+
+            <h1 className="text-5xl font-extrabold tracking-tight text-[var(--color-text)] sm:text-6xl lg:text-7xl leading-none">
+              MJP Claude
+              <br />
+              <span className="gradient-text">Skills</span>
+            </h1>
+
+            <p className="mt-6 text-base leading-relaxed text-[var(--color-text-secondary)] max-w-xl">
+              {t.home.heroDescription}
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/skills"
+                className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-all hover:bg-[var(--color-accent-hover)] hover:shadow-lg hover:shadow-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] focus-ring"
+              >
+                {t.home.browseAllSkills}
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <a
+                href={GITHUB_REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-secondary)] hover:bg-[var(--color-border-strong)] focus-ring"
+              >
+                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
+                </svg>
+                GitHub
+              </a>
+            </div>
+
+            <div className="mt-12 flex items-center gap-8 border-t border-[var(--color-border)] pt-8">
+              {[
+                { value: skills.length, label: t.home.statsSkills },
+                { value: activeCount, label: t.home.statsPublished },
+                { value: categories.length, label: t.home.statsCategories },
+              ].map((stat, i) => (
+                <div key={stat.label} className={`flex items-baseline gap-2 ${i > 0 ? 'border-l border-[var(--color-border)] pl-8' : ''}`}>
+                  <span className="text-3xl font-bold tabular-nums text-[var(--color-accent)]">{stat.value}</span>
+                  <span className="text-xs text-[var(--color-text-muted)]">{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Skills */}
+      {featuredSkills.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mb-8 flex items-end justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)] mb-2">{t.home.featuredLabel}</p>
+              <h2 className="text-2xl font-bold text-[var(--color-text)]">{t.home.featuredTitle}</h2>
+              <p className="text-sm text-[var(--color-text-muted)] mt-1">{t.home.featuredSubtitle}</p>
+            </div>
+            <Link
+              href="/skills"
+              className="flex items-center gap-1 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors focus-ring rounded-md"
+            >
+              {t.home.viewAll}
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredSkills.map((skill) => (
+              <SkillCard key={skill.id} skill={skill} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Categories */}
+      <section className="border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_60%,transparent)]">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mb-8 flex items-end justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)] mb-2">{t.home.categoriesLabel}</p>
+              <h2 className="text-2xl font-bold text-[var(--color-text)]">{t.home.categoriesTitle}</h2>
+              <p className="text-sm text-[var(--color-text-muted)] mt-1">{t.home.categoriesSubtitle}</p>
+            </div>
+            <Link
+              href="/categories"
+              className="flex items-center gap-1 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors focus-ring rounded-md"
+            >
+              {t.home.viewAll}
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {categories.map((cat) => (
+              <Link
+                key={cat.id}
+                href={`/categories/${cat.id}`}
+                className="group flex flex-col gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-2)] p-4 transition-all card-glow focus-ring"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--color-border)] text-[var(--color-accent)] group-hover:bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] transition-colors">
+                  <CategoryIcon category={cat.id} className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent)] transition-colors leading-tight">
+                    {lang === 'en' ? cat.labelEn : cat.label}
+                  </div>
+                  <div className="mt-0.5 text-xs text-[var(--color-text-muted)]">
+                    {lang === 'en' ? cat.label : cat.labelEn}
+                  </div>
+                </div>
+                <div className="text-xs text-[var(--color-border-strong)] group-hover:text-[var(--color-text-muted)] transition-colors">
+                  {t.home.categoryCount.replace('{count}', String(cat.count))}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-xl border border-accent-soft bg-[var(--color-surface)] p-10">
+          <div
+            className="hero-glow absolute -top-20 -right-20 h-40 w-40 opacity-40"
+            style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 50%, transparent) 0%, transparent 70%)' }}
+          />
+          <div className="relative flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">{t.home.ctaTitle}</h2>
+              <p className="text-sm text-[var(--color-text-secondary)] max-w-md">
+                {t.home.ctaDescription}{' '}
+                <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline focus-ring rounded">
+                  {t.home.ctaDescriptionLink}
+                </a>。
+              </p>
+            </div>
+            <a
+              href={GITHUB_CONTRIBUTE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-accent-dim bg-[color-mix(in_srgb,var(--color-accent)_10%,transparent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-accent)] transition-all hover:bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] hover:border-[color-mix(in_srgb,var(--color-accent)_60%,transparent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)]"
+            >
+              {t.home.ctaButton}
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

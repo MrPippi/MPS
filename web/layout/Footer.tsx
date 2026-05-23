@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { GITHUB_REPO_URL, GITHUB_CONTRIBUTE_URL, SITE_NAME } from '@/config/site';
 import { PickaxeIcon } from '@/shared/ui';
+import { useLanguage } from '@/shared/i18n';
 
 const GITHUB_SVG = (
   <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
@@ -9,6 +12,21 @@ const GITHUB_SVG = (
 );
 
 export function Footer() {
+  const { t } = useLanguage();
+
+  const navItems = [
+    { href: '/', label: t.footer.home },
+    { href: '/skills', label: t.footer.allSkills },
+    { href: '/categories', label: t.footer.categoriesBrowse },
+    { href: '/guide', label: t.footer.howToUse },
+  ];
+
+  const resourceItems = [
+    { href: GITHUB_REPO_URL, label: t.footer.githubProject },
+    { href: GITHUB_CONTRIBUTE_URL, label: t.footer.contributeGuide },
+    { href: `${GITHUB_REPO_URL}/blob/main/LICENSE`, label: t.footer.license },
+  ];
+
   return (
     <footer className="bg-[var(--color-surface)]">
       {/* Gradient divider */}
@@ -25,7 +43,7 @@ export function Footer() {
               <span className="text-sm font-extrabold text-[var(--color-text)]">MJP-Claude-Skills</span>
             </div>
             <p className="text-sm leading-relaxed text-[var(--color-text-secondary)] max-w-xs">
-              Paper 1.21.x NMS 底層開發的 Claude Code Agent Skills 函式庫，基於 Paperweight + Mojang mappings。
+              {t.footer.description}
             </p>
             <div className="mt-5">
               <a
@@ -43,14 +61,11 @@ export function Footer() {
           {/* Right: Nav + Resources two-column */}
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">導覽</h3>
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">
+                {t.footer.nav}
+              </h3>
               <ul className="space-y-2.5">
-                {[
-                  { href: '/', label: '首頁' },
-                  { href: '/skills', label: '所有 Skills' },
-                  { href: '/categories', label: '分類瀏覽' },
-                  { href: '/guide', label: '使用方法' },
-                ].map((item) => (
+                {navItems.map((item) => (
                   <li key={item.href}>
                     <Link
                       href={item.href}
@@ -63,13 +78,11 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">資源</h3>
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">
+                {t.footer.resources}
+              </h3>
               <ul className="space-y-2.5">
-                {[
-                  { href: GITHUB_REPO_URL, label: 'GitHub 專案' },
-                  { href: GITHUB_CONTRIBUTE_URL, label: '貢獻指南' },
-                  { href: `${GITHUB_REPO_URL}/blob/main/LICENSE`, label: '授權條款' },
-                ].map((item) => (
+                {resourceItems.map((item) => (
                   <li key={item.href}>
                     <a
                       href={item.href}

@@ -5,12 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { GITHUB_REPO_URL } from '@/config/site';
 import { PickaxeIcon } from '@/shared/ui';
-
-const NAV_LINKS = [
-  { href: '/skills', label: 'Skills' },
-  { href: '/categories', label: '分類' },
-  { href: '/guide', label: '使用方法' },
-];
+import { useLanguage } from '@/shared/i18n';
 
 interface HeaderProps {
   onSearchOpen?: () => void;
@@ -20,10 +15,17 @@ export function Header({ onSearchOpen }: HeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMac, setIsMac] = useState(true);
+  const { t, lang, setLang } = useLanguage();
 
   useEffect(() => {
     setIsMac(navigator.platform.toUpperCase().includes('MAC'));
   }, []);
+
+  const navLinks = [
+    { href: '/skills', label: t.nav.skills },
+    { href: '/categories', label: t.nav.categories },
+    { href: '/guide', label: t.nav.guide },
+  ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_80%,transparent)] backdrop-blur-md">
@@ -43,7 +45,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
 
         {/* Desktop Nav — pill style */}
         <nav className="hidden md:flex items-center gap-1 ml-2">
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -63,16 +65,42 @@ export function Header({ onSearchOpen }: HeaderProps) {
           <button
             onClick={onSearchOpen}
             className="group flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-text-muted)] hover:text-[var(--color-text)] focus-ring"
-            aria-label="搜尋 Skills"
+            aria-label={t.header.searchAriaLabel}
           >
             <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <span className="hidden sm:block">搜尋 Skills...</span>
+            <span className="hidden sm:block">{t.header.searchPlaceholder}</span>
             <kbd className="hidden sm:inline-flex items-center rounded bg-[var(--color-border)] border border-[var(--color-border-strong)] px-1.5 py-0.5 text-[10px] text-[var(--color-text-muted)] font-mono">
               {isMac ? '⌘K' : 'Ctrl+K'}
             </kbd>
           </button>
+
+          {/* Language toggle */}
+          <div className="hidden sm:flex items-center rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-surface-2)] p-0.5">
+            <button
+              onClick={() => setLang('zh-TW')}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                lang === 'zh-TW'
+                  ? 'bg-[var(--color-border-strong)] text-[var(--color-text)]'
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+              }`}
+              aria-label="切換至繁體中文"
+            >
+              中
+            </button>
+            <button
+              onClick={() => setLang('en')}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                lang === 'en'
+                  ? 'bg-[var(--color-border-strong)] text-[var(--color-text)]'
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+              }`}
+              aria-label="Switch to English"
+            >
+              EN
+            </button>
+          </div>
 
           {/* GitHub link */}
           <a
@@ -91,7 +119,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
           <button
             className="flex md:hidden h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border-strong)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)] transition-colors focus-ring"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="選單"
+            aria-label={t.header.menuAriaLabel}
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileMenuOpen ? (
@@ -107,7 +135,7 @@ export function Header({ onSearchOpen }: HeaderProps) {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 md:hidden">
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -121,6 +149,29 @@ export function Header({ onSearchOpen }: HeaderProps) {
               {link.label}
             </Link>
           ))}
+          {/* Mobile language toggle */}
+          <div className="mt-2 flex items-center gap-2 px-3 py-2">
+            <button
+              onClick={() => { setLang('zh-TW'); setMobileMenuOpen(false); }}
+              className={`flex-1 rounded-lg py-1.5 text-xs font-medium transition-colors border ${
+                lang === 'zh-TW'
+                  ? 'bg-accent-subtle text-[var(--color-accent)] border-accent-soft'
+                  : 'text-[var(--color-text-secondary)] border-[var(--color-border-strong)] hover:text-[var(--color-text)]'
+              }`}
+            >
+              繁體中文
+            </button>
+            <button
+              onClick={() => { setLang('en'); setMobileMenuOpen(false); }}
+              className={`flex-1 rounded-lg py-1.5 text-xs font-medium transition-colors border ${
+                lang === 'en'
+                  ? 'bg-accent-subtle text-[var(--color-accent)] border-accent-soft'
+                  : 'text-[var(--color-text-secondary)] border-[var(--color-border-strong)] hover:text-[var(--color-text)]'
+              }`}
+            >
+              English
+            </button>
+          </div>
         </div>
       )}
     </header>

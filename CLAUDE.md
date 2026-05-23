@@ -1,4 +1,4 @@
-# MJP-Claude-Skills — Minecraft NMS Claude Code Skills
+# CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -13,42 +13,32 @@ MJP-Claude-Skills (Minecraft NMS Claude Code Skills) 是一套專注於 **Paper 
 執行時目錄：**`.claude/skills/`**（Claude Code 專用）
 規範來源：**`Skills/`**（authoritative source，與 `.claude/skills/` 內容相同）
 
-Web app（`web/`）暫時保留但內容待更新；當前優先是 Skills 結構。
+Web app（`web/`）保留供文件瀏覽；`web/data/skills/` 已含全部 15 個 NMS 技能。
 
 ### Repository Layout
 
 ```
 MJP-Claude-Skills/
 ├── CLAUDE.md                            ← 本檔（Claude Code 入口）
+├── AGENTS.md                            ← Codex 入口（與 CLAUDE.md 平行）
 ├── README.md / README.zh-TW.md
 ├── .github/workflows/nextjs.yml
 ├── .claude/
-│   └── skills/                          ← Claude Code 執行時
-│       ├── skills-registry.yml
+│   └── skills/                          ← Claude Code 執行時（目前僅 5 個已同步，⚠️ 10 個缺失）
+│       ├── skills-registry.yml          ← 與 Skills/ 相同（已同步）
 │       ├── _shared/
-│       │   ├── nms-threading.md
-│       │   └── nms-obfuscation.md
-│       └── nms/
-│           ├── nms-packet-sender/
-│           ├── nms-packet-interceptor/
-│           ├── nms-custom-entity/
-│           ├── nms-reflection-bridge/
-│           └── nms-version-adapter/
-├── Skills/                              ← Canonical source（與 .claude/skills/ 鏡像）
+│       └── nms/                         ← ⚠️ 缺少 nms-nbt-manipulation 等 10 個技能
+├── .agents/
+│   └── skills/                          ← Codex 執行時（同樣只有 5 個）
+├── Skills/                              ← Canonical source
 │   ├── skills-registry.yml              ← v6.0.0，15 個 NMS 技能
-│   ├── README.md
 │   ├── _shared/
 │   │   ├── nms-threading.md
 │   │   └── nms-obfuscation.md
 │   ├── paper-nms/
 │   │   └── PLATFORM.md                  ← Paperweight + Mojang 建置設定
-│   └── nms/
-│       ├── nms-packet-sender/{SKILL.md, examples.md}
-│       ├── nms-packet-interceptor/{SKILL.md, examples.md}
-│       ├── nms-custom-entity/{SKILL.md, examples.md}
-│       ├── nms-reflection-bridge/{SKILL.md, examples.md}
-│       └── nms-version-adapter/{SKILL.md, examples.md}
-├── .cursor/                             ← Cursor 設定（歷史殘留，不再維護）
+│   └── nms/                             ← 15 個技能（每個含 SKILL.md + examples.md）
+├── .cursor/                             ← 歷史殘留，不再維護
 ├── docs/
 │   └── paper-nms/                       ← NMS API 速查表（深度參考資料）
 │       ├── packets.md                   ← Clientbound/Serverbound 封包目錄
@@ -56,6 +46,7 @@ MJP-Claude-Skills/
 │       ├── network.md                   ← Netty pipeline 結構與執行緒模型
 │       └── bukkit-nms-bridge.md         ← Bukkit ↔ NMS 橋接轉換表
 └── web/                                 ← Next.js 文件站
+    └── data/skills/                     ← 15 個 NMS 技能 .md（已完整）
 ```
 
 ---
@@ -65,10 +56,10 @@ MJP-Claude-Skills/
 當使用者要求產生 NMS 代碼時，一律遵循：
 
 1. **檢查 `.claude/skills/skills-registry.yml`** — 找出 `trigger_keywords` 匹配請求的技能
-2. **讀取對應的 `SKILL.md`** — 取得完整指引與範本
-3. **查看 `examples.md`** — 理解多種使用情境
-4. **讀取 `paper-nms/PLATFORM.md`** — 確認正確的 `build.gradle` 與依賴聲明
-5. **閱讀 `_shared/nms-threading.md` 與 `_shared/nms-obfuscation.md`** — 理解執行緒與映射規則
+2. **讀取對應的 `SKILL.md`** — 優先讀 `.claude/skills/nms/<id>/SKILL.md`；若不存在（10 個未同步技能），改讀 `Skills/nms/<id>/SKILL.md`
+3. **查看 `examples.md`** — 理解多種使用情境（同上路徑邏輯）
+4. **讀取 `Skills/paper-nms/PLATFORM.md`** — 確認正確的 `build.gradle` 與依賴聲明
+5. **閱讀 `Skills/_shared/nms-threading.md` 與 `Skills/_shared/nms-obfuscation.md`** — 理解執行緒與映射規則
 6. **深度 API 查詢**：若 SKILL.md 範本無法涵蓋需求，查閱 `docs/paper-nms/`：
    - `docs/paper-nms/packets.md` — 封包類名與建構子簽名
    - `docs/paper-nms/entities.md` — 實體 AI、Goal 系統、Attribute 常數
@@ -96,15 +87,25 @@ MJP-Claude-Skills/
 
 ## Skills Index
 
-所有技能以 `.claude/skills/skills-registry.yml` 為準。
+所有技能以 `Skills/skills-registry.yml`（v6.0.0）為準。✅ = 已同步至 `.claude/skills/`，⚠️ = 僅存於 `Skills/`。
 
-| Skill ID | Category | Purpose |
-|----------|----------|---------|
-| `nms-packet-sender` | nms-packet | 發送自定義 Clientbound 封包 |
-| `nms-packet-interceptor` | nms-packet | Netty pipeline 封包攔截與修改 |
-| `nms-custom-entity` | nms-entity | 自定義 NMS 實體 + PathfinderGoal AI |
-| `nms-reflection-bridge` | nms-bridge | 無 Paperweight 依賴的反射式 NMS 存取 |
-| `nms-version-adapter` | nms-bridge | 多版本 NMS 相容的 Adapter 模式 |
+| Skill ID | Category | Purpose | 狀態 |
+|----------|----------|---------|------|
+| `nms-packet-sender` | nms-packet | 發送自定義 Clientbound 封包 | ✅ |
+| `nms-packet-interceptor` | nms-packet | Netty pipeline 封包攔截與修改 | ✅ |
+| `nms-custom-entity` | nms-entity | 自定義 NMS 實體 + PathfinderGoal AI | ✅ |
+| `nms-reflection-bridge` | nms-bridge | 無 Paperweight 依賴的反射式 NMS 存取 | ✅ |
+| `nms-version-adapter` | nms-bridge | 多版本 NMS 相容的 Adapter 模式 | ✅ |
+| `nms-nbt-manipulation` | nms-data | CompoundTag 讀寫物品/實體/方塊實體 NBT | ⚠️ |
+| `nms-custom-menu` | nms-ui | AbstractContainerMenu 自定義容器 GUI | ⚠️ |
+| `nms-scoreboard` | nms-display | NMS Scoreboard/Objective/Team 計分板 | ⚠️ |
+| `nms-player-profile` | nms-player | GameProfile skin 注入（NPC 外觀） | ⚠️ |
+| `nms-particle-effect` | nms-world | ClientboundLevelParticlesPacket 粒子效果 | ⚠️ |
+| `nms-attribute-modifier` | nms-entity | AttributeMap/AttributeModifier 動態屬性 | ⚠️ |
+| `nms-block-entity` | nms-world | 自定義 BlockEntity（NBT + Tick + 同步） | ⚠️ |
+| `nms-data-component` | nms-data | 1.21 DataComponentType 物品組件系統 | ⚠️ |
+| `nms-chunk-access` | nms-world | LevelChunk 直接方塊/ChunkSection 存取 | ⚠️ |
+| `nms-boss-event` | nms-display | ServerBossEvent Boss Bar 每人獨立控制 | ⚠️ |
 
 ---
 
@@ -177,9 +178,9 @@ java {
 
 ### Registry
 
-`.claude/skills/skills-registry.yml` 與 `Skills/skills-registry.yml` **內容必須相同**，包含：
+`Skills/skills-registry.yml`、`.claude/skills/skills-registry.yml`、`.agents/skills/skills-registry.yml` **三個檔案內容必須相同**，包含：
 
-- `skills` 陣列：5 個 NMS 技能條目（`id`, `version`, `status`, `platform`, `category`, `skill_file`, `examples_file`, `inputs`, `outputs`, `tags`, `trigger_keywords`）
+- `skills` 陣列：15 個 NMS 技能條目（`id`, `version`, `status`, `platform`, `category`, `skill_file`, `examples_file`, `inputs`, `outputs`, `tags`, `trigger_keywords`）
 - `platforms` 陣列：`paper-nms` 平台定義
 - `shared` 陣列：指向 `_shared/` 下的共享參考文件
 
@@ -211,8 +212,8 @@ description: "中英雙語描述（含 NMS Paperweight 要求）"
 1. 在 `Skills/nms/<slug>/` 建立目錄
 2. 撰寫 `SKILL.md`（含 YAML frontmatter：`name`, `description`）
 3. 撰寫 `examples.md`（**至少 2 個範例**，涵蓋不同使用情境）
-4. 同步至 `.claude/skills/nms/<slug>/`
-5. 將新條目加入 `Skills/skills-registry.yml` 與 `.claude/skills/skills-registry.yml`
+4. 同步至 `.claude/skills/nms/<slug>/` 與 `.agents/skills/nms/<slug>/`
+5. 將新條目加入 `Skills/skills-registry.yml`、`.claude/skills/skills-registry.yml`、`.agents/skills/skills-registry.yml`
 6. 若涉及新平台，建立 `Skills/<platform>/PLATFORM.md`
 7. 驗證觸發關鍵字無與既有技能衝突
 
@@ -220,9 +221,7 @@ description: "中英雙語描述（含 NMS Paperweight 要求）"
 
 ## Web App (`web/`)
 
-Web 文件站（Next.js 16，靜態匯出至 `web/out/`）目前仍含舊 Paper 技能內容；**待後續更新至 NMS**。當前 NMS 轉換的核心工作是 Skills 結構，Web 內容同步延後。
-
-開發指令（保留自舊版）：
+Next.js 16 靜態匯出至 `web/out/`。`web/data/skills/` 已含全部 15 個 NMS 技能（每個一個 `.md`）。
 
 ```bash
 cd web
@@ -253,6 +252,15 @@ npm run build         # 靜態匯出至 web/out/
 
 ---
 
+## Multi-Platform Entry Points
+
+| 檔案 | 平台 | 執行時目錄 |
+|------|------|-----------|
+| `CLAUDE.md` | Claude Code | `.claude/skills/` |
+| `AGENTS.md` | Codex | `.agents/skills/` |
+
+---
+
 ## Git Workflow
 
 - 預設分支：`main`（開發與 CI/CD deploy）
@@ -264,11 +272,11 @@ npm run build         # 靜態匯出至 web/out/
 
 ## Key Invariants
 
-1. **雙路徑同步**：`Skills/nms/<path>/` 與 `.claude/skills/nms/<path>/` 內容必須相同。`skills-registry.yml` 同理。
+1. **雙路徑同步**：`Skills/nms/<path>/` 與 `.claude/skills/nms/<path>/`（及 `.agents/skills/nms/<path>/`）內容必須相同。`skills-registry.yml` 三份同理。**⚠️ 當前狀態**：`.claude/skills/nms/` 與 `.agents/skills/nms/` 只有 5 個技能已同步，另 10 個（nms-nbt-manipulation、nms-custom-menu、nms-scoreboard、nms-player-profile、nms-particle-effect、nms-attribute-modifier、nms-block-entity、nms-data-component、nms-chunk-access、nms-boss-event）僅存於 `Skills/nms/`。
 
 2. **`.cursor/` 不再維護**：歷史殘留，日後可能移除；Claude Code 工作一律以 `.claude/skills/` 為準。
 
-3. **MC 版本範圍**：所有技能預設支援 1.21 – 1.21.3；若需擴展版本，更新 `paper-nms/PLATFORM.md` 的對照表。
+3. **MC 版本範圍**：所有技能預設支援 1.21 – 1.21.3；若需擴展版本，更新 `Skills/paper-nms/PLATFORM.md` 的對照表。
 
 4. **Mojang mappings 強制**：不產生 Spigot/CraftBukkit 混淆映射的代碼。
 
@@ -278,4 +286,4 @@ npm run build         # 靜態匯出至 web/out/
 
 7. **無資料庫**：Web app 直讀檔案系統，不引入 DB。
 
-8. **Paperweight 依賴預設**：五個核心 NMS 技能皆預設使用 Paperweight；若需避免，使用 `nms-reflection-bridge`。
+8. **Paperweight 依賴預設**：全部 15 個 NMS 技能皆預設使用 Paperweight；若需避免，使用 `nms-reflection-bridge`。

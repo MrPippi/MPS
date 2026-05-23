@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { SearchModal } from '@/features/search';
+import { LanguageProvider } from '@/shared/i18n';
 import type { SearchIndex } from '@/shared/types/skill';
 
 interface AppShellProps {
@@ -26,15 +27,17 @@ export function AppShell({ children, searchData }: AppShellProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col">
-      <Header onSearchOpen={() => setSearchOpen(true)} />
-      <main className="flex-1">{children}</main>
-      <Footer />
-      <SearchModal
-        isOpen={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        searchData={searchData}
-      />
-    </div>
+    <LanguageProvider>
+      <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col">
+        <Header onSearchOpen={() => setSearchOpen(true)} />
+        <main className="flex-1">{children}</main>
+        <Footer />
+        <SearchModal
+          isOpen={searchOpen}
+          onClose={() => setSearchOpen(false)}
+          searchData={searchData}
+        />
+      </div>
+    </LanguageProvider>
   );
 }

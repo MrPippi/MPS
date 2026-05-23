@@ -1,9 +1,8 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getCategories, getSkillsByCategory, SkillGrid } from '@/features/skills';
-import { Sidebar } from '@/features/categories';
+import { getCategories, getSkillsByCategory } from '@/features/skills';
 import { SITE_NAME } from '@/config/site';
-import Link from 'next/link';
+import { CategoryDetailClient } from '@/features/categories/components/CategoryDetailClient';
 
 interface Props {
   params: Promise<{ category: string }>;
@@ -37,28 +36,6 @@ export default async function CategoryPage({ params }: Props) {
   const skills = getSkillsByCategory(category);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      {/* Page header */}
-      <div className="mb-10 border-b border-[var(--color-border)] pb-8">
-        <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] mb-4">
-          <Link href="/categories" className="hover:text-[var(--color-accent)] transition-colors focus-ring rounded">分類</Link>
-          <span>/</span>
-          <span className="text-[var(--color-text-secondary)]">{cat!.label}</span>
-        </div>
-        <h1 className="text-3xl font-bold text-[var(--color-text)]">{cat!.label}</h1>
-        <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-          {cat!.labelEn} · {skills.length} 個 Skills
-        </p>
-      </div>
-
-      <div className="flex gap-10">
-        <div className="hidden lg:block">
-          <Sidebar categories={categories} activeCategory={category} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <SkillGrid skills={skills} emptyMessage="此分類目前沒有 Skills" />
-        </div>
-      </div>
-    </div>
+    <CategoryDetailClient cat={cat!} skills={skills} categories={categories} />
   );
 }

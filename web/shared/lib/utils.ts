@@ -1,9 +1,9 @@
 import type { SkillStatus } from '@/shared/types/skill';
 
-export function formatDate(dateStr: string): string {
+export function formatDate(dateStr: string, locale: string = 'zh-TW'): string {
   if (!dateStr) return '';
   const date = new Date(dateStr);
-  return date.toLocaleDateString('zh-TW', {
+  return date.toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

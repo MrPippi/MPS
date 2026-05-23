@@ -7,6 +7,7 @@ import { SkillBadge } from './SkillBadge';
 import { formatDate } from '@/shared/lib/utils';
 import { GITHUB_REPO_URL } from '@/config/site';
 import { CategoryIcon } from '@/features/categories';
+import { useLanguage } from '@/shared/i18n';
 
 interface Heading {
   id: string;
@@ -25,6 +26,7 @@ const CHEVRON = (
 );
 
 export function SkillDetail({ skill }: SkillDetailProps) {
+  const { t, lang } = useLanguage();
   const githubUrl = skill.githubPath
     ? `${GITHUB_REPO_URL}/blob/main/${skill.githubPath}`
     : GITHUB_REPO_URL;
@@ -75,14 +77,16 @@ export function SkillDetail({ skill }: SkillDetailProps) {
         {/* Breadcrumb with chevrons */}
         <nav className="mb-6 flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
           <Link href="/" className="hover:text-[var(--color-accent)] transition-colors focus-ring rounded">
-            首頁
+            {t.skillDetail.home}
           </Link>
           {CHEVRON}
           <Link href="/skills" className="hover:text-[var(--color-accent)] transition-colors focus-ring rounded">
             Skills
           </Link>
           {CHEVRON}
-          <span className="text-[var(--color-text-secondary)] truncate max-w-[200px]">{skill.titleZh}</span>
+          <span className="text-[var(--color-text-secondary)] truncate max-w-[200px]">
+            {lang === 'en' ? skill.title : skill.titleZh}
+          </span>
         </nav>
 
         {/* Hero area */}
@@ -90,7 +94,7 @@ export function SkillDetail({ skill }: SkillDetailProps) {
           <div className="mb-4 flex items-center gap-2 flex-wrap">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[color-mix(in_srgb,var(--color-accent)_25%,transparent)] bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)] px-2.5 py-1 text-xs text-[var(--color-accent)]">
               <CategoryIcon category={skill.category} className="h-3.5 w-3.5" />
-              {skill.categoryLabelEn}
+              {lang === 'en' ? skill.categoryLabelEn : skill.categoryLabel}
             </span>
             <span className="rounded border border-[var(--color-border-strong)] bg-[var(--color-border)] px-2.5 py-1 text-xs text-[var(--color-text-muted)] font-mono">
               v{skill.version}
@@ -98,11 +102,15 @@ export function SkillDetail({ skill }: SkillDetailProps) {
             <SkillBadge status={skill.status} />
           </div>
 
-          <h1 className="text-4xl font-extrabold text-[var(--color-text)] leading-tight">{skill.titleZh}</h1>
-          <p className="mt-1.5 text-base text-[var(--color-text-muted)] font-mono">{skill.title}</p>
+          <h1 className="text-4xl font-extrabold text-[var(--color-text)] leading-tight">
+            {lang === 'en' ? skill.title : skill.titleZh}
+          </h1>
+          <p className="mt-1.5 text-base text-[var(--color-text-muted)] font-mono">
+            {lang === 'en' ? skill.titleZh : skill.title}
+          </p>
 
           <p className="mt-4 text-base leading-relaxed text-[var(--color-text-secondary)]">
-            {skill.descriptionZh}
+            {lang === 'en' ? skill.description : skill.descriptionZh}
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -119,7 +127,7 @@ export function SkillDetail({ skill }: SkillDetailProps) {
 
             <div className="ml-auto flex flex-wrap items-center gap-4 text-xs text-[var(--color-text-muted)]">
               {skill.updatedAt && (
-                <span>更新：{formatDate(skill.updatedAt)}</span>
+                <span>{t.skillDetail.updatedAt}{formatDate(skill.updatedAt, lang === 'en' ? 'en-US' : 'zh-TW')}</span>
               )}
               <a
                 href={githubUrl}
@@ -148,7 +156,7 @@ export function SkillDetail({ skill }: SkillDetailProps) {
         <aside className="hidden lg:block w-48 shrink-0">
           <div className="sticky top-24">
             <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">
-              本頁目錄
+              {t.skillDetail.toc}
             </p>
             <ul className="space-y-1">
               {headings.map((h) => (
